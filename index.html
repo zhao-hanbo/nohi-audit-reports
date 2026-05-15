@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Nohi · Agent Audit reports</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Bricolage+Grotesque:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #334155;
+    --primary-dark: #1e293b;
+    --bg: #fbfaf7;
+    --surface: #ffffff;
+    --text: #1a1c24;
+    --text2: #54586a;
+    --text3: #8b8fa0;
+    --border: rgba(20,20,28,0.08);
+    --border-h: rgba(20,20,28,0.14);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 3rem 2rem 5rem; }
+  .brand { display: flex; align-items: center; gap: .55rem; margin-bottom: 2rem; }
+  .brand-mark { width: 28px; height: 28px; background: var(--primary); border-radius: 7px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-family: 'Bricolage Grotesque', sans-serif; }
+  .brand-text { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 1.1rem; letter-spacing: -.02em; }
+  h1 { font-family: 'Bricolage Grotesque', sans-serif; font-size: 2rem; font-weight: 800; letter-spacing: -.025em; line-height: 1.1; margin-bottom: .5rem; }
+  .deck { font-size: 1.02rem; color: var(--text2); margin-bottom: 2.5rem; max-width: 600px; }
+  h2 { font-family: 'Bricolage Grotesque', sans-serif; font-size: .85rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--text3); margin: 2.5rem 0 .75rem; }
+  ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: .5rem; }
+  li a {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 1rem;
+    padding: .85rem 1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    text-decoration: none;
+    color: var(--text);
+    transition: all .15s;
+  }
+  li a:hover { border-color: var(--primary); background: var(--surface); transform: translateY(-1px); box-shadow: 0 2px 6px rgba(20,20,28,0.05); }
+  .report-name { font-weight: 600; font-size: 1rem; }
+  .report-meta { display: flex; gap: .35rem; flex-wrap: wrap; align-items: center; }
+  .tag { font-family: 'JetBrains Mono', monospace; font-size: .68rem; font-weight: 600; padding: .15rem .55rem; border-radius: 999px; border: 1px solid var(--border-h); color: var(--text3); white-space: nowrap; }
+  .tag.multi { color: #4285f4; border-color: #c8dafa; background: rgba(66,133,244,0.06); }
+  .tag.single { color: #475569; }
+  .tag.zh { color: #be185d; border-color: #fbcfe8; background: rgba(190,24,93,0.06); }
+  .url-row { font-family: 'JetBrains Mono', monospace; font-size: .72rem; color: var(--text3); margin-top: .2rem; word-break: break-all; }
+  footer { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); font-size: .8rem; color: var(--text3); }
+  footer a { color: var(--primary); text-decoration: none; font-weight: 600; }
+  .placeholder { color: var(--text3); font-style: italic; padding: .85rem 1rem; border: 1px dashed var(--border-h); border-radius: 8px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="brand">
+  <div class="brand-mark">N</div>
+  <span class="brand-text">Nohi · Agent Audit</span>
+</div>
+
+<h1>Sample reports</h1>
+<p class="deck">Audits of real Shopify product pages from the perspective of AI shopping agents (ChatGPT, Gemini, Claude). Each report scores 8 buyer tasks and pairs every gap with a one-click fix.</p>
+
+<h2>Multi-agent (3 LLMs in parallel)</h2>
+<ul>
+  <li><a href="conceptglobal.html">
+    <div>
+      <div class="report-name">Concept Global — Travel Sling Bag 2.0</div>
+      <div class="url-row">conceptglobal.co/products/travel-sling-bag-2-0</div>
+    </div>
+    <div class="report-meta"><span class="tag multi">multi-agent</span><span class="tag">en</span></div>
+  </a></li>
+  <li><a href="annarave.html">
+    <div>
+      <div class="report-name">Annarave — Vest</div>
+      <div class="url-row">annarave.com/products/vest</div>
+    </div>
+    <div class="report-meta"><span class="tag multi">multi-agent</span><span class="tag">en</span></div>
+  </a></li>
+  <li><a href="nirogam.html">
+    <div>
+      <div class="report-name">Nirogam — Sleepmitram Tablets</div>
+      <div class="url-row">nirogamonline.com/products/sleepmitram-tablets</div>
+    </div>
+    <div class="report-meta"><span class="tag multi">multi-agent</span><span class="tag">en</span></div>
+  </a></li>
+  <li><a href="huggwaii.html">
+    <div>
+      <div class="report-name">Huggwaii — Capybara LED Night Lamp</div>
+      <div class="url-row">huggwaii.com/products/capybara-tap-tap-led-night-lamp...</div>
+    </div>
+    <div class="report-meta"><span class="tag multi">multi-agent</span><span class="tag zh">中文</span></div>
+  </a></li>
+</ul>
+
+<h2>Single-agent (Claude only)</h2>
+<ul>
+  <li><a href="venvia.html">
+    <div>
+      <div class="report-name">Venvia — Fire Phoenix Brooch</div>
+      <div class="url-row">thevenvia.com/products/fire-phoenix-...</div>
+    </div>
+    <div class="report-meta"><span class="tag single">single</span><span class="tag">en</span></div>
+  </a></li>
+  <li><a href="olipop.html">
+    <div>
+      <div class="report-name">Olipop — Strawberry Vanilla</div>
+      <div class="url-row">drinkolipop.com/products/strawberry-vanilla</div>
+    </div>
+    <div class="report-meta"><span class="tag single">single</span><span class="tag">en</span></div>
+  </a></li>
+  <li><a href="conceptglobal-single.html">
+    <div>
+      <div class="report-name">Concept Global — Travel Sling Bag 2.0 <span class="tag single" style="margin-left:.4rem;">single-agent variant</span></div>
+      <div class="url-row">conceptglobal.co/products/travel-sling-bag-2-0</div>
+    </div>
+    <div class="report-meta"><span class="tag single">single</span><span class="tag">en</span></div>
+  </a></li>
+</ul>
+
+<footer>
+  Powered by <a href="https://nohi.ai">Nohi</a>. These reports are samples shared with merchants for feedback. Not indexed by search engines.
+</footer>
+
+</div>
+</body>
+</html>

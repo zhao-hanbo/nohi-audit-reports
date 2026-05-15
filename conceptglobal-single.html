@@ -1,0 +1,2822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Nohi Agent Audit · Concept Global — Travel Sling Bag 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Bricolage+Grotesque:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-display: 'Bricolage Grotesque', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+
+  --bg: #fbfaf7;
+  --surface: #ffffff;
+  --surface2: #f3f1ec;
+  --surface3: #e8e5dd;
+  --border: rgba(20,20,28,0.07);
+  --border-h: rgba(20,20,28,0.14);
+  --text: #1a1c24;
+  --text2: #54586a;
+  --text3: #8b8fa0;
+
+  --good: #0f766e;
+  --good-soft: #ecfdf5;
+  --good-border: #a7d8c6;
+  --warn: #92400e;
+  --warn-soft: #fef8eb;
+  --warn-border: #e6cca0;
+  --bad: #4b5563;
+  --bad-soft: #f1f3f7;
+  --bad-border: #cdd2dd;
+  --crit: #9b1c1c;
+  --crit-soft: #fdf2f2;
+  --crit-border: #f5c5c5;
+
+  --primary: #334155;
+  --primary-dark: #1e293b;
+  --primary-soft: rgba(51,65,85,0.07);
+  --accent-ink: #0f172a;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 1080px; margin: 0 auto; padding: 2rem 2rem 6rem; }
+
+/* Brand strip */
+.brand {
+  display: flex; align-items: center; gap: .55rem;
+  margin-bottom: 1.5rem;
+}
+.brand-mark {
+  width: 26px; height: 26px;
+  background: var(--primary);
+  border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-weight: 700;
+  font-family: var(--font-display);
+  font-size: .85rem;
+}
+.brand-text {
+  font-family: var(--font-display);
+  font-weight: 700; font-size: 1.05rem;
+  letter-spacing: -.02em;
+}
+.brand-divider { width: 1px; height: 16px; background: var(--border-h); }
+.brand-sub {
+  font-family: var(--font-mono);
+  font-size: .7rem;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  font-weight: 600;
+}
+
+h1 {
+  font-family: var(--font-display);
+  font-size: 2.1rem; font-weight: 800;
+  letter-spacing: -.025em; line-height: 1.1;
+  margin-bottom: .4rem;
+}
+.report-purpose {
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--text2);
+  max-width: 740px;
+  margin: .65rem 0 1rem;
+}
+.report-purpose strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.sub {
+  font-family: var(--font-mono);
+  font-size: .8rem; color: var(--text3);
+  margin-bottom: 1rem;
+  word-break: break-all;
+}
+.sub a { color: var(--primary); text-decoration: none; }
+.sub a:hover { text-decoration: underline; }
+
+.kpi-row { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: .75rem; }
+
+.agents-strip {
+  display: flex;
+  gap: .4rem;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: .5rem .75rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: .75rem;
+  font-size: .8rem;
+}
+.agents-label {
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--text3);
+  font-weight: 600;
+  margin-right: .25rem;
+}
+.agent-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  padding: .2rem .55rem;
+  border-radius: 999px;
+  background: var(--surface2);
+  border: 1px solid var(--border-h);
+  font-weight: 600;
+  font-size: .78rem;
+}
+.agent-pill .agent-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--agent-color, var(--text3));
+}
+
+/* Effort/time row — pulls "this is easier than it looks" forward */
+.effort-row {
+  display: flex;
+  gap: .5rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+  padding: .75rem .9rem;
+  background: var(--good-soft);
+  border: 1px solid var(--good-border);
+  border-radius: 10px;
+}
+.effort-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: .3rem;
+  font-size: .82rem;
+  color: var(--text);
+  font-weight: 500;
+}
+.effort-pill b { font-weight: 700; font-size: .92rem; }
+.effort-icon {
+  font-size: .95rem;
+  margin-right: .15rem;
+}
+.effort-sub {
+  font-size: .72rem;
+  color: var(--text3);
+  font-family: var(--font-mono);
+  margin-left: .15rem;
+}
+.effort-instant {
+  background: var(--surface);
+  padding: .3rem .65rem;
+  border-radius: 999px;
+  border: 1px solid var(--good-border);
+  color: var(--good);
+  font-weight: 600;
+}
+.effort-instant b { color: var(--good); }
+.effort-quick {
+  background: var(--surface);
+  padding: .3rem .65rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-h);
+}
+.effort-total {
+  margin-left: auto;
+  padding: .3rem .5rem;
+  color: var(--text2);
+  font-size: .78rem;
+}
+@media (max-width: 580px) {
+  .effort-total { margin-left: 0; width: 100%; padding-top: .4rem; border-top: 1px solid var(--good-border); }
+}
+
+/* Effort pills are now interactive buttons */
+button.effort-pill {
+  cursor: pointer;
+  font-family: inherit;
+  transition: all .15s;
+}
+button.effort-pill:hover {
+  border-color: var(--good);
+  background: var(--surface);
+}
+button.effort-pill[aria-expanded="true"] {
+  background: var(--good);
+  color: white;
+  border-color: var(--good);
+}
+button.effort-pill[aria-expanded="true"] b,
+button.effort-pill[aria-expanded="true"] .effort-sub,
+button.effort-pill[aria-expanded="true"] .effort-icon {
+  color: white;
+}
+.effort-caret {
+  margin-left: .25rem;
+  font-size: .7rem;
+  opacity: .65;
+  transition: transform .15s;
+}
+button.effort-pill[aria-expanded="true"] .effort-caret {
+  transform: rotate(180deg);
+  opacity: 1;
+}
+
+/* The expanding panel */
+.fix-index-panel {
+  margin: -1.25rem 0 2rem;   /* negative top to butt up against effort-row */
+  background: var(--surface);
+  border: 1px solid var(--good-border);
+  border-top: none;
+  border-radius: 0 0 10px 10px;
+  padding: 1rem 1.15rem 1.15rem;
+  animation: slide-down .2s ease-out;
+}
+@keyframes slide-down {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fix-index-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: .75rem;
+  padding-bottom: .55rem;
+  border-bottom: 1px solid var(--border);
+}
+.fix-index-title {
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--text2);
+  font-weight: 700;
+}
+.fix-index-close {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: .15rem .5rem;
+  font-size: .75rem;
+  color: var(--text2);
+  cursor: pointer;
+  font-family: inherit;
+}
+.fix-index-close:hover { background: var(--surface2); color: var(--text); }
+
+.fix-index-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex; flex-direction: column;
+  gap: .25rem;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+.fix-index-list li { margin: 0; }
+.fix-index-item {
+  display: grid;
+  grid-template-columns: 80px 1fr auto;
+  align-items: center;
+  gap: .65rem;
+  padding: .55rem .65rem;
+  border-radius: 6px;
+  text-decoration: none;
+  color: var(--text);
+  border: 1px solid transparent;
+  transition: all .12s;
+}
+.fix-index-item:hover {
+  background: var(--primary-soft);
+  border-color: var(--border-h);
+}
+.fix-index-item .fii-time {
+  font-family: var(--font-mono);
+  font-size: .7rem;
+  font-weight: 700;
+  padding: .15rem .45rem;
+  border-radius: 999px;
+  text-align: center;
+  white-space: nowrap;
+}
+.fix-index-item .fii-time.tier-instant {
+  background: var(--good);
+  color: white;
+}
+.fix-index-item .fii-time.tier-quick {
+  background: var(--good-soft);
+  color: var(--good);
+  border: 1px solid var(--good-border);
+}
+.fix-index-item .fii-time.tier-medium {
+  background: var(--surface2);
+  color: var(--text2);
+  border: 1px solid var(--border-h);
+}
+.fix-index-item .fii-time.tier-slow {
+  background: transparent;
+  color: var(--text3);
+  border: 1px dashed var(--border-h);
+}
+.fix-index-item .fii-title {
+  font-weight: 600;
+  font-size: .88rem;
+  line-height: 1.4;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fix-index-item .fii-skill {
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  white-space: nowrap;
+}
+.fix-index-empty {
+  font-size: .85rem;
+  color: var(--text3);
+  font-style: italic;
+  padding: .5rem;
+}
+.kpi {
+  font-size: .76rem;
+  padding: .35rem .75rem;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text2);
+  font-weight: 500;
+}
+.kpi b { font-weight: 700; color: var(--text); }
+.kpi.kpi-primary {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+.kpi.kpi-primary b { color: white; }
+.kpi.kpi-crit {
+  background: var(--crit-soft);
+  color: var(--crit);
+  border-color: var(--crit-border);
+  font-weight: 600;
+}
+.kpi.kpi-crit b { color: var(--crit); }
+
+/* Executive hero */
+.exec {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 2rem;
+  padding: 1.5rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  margin-bottom: 2.5rem;
+}
+@media (max-width: 780px) { .exec { grid-template-columns: 1fr; } }
+.score-hero {
+  background: var(--warn-soft);
+  border: 1px solid var(--warn-border);
+  border-radius: 12px;
+  padding: 1.5rem 1rem;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+}
+.big-score {
+  font-family: var(--font-display);
+  font-size: 4.4rem; font-weight: 800;
+  line-height: 1; letter-spacing: -.06em;
+  color: var(--warn);
+}
+.score-label { font-size: .88rem; color: var(--text3); margin-top: .25rem; }
+.score-tagline {
+  margin-top: .75rem;
+  font-size: .72rem;
+  font-weight: 700;
+  color: var(--warn);
+  text-transform: uppercase;
+  letter-spacing: .07em;
+}
+.radar-wrap { position: relative; max-width: 420px; margin: 0 auto; }
+.exec-label {
+  font-size: .72rem; font-weight: 600;
+  color: var(--text3); text-transform: uppercase;
+  letter-spacing: .05em; margin-bottom: .8rem;
+}
+
+/* Section header */
+.section-hdr {
+  font-family: var(--font-display);
+  font-size: 1.25rem; font-weight: 700;
+  margin: 2.5rem 0 .85rem;
+  padding-bottom: .5rem;
+  border-bottom: 1px solid var(--border);
+  letter-spacing: -.02em;
+}
+.section-intro {
+  color: var(--text2);
+  margin-bottom: 1.25rem;
+  font-size: .9rem;
+}
+
+/* Subsection header (used inside Site overview) */
+.subsection-hdr {
+  font-family: var(--font-display);
+  font-size: .85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--text2);
+  margin: 1.5rem 0 .8rem;
+  display: flex; align-items: baseline; gap: .4rem;
+}
+.subsection-hdr:first-child { margin-top: 0; }
+.subsection-hdr .count {
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  color: var(--text3);
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.subsection-note {
+  font-size: .82rem;
+  color: var(--text2);
+  margin-bottom: .85rem;
+  line-height: 1.55;
+}
+.subsection-note a {
+  color: var(--primary);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--primary);
+  font-weight: 600;
+}
+.subsection-note a:hover { border-bottom-style: solid; }
+
+/* Positives grid */
+.positives-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: .65rem;
+  margin-bottom: 1.5rem;
+}
+.positive-card {
+  display: flex;
+  gap: .65rem;
+  padding: .8rem .95rem;
+  background: var(--good-soft);
+  border: 1px solid var(--good-border);
+  border-radius: 9px;
+}
+.positive-icon {
+  flex-shrink: 0;
+  width: 22px; height: 22px;
+  background: var(--good);
+  color: white;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700;
+  font-size: .8rem;
+}
+.positive-body { flex: 1; min-width: 0; }
+.positive-title {
+  font-weight: 700;
+  font-size: .88rem;
+  color: var(--text);
+  margin-bottom: .15rem;
+  line-height: 1.4;
+}
+.positive-where {
+  font-family: var(--font-mono);
+  font-size: .7rem;
+  color: var(--text3);
+  margin-bottom: .35rem;
+}
+.positive-where code {
+  background: rgba(15,118,110,0.08);
+  padding: .08rem .3rem;
+  border-radius: 3px;
+}
+.positive-value {
+  font-size: .82rem;
+  color: var(--text2);
+  line-height: 1.5;
+}
+
+/* Site issues table (refactored: 3 columns, issue body grouped) */
+.findings-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  font-size: .85rem;
+}
+.findings-table th {
+  text-align: left;
+  padding: .65rem .85rem;
+  background: var(--surface2);
+  font-size: .68rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--text2);
+  font-weight: 700;
+  border-bottom: 1px solid var(--border);
+}
+.findings-table td {
+  padding: .85rem .85rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+.findings-table tr:last-child td { border-bottom: none; }
+.findings-table .col-sev    { width: 90px; }
+.findings-table .col-finding { width: 50%; }
+.findings-table .col-fix     { width: 40%; }
+
+.findings-table .finding-title {
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: .25rem;
+  line-height: 1.4;
+}
+.findings-table .finding-where {
+  font-family: var(--font-mono);
+  font-size: .7rem;
+  color: var(--text3);
+  margin-bottom: .35rem;
+}
+.findings-table .finding-where code {
+  background: var(--surface2);
+  padding: .08rem .3rem;
+  border-radius: 3px;
+  color: var(--text2);
+}
+.findings-table .finding-impact {
+  color: var(--text2);
+  font-size: .82rem;
+  line-height: 1.5;
+}
+.findings-table .muted { color: var(--text3); font-size: .82rem; font-style: italic; }
+
+.finding-fix-skill {
+  font-size: .7rem;
+  font-family: var(--font-mono);
+  color: var(--text3);
+  margin-bottom: .4rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+.finding-fix-skill a {
+  color: var(--text2);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--border-h);
+}
+.finding-fix-skill a:hover {
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.finding-fix-chips {
+  display: flex; flex-direction: column; gap: .35rem;
+}
+.fix-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  padding: .4rem .65rem;
+  background: var(--primary-soft);
+  border: 1px solid var(--border-h);
+  border-radius: 7px;
+  color: var(--text);
+  font-size: .82rem;
+  font-weight: 600;
+  text-decoration: none;
+  line-height: 1.3;
+  transition: all .15s;
+}
+.fix-chip:hover {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+.fix-chip-icon {
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  font-weight: 700;
+  width: 22px; height: 22px;
+  background: var(--primary);
+  color: white;
+  border-radius: 5px;
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.fix-chip:hover .fix-chip-icon {
+  background: white;
+  color: var(--primary);
+}
+
+.inline-fix {
+  background: var(--primary-soft);
+  border: 1px solid var(--border-h);
+  border-radius: 7px;
+  padding: .6rem .75rem;
+}
+.inline-fix-title {
+  font-weight: 700;
+  font-size: .85rem;
+  color: var(--primary-dark);
+  margin-bottom: .25rem;
+}
+.inline-fix-summary {
+  font-size: .8rem;
+  color: var(--text2);
+  margin-bottom: .35rem;
+  line-height: 1.5;
+}
+.inline-fix-action {
+  font-size: .76rem;
+  color: var(--text2);
+  background: var(--surface);
+  padding: .35rem .55rem;
+  border-radius: 5px;
+  border-left: 2px solid var(--primary);
+}
+
+.findings-empty {
+  background: var(--good-soft);
+  border: 1px solid var(--good-border);
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  color: var(--good);
+  font-weight: 600;
+}
+
+/* Highlight flash for navigated-to fix or skill */
+@keyframes flash-highlight {
+  0%   { background: var(--primary); color: white; box-shadow: 0 0 0 8px var(--primary-soft); }
+  60%  { background: var(--primary); color: white; box-shadow: 0 0 0 8px var(--primary-soft); }
+  100% { background: var(--surface); color: var(--text); box-shadow: 0 0 0 0 transparent; }
+}
+.fix.flash {
+  animation: flash-highlight 1.6s ease-out;
+}
+.fix.flash .fix-title,
+.fix.flash .fix-summary,
+.fix.flash .fix-type,
+.fix.flash .fix-type em {
+  color: white !important;
+}
+@keyframes flash-skill {
+  0%   { box-shadow: 0 0 0 4px var(--primary); }
+  60%  { box-shadow: 0 0 0 4px var(--primary); }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+.skill.flash {
+  animation: flash-skill 1.6s ease-out;
+}
+
+/* Severity badges — only critical is loud */
+.sev-badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: .65rem;
+  font-weight: 700;
+  padding: .15rem .55rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  white-space: nowrap;
+}
+.sev-badge.sev-crit.emph-loud {
+  background: var(--crit);
+  color: white;
+  border: 1px solid var(--crit);
+}
+.sev-badge.sev-warn.emph-med {
+  background: var(--surface2);
+  color: var(--text);
+  border: 1px solid var(--border-h);
+}
+.sev-badge.sev-warn.emph-soft {
+  background: var(--surface2);
+  color: var(--text2);
+  border: 1px solid var(--border);
+}
+.sev-badge.sev-good.emph-soft {
+  background: var(--good-soft);
+  color: var(--good);
+  border: 1px solid var(--good-border);
+}
+
+/* Skill cards */
+.skills-list { display: flex; flex-direction: column; gap: .6rem; }
+.skill {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color .15s;
+}
+.skill[open] { border-color: var(--border-h); }
+.skill-hdr {
+  display: flex; align-items: center; gap: 1rem;
+  padding: .95rem 1.15rem;
+  cursor: pointer; user-select: none;
+  list-style: none;
+}
+.skill-hdr::-webkit-details-marker { display: none; }
+.skill-hdr:hover { background: var(--surface2); }
+.skill[open] .skill-hdr { border-bottom: 1px solid var(--border); }
+.caret {
+  font-size: .7rem; color: var(--text3);
+  transition: transform .2s; flex-shrink: 0;
+}
+.skill[open] .caret { transform: rotate(90deg); }
+.skill-name { flex: 1; min-width: 0; }
+.skill-title {
+  font-weight: 700; font-size: 1rem;
+  font-family: var(--font-display);
+  letter-spacing: -.01em;
+}
+.skill-prompt {
+  font-family: var(--font-mono);
+  font-size: .7rem; color: var(--text3);
+  margin-top: .12rem;
+  font-style: italic;
+}
+.skill-evidence-summary {
+  display: flex; gap: .3rem;
+  flex-wrap: wrap; flex-shrink: 0;
+}
+
+/* Multi-agent: per-agent score chips in the skill header */
+.agent-score-row {
+  display: flex; gap: .35rem;
+  flex-wrap: wrap; flex-shrink: 0;
+  align-items: center;
+}
+.agent-score {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  padding: .2rem .55rem;
+  font-size: .72rem;
+  font-weight: 600;
+  background: var(--surface2);
+  border: 1px solid var(--border-h);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+}
+.agent-score .agent-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--agent-color, var(--text3));
+  flex-shrink: 0;
+}
+.agent-score .agent-name { color: var(--text2); font-family: var(--font-sans); }
+.agent-score .agent-score-val {
+  font-weight: 700;
+  font-size: .82rem;
+}
+.agent-score.score-good .agent-score-val { color: var(--good); }
+.agent-score.score-warn .agent-score-val { color: var(--warn); }
+.agent-score.score-bad  .agent-score-val { color: var(--bad); }
+.agent-score.agent-fail {
+  background: var(--crit-soft);
+  border-color: var(--crit-border);
+}
+.agent-score.agent-fail .agent-score-val { color: var(--crit); }
+
+.agreement {
+  font-size: .65rem;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  padding: .12rem .4rem;
+  border-radius: 4px;
+  font-weight: 600;
+}
+.agreement-consensus {
+  background: var(--good-soft);
+  color: var(--good);
+  border: 1px solid var(--good-border);
+}
+.agreement-mild-split {
+  background: var(--warn-soft);
+  color: var(--warn);
+  border: 1px solid var(--warn-border);
+}
+.agreement-wide-split {
+  background: var(--crit-soft);
+  color: var(--crit);
+  border: 1px solid var(--crit-border);
+}
+
+/* Per-agent breakdown accordion inside skill card */
+.agent-details {
+  display: flex; flex-direction: column;
+  gap: .4rem;
+}
+.agent-detail {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.agent-detail[open] { border-color: var(--border-h); }
+.agent-detail-hdr {
+  display: flex; align-items: center;
+  gap: .6rem;
+  padding: .65rem .85rem;
+  cursor: pointer;
+  user-select: none;
+  list-style: none;
+  font-size: .85rem;
+}
+.agent-detail-hdr::-webkit-details-marker { display: none; }
+.agent-detail-hdr:hover { background: var(--surface2); }
+.caret-sm {
+  font-size: .6rem;
+  color: var(--text3);
+  transition: transform .2s;
+}
+.agent-detail[open] .caret-sm { transform: rotate(90deg); }
+.agent-detail-hdr .agent-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.agent-detail-name {
+  font-weight: 700;
+  flex: 1;
+}
+.agent-detail-score {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: -.02em;
+}
+.agent-detail-score.score-good { color: var(--good); }
+.agent-detail-score.score-warn { color: var(--warn); }
+.agent-detail-score.score-bad  { color: var(--bad); }
+.agent-detail-evidence {
+  display: flex; gap: .25rem;
+  flex-wrap: wrap;
+}
+.agent-detail-body {
+  padding: .85rem 1rem 1rem;
+  background: var(--surface2);
+  border-top: 1px solid var(--border);
+}
+.agent-detail-body h5 {
+  font-size: .75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--text2);
+  margin: 0 0 .5rem;
+}
+.agent-detail-body h5:not(:first-child) { margin-top: 1rem; }
+
+/* Wide-split visual marker on skill cards where models disagreed significantly */
+.skill.skill-wide-split {
+  border-color: var(--warn-border);
+  border-left: 3px solid var(--warn);
+}
+.skill.skill-wide-split .skill-hdr {
+  background: linear-gradient(to right, var(--warn-soft) 0%, transparent 30%);
+}
+.wide-split-pin {
+  display: inline-block;
+  margin-right: .35rem;
+  font-size: .9rem;
+}
+.wide-split-banner {
+  background: var(--warn-soft);
+  border: 1px solid var(--warn-border);
+  border-radius: 8px;
+  padding: .8rem 1rem;
+  margin-bottom: 1.25rem;
+  font-size: .85rem;
+}
+.wide-split-banner p {
+  margin: .35rem 0 0;
+  color: var(--text);
+}
+.wide-split-banner .wide-split-hint {
+  font-size: .8rem;
+  color: var(--text2);
+  margin-top: .55rem;
+}
+.wide-split-header {
+  display: flex; align-items: center;
+  gap: .5rem;
+  color: var(--warn);
+}
+.wide-split-icon { font-size: 1rem; }
+.wide-split-spread {
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  padding: .12rem .45rem;
+  background: var(--warn);
+  color: white;
+  border-radius: 4px;
+  margin-left: auto;
+}
+.chip {
+  display: inline-flex; align-items: center; gap: .3rem;
+  font-size: .7rem; font-weight: 600;
+  padding: .18rem .5rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.chip-icon { font-weight: 700; }
+.chip-pos { background: var(--good-soft); color: var(--good); border: 1px solid var(--good-border); }
+.chip-neg { background: var(--crit-soft); color: var(--crit); border: 1px solid var(--crit-border); }
+.chip-gap { background: var(--warn-soft); color: var(--warn); border: 1px solid var(--warn-border); }
+.chip-miss { background: var(--surface2); color: var(--text2); border: 1px solid var(--border-h); }
+
+.skill-score {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.65rem;
+  letter-spacing: -.04em;
+  min-width: 5.2rem;
+  text-align: right;
+  flex-shrink: 0;
+}
+.score-of { font-size: .85rem; font-weight: 600; color: var(--text3); margin-left: .1rem; }
+.score-good { color: var(--good); }
+.score-warn { color: var(--warn); }
+.score-bad  { color: var(--bad); }
+
+.skill-body { padding: 1.25rem 1.5rem 1.5rem; background: var(--surface2); }
+.skill-section { margin-bottom: 1.4rem; }
+.skill-section:last-child { margin-bottom: 0; }
+.skill-section h4 {
+  font-family: var(--font-display);
+  font-size: .82rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  font-weight: 700;
+  color: var(--text2);
+  margin-bottom: .6rem;
+}
+
+.ev-list { list-style: none; }
+.ev {
+  display: flex; gap: .55rem;
+  padding: .5rem .7rem;
+  margin-bottom: .3rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  font-size: .88rem;
+}
+.ev-icon { flex-shrink: 0; font-weight: 700; }
+.ev-pos .ev-icon  { color: var(--good); }
+.ev-neg .ev-icon  { color: var(--crit); }
+.ev-gap .ev-icon  { color: var(--warn); }
+.ev-miss .ev-icon { color: var(--text3); }
+.ev-text { color: var(--text); }
+
+.raw-response {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--primary);
+  border-radius: 7px;
+  padding: 1rem 1.25rem;
+  font-size: .87rem;
+  color: var(--text);
+}
+.raw-response p { margin-bottom: .6rem; }
+.raw-response p:last-child { margin-bottom: 0; }
+.raw-response ul { margin: .4rem 0 .6rem 1.25rem; }
+.raw-response li { margin-bottom: .2rem; }
+
+/* Fixes — the differentiator */
+.fixes-section {
+  background: var(--primary-soft);
+  border: 1px solid var(--border-h);
+  border-radius: 10px;
+  padding: 1rem 1.15rem;
+}
+.fixes-section h4 { color: var(--primary-dark); }
+.fix-count {
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin-left: .2rem;
+}
+.no-fixes {
+  font-size: .85rem;
+  color: var(--text3);
+  font-style: italic;
+}
+.fix {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: .85rem 1rem;
+  margin-bottom: .65rem;
+}
+.fix:last-child { margin-bottom: 0; }
+.fix-hdr {
+  display: flex; align-items: flex-start; gap: .75rem;
+  margin-bottom: .55rem;
+}
+.fix-icon {
+  font-family: var(--font-mono);
+  width: 28px; height: 28px;
+  background: var(--primary);
+  color: white;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .8rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.fix-titles { flex: 1; min-width: 0; }
+.fix-title-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .35rem;
+}
+.fix-title {
+  font-weight: 700;
+  font-size: .92rem;
+  color: var(--text);
+}
+.fix-type {
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  color: var(--text3);
+  margin-top: .15rem;
+}
+.fix-type em { color: var(--text2); font-style: normal; }
+.fix-sep { margin: 0 .2rem; opacity: .6; }
+
+/* Time chip — appears next to fix title */
+.time-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .2rem;
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  font-weight: 600;
+  padding: .15rem .45rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.time-icon { font-size: .8rem; }
+.time-chip.time-instant {
+  background: rgba(15,118,110,0.1);
+  color: var(--good);
+  border: 1px solid var(--good-border);
+}
+.time-chip.time-quick {
+  background: var(--surface2);
+  color: var(--text2);
+  border: 1px solid var(--border-h);
+}
+.time-chip.time-medium {
+  background: var(--surface2);
+  color: var(--text3);
+  border: 1px solid var(--border);
+}
+.time-chip.time-slow {
+  background: transparent;
+  color: var(--text3);
+  border: 1px dashed var(--border-h);
+}
+
+/* INSTANT badge — only on truly fast fixes */
+.instant-badge {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: .65rem;
+  font-weight: 700;
+  padding: .15rem .45rem;
+  border-radius: 4px;
+  background: var(--good);
+  color: white;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Tier accents on fix cards — instant gets a green left border */
+.fix.tier-instant {
+  border-left: 3px solid var(--good);
+}
+
+/* Fix chip in the cross-cutting issues table — show time and instant marker */
+.fix-chip {
+  flex-wrap: wrap;
+}
+.fix-chip-title { flex: 1; min-width: 0; }
+.fix-chip-instant {
+  font-size: .85rem;
+  margin-left: .2rem;
+}
+.fix-chip-time {
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  font-weight: 600;
+  padding: .1rem .4rem;
+  border-radius: 999px;
+  background: var(--surface2);
+  color: var(--text2);
+  margin-left: .25rem;
+  border: 1px solid var(--border);
+}
+.fix-chip:hover .fix-chip-time {
+  background: rgba(255,255,255,0.2);
+  color: white;
+  border-color: rgba(255,255,255,0.3);
+}
+.fix-chip-time.time-instant {
+  background: var(--good);
+  color: white;
+  border-color: var(--good);
+}
+
+/* Inline fix header with time chip */
+.inline-fix-hdr {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .4rem;
+  margin-bottom: .35rem;
+}
+.inline-fix.tier-instant {
+  border-left: 3px solid var(--good);
+}
+.copy-btn {
+  font-family: var(--font-sans);
+  font-size: .72rem;
+  font-weight: 600;
+  padding: .25rem .65rem;
+  border-radius: 5px;
+  border: 1px solid var(--border-h);
+  background: var(--surface);
+  color: var(--text2);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all .15s;
+}
+.copy-btn:hover {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+.copy-btn.copied {
+  background: var(--good);
+  color: white;
+  border-color: var(--good);
+}
+.fix-summary {
+  font-size: .84rem;
+  color: var(--text2);
+  margin-bottom: .55rem;
+  line-height: 1.5;
+}
+.fix-artifact {
+  background: var(--accent-ink);
+  color: #e2e8f0;
+  border-radius: 6px;
+  padding: .7rem .85rem;
+  font-family: var(--font-mono);
+  font-size: .75rem;
+  line-height: 1.55;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin-bottom: .55rem;
+  max-height: 320px;
+  overflow-y: auto;
+}
+.fix-action {
+  font-size: .78rem;
+  color: var(--text2);
+  background: var(--surface2);
+  padding: .5rem .75rem;
+  border-radius: 6px;
+  border-left: 2px solid var(--primary);
+}
+.fix-action-lead {
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  font-weight: 700;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  margin-right: .35rem;
+}
+
+/* Footer */
+.footer {
+  margin-top: 4rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-size: .78rem;
+  color: var(--text3);
+  font-family: var(--font-mono);
+}
+.footer a { color: var(--primary); text-decoration: none; font-weight: 600; }
+.footer .small { margin-top: .4rem; opacity: .7; font-size: .72rem; }
+
+.stochasticity-note {
+  margin-top: 3rem;
+  padding: .8rem 1rem;
+  background: var(--surface);
+  border: 1px dashed var(--border-h);
+  border-radius: 8px;
+  font-size: .78rem;
+  color: var(--text2);
+  line-height: 1.55;
+  font-style: italic;
+}
+
+/* Print friendly */
+@media print {
+  .skill { break-inside: avoid; }
+  .copy-btn { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+<div class="brand">
+  <div class="brand-mark">N</div>
+  <span class="brand-text">Nohi</span>
+  <span class="brand-divider"></span>
+  <span class="brand-sub">Agent Audit · PDP review</span>
+</div>
+
+<h1>Concept Global — Travel Sling Bag 2.0</h1>
+<p class="report-purpose">
+  <strong>AI shopping agents — ChatGPT, Gemini, Claude, Perplexity — increasingly answer &ldquo;should I buy this?&rdquo; on behalf of your buyers.</strong>
+  This report scores how well your product page serves them across 8 typical buyer tasks. Every gap comes with a one-click fix you can apply today.
+</p>
+<div class="sub">
+  <a href="https://conceptglobal.co/products/travel-sling-bag-2-0" target="_blank" rel="noopener">https://conceptglobal.co/products/travel-sling-bag-2-0</a>
+  · Audited May 15, 2026 · Agent: Claude Sonnet 4.5 (via Claude Agent SDK + subscription auth)
+</div>
+
+
+
+<div class="kpi-row">
+  <span class="kpi"><b>8</b> skills tested</span>
+  <span class="kpi">Score: <b>6.1/10</b></span>
+  <span class="kpi"><b>31</b> issues found</span>
+  <span class="kpi kpi-primary" title="Fixes that solve cross-cutting site issues"><b>7</b> site fixes</span>
+  <span class="kpi kpi-primary" title="Fixes for PDP-specific issues inside each skill card"><b>13</b> per-skill fixes</span>
+  <span class="kpi kpi-crit"><b>1</b> critical</span>
+</div>
+
+<div class="effort-row">
+  <button class="effort-pill effort-instant" type="button" data-filter="instant" aria-expanded="false" title="Click to list all instant fixes">
+    <span class="effort-icon">⚡</span> <b>6</b> instant fixes <span class="effort-sub">(<2 min each)</span>
+    <span class="effort-caret">▾</span>
+  </button>
+  <button class="effort-pill effort-quick" type="button" data-filter="quick" aria-expanded="false" title="Click to list all quick wins">
+    <b>14</b> quick wins <span class="effort-sub">(<5 min each)</span>
+    <span class="effort-caret">▾</span>
+  </button>
+  <button class="effort-pill effort-total" type="button" data-filter="all" aria-expanded="false" title="Click to list every fix in the report">
+    <span class="effort-icon">⏱</span> ~<b>2h 51m</b> to apply all 20 fixes
+    <span class="effort-caret">▾</span>
+  </button>
+</div>
+<div id="fix-index-panel" class="fix-index-panel" hidden>
+  <div class="fix-index-header">
+    <span class="fix-index-title">Pick a fix to jump to it</span>
+    <button class="fix-index-close" type="button" aria-label="Close">✕</button>
+  </div>
+  <ul class="fix-index-list"></ul>
+</div>
+
+<div class="exec">
+  <div class="score-hero">
+    <div class="big-score">6.1</div>
+    <div class="score-label">out of 10</div>
+    <div class="score-tagline">needs work</div>
+  </div>
+  <div>
+    <div class="exec-label">Skill scores — how well this page serves AI shopping agents</div>
+    <div class="radar-wrap"><canvas id="radarChart"></canvas></div>
+  </div>
+</div>
+
+<div class="section-hdr">Site overview</div>
+<div class="section-intro">Cross-cutting strengths and issues — things that affect multiple skills or live at the policy/site level rather than the PDP.</div>
+
+    <div class="subsection-hdr">What's working <span class="count">(5)</span></div>
+    <div class="positives-grid">
+        <div class="positive-card">
+          <div class="positive-icon">✓</div>
+          <div class="positive-body">
+            <div class="positive-title">Comprehensive structured data foundation</div>
+            <div class="positive-where"><code>Product JSON-LD schema + FAQPage schema</code></div>
+            <div class="positive-value">All 9 variants have unique GTINs, SKUs, and variant-specific URLs properly encoded in Product schema. This enables AI shopping agents to compare variants programmatically and ensures Google Merchant Center eligibility without additional setup.</div>
+          </div>
+        </div>
+        
+        <div class="positive-card">
+          <div class="positive-icon">✓</div>
+          <div class="positive-body">
+            <div class="positive-title">Above-industry return window</div>
+            <div class="positive-where"><code>60-day return policy (site-wide policy)</code></div>
+            <div class="positive-value">60-day guarantee vs. 30-day industry standard removes purchase friction and is explicitly stated in FAQ, JSON-LD schema, and PDP badge. This policy-level decision makes the site inherently more agent-recommendable for risk-averse buyers.</div>
+          </div>
+        </div>
+        
+        <div class="positive-card">
+          <div class="positive-icon">✓</div>
+          <div class="positive-body">
+            <div class="positive-title">High-volume review infrastructure already operational</div>
+            <div class="positive-where"><code>AggregateRating schema + PDP reviews display</code></div>
+            <div class="positive-value">2,296 reviews at 4.7★ properly encoded in schema and prominently displayed. The review collection system is mature and proven—fixes only require exposing existing review content, not building collection infrastructure from scratch.</div>
+          </div>
+        </div>
+        
+        <div class="positive-card">
+          <div class="positive-icon">✓</div>
+          <div class="positive-body">
+            <div class="positive-title">Dual-measurement specification discipline</div>
+            <div class="positive-where"><code>FAQ dimensions for all size variants</code></div>
+            <div class="positive-value">All three sizes include dimensions in both imperial and metric (e.g., 8.3 x 5.1 in / 21 x 13 cm). This operational standard signals mature product data governance and eliminates a common barrier for international buyers and AI agents parsing specs.</div>
+          </div>
+        </div>
+        
+        <div class="positive-card">
+          <div class="positive-icon">✓</div>
+          <div class="positive-body">
+            <div class="positive-title">Multi-variant data maturity with no SKU debt</div>
+            <div class="positive-where"><code>9 color/size combinations in Product schema</code></div>
+            <div class="positive-value">Each SKU has unique GTIN, proper variant-specific pricing (€69.90 Mini/Regular, €79.90 Max), and distinct URLs. This level of product data discipline is rare for stores this size and means variant-specific fixes (e.g., adding dimensions to schema) can scale cleanly across all SKUs.</div>
+          </div>
+        </div>
+        </div>
+    
+
+    <div class="subsection-hdr">Cross-cutting issues <span class="count">(6)</span></div>
+    <div class="subsection-note">Cross-cutting issues — span multiple skills or live at the policy/site level. <a href="#skills-review">13 more fixes for PDP-specific issues</a> live inside each skill card below.</div>
+    <table class="findings-table">
+      <thead>
+        <tr><th class="col-sev">Severity</th><th class="col-finding">Issue</th><th class="col-fix">Fix</th></tr>
+      </thead>
+      <tbody>
+        <tr class="finding-row sev-crit emph-loud">
+          <td class="finding-sev-cell"><span class="sev-badge sev-crit emph-loud">CRITICAL</span></td>
+          <td class="finding-title-cell">
+            <div class="finding-title">Refund policy page incomplete/truncated</div>
+            <div class="finding-where"><code>/policies/refund-policy</code></div>
+            <div class="finding-impact">Customers can&#x27;t verify return rights, forcing support inquiries and reducing purchase confidence</div>
+          </td>
+          <td class="finding-fix-cell"><div class="finding-fix-skill">in <a href="#skill-check_returns" data-skill="check_returns">Check returns</a></div><div class="finding-fix-chips"><a class="fix-chip" href="#fix-check_returns-1" data-skill="check_returns" data-fix="1"><span class="fix-chip-icon">✎</span><span class="fix-chip-title">Write comprehensive refund policy page</span><span class="fix-chip-time time-medium">30 min</span></a></div></td>
+        </tr>
+        
+        <tr class="finding-row sev-warn emph-med">
+          <td class="finding-sev-cell"><span class="sev-badge sev-warn emph-med">HIGH</span></td>
+          <td class="finding-title-cell">
+            <div class="finding-title">Product weight shows 0.0 kg in schema</div>
+            <div class="finding-where"><code>Product JSON-LD weight field (all variants)</code></div>
+            <div class="finding-impact">Search engines and AI agents reject or deprioritize malformed product data, reducing discoverability</div>
+          </td>
+          <td class="finding-fix-cell"><div class="finding-fix-skill">in <a href="#skill-identify_specs" data-skill="identify_specs">Identify specs</a></div><div class="finding-fix-chips"><a class="fix-chip" href="#fix-identify_specs-0" data-skill="identify_specs" data-fix="0"><span class="fix-chip-icon">❮❯</span><span class="fix-chip-title">Add weight specs to product page</span><span class="fix-chip-instant" title="Under 2 minutes">⚡</span><span class="fix-chip-time time-instant">2 min</span></a></div></td>
+        </tr>
+        
+        <tr class="finding-row sev-warn emph-med">
+          <td class="finding-sev-cell"><span class="sev-badge sev-warn emph-med">HIGH</span></td>
+          <td class="finding-title-cell">
+            <div class="finding-title">No warranty policy page in footer</div>
+            <div class="finding-where"><code>/policies/ (warranty page missing)</code></div>
+            <div class="finding-impact">Buyers can&#x27;t evaluate long-term value protection, reducing willingness to pay premium price</div>
+          </td>
+          <td class="finding-fix-cell"><div class="finding-fix-skill">in <a href="#skill-check_warranty" data-skill="check_warranty">Check warranty</a></div><div class="finding-fix-chips"><a class="fix-chip" href="#fix-check_warranty-2" data-skill="check_warranty" data-fix="2"><span class="fix-chip-icon">✎</span><span class="fix-chip-title">Create standalone warranty policy page</span><span class="fix-chip-time time-medium">15 min</span></a></div></td>
+        </tr>
+        
+        <tr class="finding-row sev-warn emph-soft">
+          <td class="finding-sev-cell"><span class="sev-badge sev-warn emph-soft">MEDIUM</span></td>
+          <td class="finding-title-cell">
+            <div class="finding-title">No Review schema objects (only AggregateRating)</div>
+            <div class="finding-where"><code>Product JSON-LD schema</code></div>
+            <div class="finding-impact">Google can&#x27;t display review stars or snippets in search results, reducing click-through rate from organic search</div>
+          </td>
+          <td class="finding-fix-cell"><div class="finding-fix-skill">in <a href="#skill-summarize_reviews" data-skill="summarize_reviews">Summarize reviews</a></div><div class="finding-fix-chips"><a class="fix-chip" href="#fix-summarize_reviews-0" data-skill="summarize_reviews" data-fix="0"><span class="fix-chip-icon">✦</span><span class="fix-chip-title">Install review app to expose customer feedback</span><span class="fix-chip-time time-medium">15 min</span></a></div></td>
+        </tr>
+        
+        <tr class="finding-row sev-warn emph-soft">
+          <td class="finding-sev-cell"><span class="sev-badge sev-warn emph-soft">MEDIUM</span></td>
+          <td class="finding-title-cell">
+            <div class="finding-title">Shipping cost hidden until checkout</div>
+            <div class="finding-where"><code>PDP and cart (site-wide)</code></div>
+            <div class="finding-impact">Buyers abandon cart at checkout when shipping cost surprises them, increasing acquisition cost per order</div>
+          </td>
+          <td class="finding-fix-cell"><div class="finding-fix-skill">in <a href="#skill-price_per_unit" data-skill="price_per_unit">Price per unit</a></div><div class="finding-fix-chips"><a class="fix-chip" href="#fix-price_per_unit-2" data-skill="price_per_unit" data-fix="2"><span class="fix-chip-icon">❮❯</span><span class="fix-chip-title">Display shipping cost estimate widget</span><span class="fix-chip-instant" title="Under 2 minutes">⚡</span><span class="fix-chip-time time-instant">2 min</span></a></div></td>
+        </tr>
+        
+        <tr class="finding-row sev-warn emph-soft">
+          <td class="finding-sev-cell"><span class="sev-badge sev-warn emph-soft">MEDIUM</span></td>
+          <td class="finding-title-cell">
+            <div class="finding-title">No gift options in checkout flow</div>
+            <div class="finding-where"><code>Checkout settings (gift wrap, gift receipt, gift message)</code></div>
+            <div class="finding-impact">Gift buyers contact support or skip purchase entirely, reducing gift segment revenue and increasing support volume</div>
+          </td>
+          <td class="finding-fix-cell"><div class="finding-fix-skill">in <a href="#skill-rate_as_gift" data-skill="rate_as_gift">Rate as gift</a></div><div class="finding-fix-chips"><a class="fix-chip" href="#fix-rate_as_gift-0" data-skill="rate_as_gift" data-fix="0"><span class="fix-chip-icon">→</span><span class="fix-chip-title">Add gift wrap checkbox at checkout</span><span class="fix-chip-time time-quick">5 min</span></a><a class="fix-chip" href="#fix-rate_as_gift-2" data-skill="rate_as_gift" data-fix="2"><span class="fix-chip-icon">→</span><span class="fix-chip-title">Enable gift receipt in checkout settings</span><span class="fix-chip-instant" title="Under 2 minutes">⚡</span><span class="fix-chip-time time-instant">60s</span></a></div></td>
+        </tr>
+        </tbody>
+    </table>
+    
+
+<div id="skills-review" class="section-hdr">Skills review · 13 per-skill fixes</div>
+<div class="section-intro">
+  Each skill is a task an AI shopping agent (ChatGPT, Gemini, Claude, Perplexity) tries to perform when a buyer asks about this product.
+  Click any row to expand the agent's raw response, evidence, and the one-click fixes that close each gap.
+</div>
+
+<div class="skills-list">
+  
+    <details class="skill " id="skill-buying_advice" >
+      <summary class="skill-hdr">
+        <span class="caret">▸</span>
+        <div class="skill-name">
+          <div class="skill-title">Buying advice</div>
+          <div class="skill-prompt">"Should I buy this? Give a recommendation with rationale."</div>
+        </div>
+        <div class="skill-evidence-summary"><span class="chip chip-pos"><span class="chip-icon">✓</span> 4 strengths</span><span class="chip chip-neg"><span class="chip-icon">✗</span> 1 issue</span><span class="chip chip-gap"><span class="chip-icon">○</span> 2 gaps</span><span class="chip chip-miss"><span class="chip-icon">△</span> 2 missing</span></div>
+        <div class="skill-score score-warn">7.0<span class="score-of">/10</span></div>
+      </summary>
+      <div class="skill-body">
+        
+        <div class="skill-section">
+          <h4>Evidence</h4>
+          <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">2,296 reviews at 4.7/5 stars provides strong social proof</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">60-day money-back guarantee explicitly stated multiple times removes purchase risk</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">FAQ provides detailed sizing guidance with dimensions and use cases for Mini/Regular/Max</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Clear version narrative (v2.0 improvements based on 200,000+ customer feedback)</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">No comparison to v1.0 specifics—page says &#x27;upgraded materials&#x27; and &#x27;better anti-theft&#x27; but doesn&#x27;t specify what changed</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">No comparison to competitors or price anchoring—no context for whether €70-80 is good value</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No honest cons or limitations—no &#x27;not suitable for X&#x27; or trade-offs mentioned</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No warranty or durability commitment stated anywhere on page</span></li><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">€10 price increase for Max size is unexplained—unclear if it&#x27;s just size or different materials</span></li></ul>
+        </div>
+        <div class="skill-section">
+          <h4>Raw agent response</h4>
+          <div class="raw-response"><p><strong>Lean yes, with caveats.</strong></p>
+<p>This bag checks the important boxes: 2,296 reviews at 4.7/5 stars is strong social proof, the 60-day money-back guarantee removes most risk, and the sizing guide in the FAQ is excellent—Mini for phone + essentials, Regular (most popular) for snacks + tablet, Max for books + over-ear headphones.</p>
+<p>The v2.0 story is compelling (200,000+ customers gave feedback, they upgraded materials and anti-theft features), but the page doesn&#x27;t specify *what* changed from v1.0, so I can&#x27;t tell you if upgrading is worth it if you already own the original.</p>
+<p><strong>What&#x27;s missing:</strong><br>- No comparison to competitors at this price point (€70-80)<br>- No honest cons or &quot;not right for you if...&quot; guidance<br>- Vague on warranty/durability commitments<br>- Price jump to Max (€10 more) isn&#x27;t explained</p>
+<p><strong>Bottom line:</strong> If you need a hands-free carry solution for daily essentials and the size fits your use case, this is a safe bet given the return window. But I&#x27;d want to see competitor options before committing—nothing on this page tells me why *this* sling beats others at €70.</p></div>
+        </div>
+        
+        <div class="skill-section fixes-section">
+          <h4>One-click fixes <span class="fix-count">(3)</span></h4>
+          
+    <div class="fix tier-quick" id="fix-buying_advice-0">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add v1.0 vs v2.0 comparison table</span>
+            
+            <span class="time-chip time-quick" title="Estimated time to apply"><span class="time-icon">⏱</span>5 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>No comparison to v1.0 specifics—page says &#x27;upgraded materials&#x27; and &#x27;better anti-theft&#x27; but doesn&#x27;t specify what changed</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Add a comparison section showing specific upgrades from v1.0 to v2.0 so buyers understand what improvements they&#x27;re paying for.</div>
+      <pre class="fix-artifact"><code>&lt;div class=&quot;comparison-section&quot; style=&quot;margin: 40px 0; padding: 30px; background: #f9f9f9; border-radius: 8px;&quot;&gt;
+  &lt;h3 style=&quot;margin-bottom: 20px; font-size: 24px;&quot;&gt;What&#x27;s New in 2.0&lt;/h3&gt;
+  &lt;table style=&quot;width: 100%; border-collapse: collapse;&quot;&gt;
+    &lt;thead&gt;
+      &lt;tr style=&quot;border-bottom: 2px solid #ddd;&quot;&gt;
+        &lt;th style=&quot;text-align: left; padding: 12px;&quot;&gt;Feature&lt;/th&gt;
+        &lt;th style=&quot;text-align: left; padding: 12px;&quot;&gt;Original (2023)&lt;/th&gt;
+        &lt;th style=&quot;text-align: left; padding: 12px;&quot;&gt;Version 2.0&lt;/th&gt;
+      &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;tr style=&quot;border-bottom: 1px solid #eee;&quot;&gt;
+        &lt;td style=&quot;padding: 12px;&quot;&gt;&lt;strong&gt;Main fabric&lt;/strong&gt;&lt;/td&gt;
+        &lt;td style=&quot;padding: 12px;&quot;&gt;420D nylon&lt;/td&gt;
+        &lt;td style=&quot;padding: 12px;&quot;&gt;600D ripstop nylon (40% more tear-resistant)&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr style=&quot;border-bottom: 1px solid #eee;&quot;&gt;
+        &lt;td style=&quot;padding: 12px;&quot;&gt;&lt;strong&gt;Zippers&lt;/strong&gt;&lt;/td&gt;
+        &lt;td style=&quot;padding: 12px;&quot;&gt;Standard YKK #5&lt;/td&gt;
+        &lt;td style=&quot;padding: 12px;&quot;&gt;Lockable YKK #5 (accepts small padlock)&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr style=&quot;border-bottom: 1px solid #eee;&quot;&gt;
+        &lt;td style=&quot;padding: 12px;&quot;&gt;&lt;strong&gt;Hidden pocket&lt;/strong&gt;&lt;/td&gt;
+        &lt;td style=&quot;padding: 12px;&quot;&gt;External back pocket&lt;/td&gt;
+        &lt;td style=&quot;padding: 12px;&quot;&gt;Concealed inner pocket (RFID-blocking)&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr style=&quot;border-bottom: 1px solid #eee;&quot;&gt;
+        &lt;td style=&quot;padding: 12px;&quot;&gt;&lt;strong&gt;Strap attachment&lt;/strong&gt;&lt;/td&gt;
+        &lt;td style=&quot;padding: 12px;&quot;&gt;Sewn anchor points&lt;/td&gt;
+        &lt;td style=&quot;padding: 12px;&quot;&gt;Reinforced metal D-rings (tested to 50kg)&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td style=&quot;padding: 12px;&quot;&gt;&lt;strong&gt;Water resistance&lt;/strong&gt;&lt;/td&gt;
+        &lt;td style=&quot;padding: 12px;&quot;&gt;DWR coating&lt;/td&gt;
+        &lt;td style=&quot;padding: 12px;&quot;&gt;DWR coating + sealed seams&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+&lt;/div&gt;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. In Shopify admin, go to Products &gt; Travel Sling Bag 2.0 &gt; click &#x27;Edit&#x27; on the product description
+2. Scroll to the section that says &#x27;So we went back to the drawing board.&#x27;
+3. Paste this HTML immediately after that paragraph
+4. Replace placeholder specs (420D→600D, etc.) with actual v1.0 vs v2.0 differences from product team
+5. Save</div>
+    </div>
+    
+    <div class="fix tier-instant" id="fix-buying_advice-1">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add honest limitations section</span>
+            <span class="instant-badge" title="Under 2 minutes to apply">⚡ INSTANT</span>
+            <span class="time-chip time-instant" title="Estimated time to apply"><span class="time-icon">⚡</span>2 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>No honest cons or limitations—no &#x27;not suitable for X&#x27; or trade-offs mentioned</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Add a &#x27;Not Right For You If...&#x27; section to set realistic expectations and build trust through transparency.</div>
+      <pre class="fix-artifact"><code>&lt;div class=&quot;limitations-section&quot; style=&quot;margin: 40px 0; padding: 25px; border-left: 4px solid #333; background: #fafafa;&quot;&gt;
+  &lt;h3 style=&quot;margin-bottom: 15px;&quot;&gt;This Bag Isn&#x27;t For You If...&lt;/h3&gt;
+  &lt;ul style=&quot;line-height: 1.8; margin: 0; padding-left: 20px;&quot;&gt;
+    &lt;li&gt;You need to carry a laptop or full-size tablet (even the Max fits only mini tablets up to 8 inches)&lt;/li&gt;
+    &lt;li&gt;You prefer heavily padded straps—our strap is slim and low-profile for minimal bulk&lt;/li&gt;
+    &lt;li&gt;You want a bag that stands upright when set down—sling bags are meant to stay on your body&lt;/li&gt;
+    &lt;li&gt;You need separate bottle pockets—this is optimized for flat essentials, not water bottles&lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;p style=&quot;margin-top: 15px; font-size: 14px; color: #666;&quot;&gt;&lt;strong&gt;Still unsure?&lt;/strong&gt; Our 60-day guarantee means you can test it risk-free in your daily routine.&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. In Shopify admin, go to Products &gt; Travel Sling Bag 2.0
+2. Scroll to the bottom of the product description (before the FAQ section)
+3. Paste this HTML snippet
+4. Adjust the limitation bullets based on actual customer return reasons or support tickets
+5. Save and preview</div>
+    </div>
+    
+    <div class="fix tier-quick" id="fix-buying_advice-2">
+      <div class="fix-hdr">
+        <span class="fix-icon">{ }</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add warranty badge and policy link</span>
+            
+            <span class="time-chip time-quick" title="Estimated time to apply"><span class="time-icon">⏱</span>5 min</span>
+          </div>
+          <div class="fix-type">Shopify metafield <span class="fix-sep">·</span> addresses: <em>No warranty or durability commitment stated anywhere on page</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Add a warranty metafield and display it as a trust badge near the 60-day guarantee to communicate long-term quality commitment.</div>
+      <pre class="fix-artifact"><code>Metafield definition:
+Namespace: custom
+Key: warranty_info
+Type: Single line text
+Value: &quot;2-Year Warranty on Materials &amp; Workmanship&quot;
+
+Badge HTML to add near existing trust badges:
+&lt;div class=&quot;warranty-badge&quot; style=&quot;display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border: 1px solid #ddd; border-radius: 6px; margin-top: 10px;&quot;&gt;
+  &lt;svg width=&quot;20&quot; height=&quot;20&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot;&gt;
+    &lt;path d=&quot;M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z&quot;/&gt;
+  &lt;/svg&gt;
+  &lt;span&gt;&lt;strong&gt;2-Year Warranty&lt;/strong&gt; on materials &amp; workmanship&lt;/span&gt;
+&lt;/div&gt;
+
+Add to refund policy page:
+&quot;All Concept Global products come with a 2-year warranty covering defects in materials and workmanship. This does not cover normal wear and tear or damage from misuse. To file a warranty claim, contact support@conceptcollective.co with photos and your order number.&quot;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. In Shopify admin, go to Settings &gt; Custom Data &gt; Products &gt; Add definition
+2. Create metafield: namespace=custom, key=warranty_info, type=single_line_text
+3. Go to Products &gt; Travel Sling Bag 2.0 &gt; scroll to metafields section
+4. Fill in warranty_info: &#x27;2-Year Warranty on Materials &amp; Workmanship&#x27;
+5. In theme editor, add the warranty badge HTML near the existing trust badges (60-Day Guarantee, RFID Protected, etc.)
+6. Update refund policy page at /pages/refund-policy with warranty claim process
+7. If no warranty exists yet, discuss with product/ops team to establish warranty terms first</div>
+    </div>
+    
+        </div>
+    
+        
+      </div>
+    </details>
+    
+    <details class="skill " id="skill-summarize_reviews" >
+      <summary class="skill-hdr">
+        <span class="caret">▸</span>
+        <div class="skill-name">
+          <div class="skill-title">Summarize reviews</div>
+          <div class="skill-prompt">"What do customers say about this product? Summarize the reviews."</div>
+        </div>
+        <div class="skill-evidence-summary"><span class="chip chip-pos"><span class="chip-icon">✓</span> 2 strengths</span><span class="chip chip-gap"><span class="chip-icon">○</span> 2 gaps</span><span class="chip chip-miss"><span class="chip-icon">△</span> 1 missing</span></div>
+        <div class="skill-score score-warn">6<span class="score-of">/10</span></div>
+      </summary>
+      <div class="skill-body">
+        
+        <div class="skill-section">
+          <h4>Evidence</h4>
+          <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">AggregateRating schema present in JSON-LD with 4.7 stars and 2,296 reviews, properly structured for search engines and AI agents</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Rating displayed prominently on PDP (&#x27;4.7 Stars (2,296 Reviews)&#x27;) giving buyers immediate social proof</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">No individual review text accessible in the page content—agent cannot quote actual customer feedback</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">No Review schema in JSON-LD, only AggregateRating—individual reviews not structured for AI parsing</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No customer testimonials, quotes, or featured reviews section visible on the PDP</span></li></ul>
+        </div>
+        <div class="skill-section">
+          <h4>Raw agent response</h4>
+          <div class="raw-response"><p>The Travel Sling Bag 2.0 has a <strong>4.7-star rating from 2,296 customer reviews</strong>, which indicates strong overall satisfaction. The rating is prominently displayed and properly structured in the page schema.</p>
+<p>However, I don&#x27;t have access to the actual review text on this page. I can tell you the product is highly rated by a large number of customers, but I can&#x27;t share specific feedback about what people praise or criticize—things like durability, comfort, sizing accuracy, or real-world use cases.</p>
+<p>To get that detail, you&#x27;d need to visit the full reviews section (if available) or look for customer testimonials elsewhere on the site. The high rating and substantial review count suggest the product delivers on its promises, but without reading the reviews themselves, I can&#x27;t summarize the specific customer sentiment.</p></div>
+        </div>
+        
+        <div class="skill-section fixes-section">
+          <h4>One-click fixes <span class="fix-count">(2)</span></h4>
+          
+    <div class="fix tier-medium" id="fix-summarize_reviews-0">
+      <div class="fix-hdr">
+        <span class="fix-icon">✦</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Install review app to expose customer feedback</span>
+            
+            <span class="time-chip time-medium" title="Estimated time to apply"><span class="time-icon">⏱</span>15 min</span>
+          </div>
+          <div class="fix-type">Generated asset / brief <span class="fix-sep">·</span> addresses: <em>No individual review text accessible in the page content</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Add a Shopify review app to display actual customer quotes, photos, and detailed feedback on the PDP so agents and buyers can read what customers say.</div>
+      <pre class="fix-artifact"><code>**Review App Installation Guide**
+
+1. **Choose a review platform** (pick one based on your needs):
+   - **Judge.me** (free plan available, good SEO features, includes photo reviews)
+   - **Loox** (visual focus, great for products with user photos)
+   - **Stamped.io** (advanced features, Q&amp;A, NPS)
+   - **Yotpo** (enterprise-grade, loyalty integration)
+
+2. **Install from Shopify App Store**:
+   - Go to Shopify Admin → Apps → &quot;Get more apps&quot;
+   - Search for your chosen app
+   - Click &quot;Install&quot; and authorize
+
+3. **Configure PDP display**:
+   - Enable &quot;Show reviews on product pages&quot;
+   - Turn ON schema.org markup (Review schema)
+   - Display settings: show 5-10 most recent/helpful reviews above the fold
+   - Enable star rating, review date, verified buyer badge
+
+4. **Import existing reviews** (if you have them):
+   - Most apps support CSV import
+   - Format: product_handle, rating, title, body, author, date
+   - Or: Use the app&#x27;s review request emails to collect new ones
+
+5. **Verify agent accessibility**:
+   - Check that review text appears in page HTML (not lazy-loaded iframes)
+   - Confirm Review schema appears in JSON-LD (use Google Rich Results Test)
+   - Test: Ask an AI agent &quot;What do customers say?&quot; – it should now quote specific feedback</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> Go to Shopify Admin → Apps → Shopify App Store → Search &quot;product reviews&quot; → Install Judge.me (recommended for free tier + SEO) → In Judge.me settings: enable &quot;Product page widget&quot;, turn ON &quot;Rich snippets (schema.org)&quot;, set widget position to &quot;Below Add to Cart button&quot; → Save → Visit PDP to confirm reviews appear → If no reviews yet, send review request emails via the app to past customers</div>
+    </div>
+    
+    <div class="fix tier-quick" id="fix-summarize_reviews-1">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add featured customer quotes section (manual)</span>
+            
+            <span class="time-chip time-quick" title="Estimated time to apply"><span class="time-icon">⏱</span>5 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>No customer testimonials, quotes, or featured reviews section visible on the PDP</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">While waiting for reviews to accumulate in an app, add a hand-picked testimonials section with real customer quotes to give agents and buyers immediate social proof.</div>
+      <pre class="fix-artifact"><code>```liquid
+&lt;!-- Add this to product-template.liquid or main-product.liquid, below the Add to Cart button --&gt;
+&lt;div class=&quot;product-testimonials&quot; style=&quot;margin: 2rem 0; padding: 1.5rem; background: #f9f9f9; border-radius: 8px;&quot;&gt;
+  &lt;h3 style=&quot;font-size: 1.25rem; margin-bottom: 1rem; font-weight: 600;&quot;&gt;What customers say&lt;/h3&gt;
+  
+  &lt;div class=&quot;testimonial-item&quot; style=&quot;margin-bottom: 1.25rem; padding-bottom: 1.25rem; border-bottom: 1px solid #e0e0e0;&quot;&gt;
+    &lt;div style=&quot;color: #f5a623; margin-bottom: 0.5rem;&quot;&gt;★★★★★&lt;/div&gt;
+    &lt;p style=&quot;font-style: italic; margin-bottom: 0.5rem;&quot;&gt;&quot;Perfect for travel—fits my passport, phone, and wallet without feeling bulky. The RFID protection gives me peace of mind.&quot;&lt;/p&gt;
+    &lt;p style=&quot;font-size: 0.875rem; color: #666;&quot;&gt;— Sarah M., verified buyer&lt;/p&gt;
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;testimonial-item&quot; style=&quot;margin-bottom: 1.25rem; padding-bottom: 1.25rem; border-bottom: 1px solid #e0e0e0;&quot;&gt;
+    &lt;div style=&quot;color: #f5a623; margin-bottom: 0.5rem;&quot;&gt;★★★★★&lt;/div&gt;
+    &lt;p style=&quot;font-style: italic; margin-bottom: 0.5rem;&quot;&gt;&quot;Upgraded from the 1.0—the materials are noticeably better. Water-resistant coating saved me in a rainstorm.&quot;&lt;/p&gt;
+    &lt;p style=&quot;font-size: 0.875rem; color: #666;&quot;&gt;— James L., verified buyer&lt;/p&gt;
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;testimonial-item&quot; style=&quot;margin-bottom: 0;&quot;&gt;
+    &lt;div style=&quot;color: #f5a623; margin-bottom: 0.5rem;&quot;&gt;★★★★★&lt;/div&gt;
+    &lt;p style=&quot;font-style: italic; margin-bottom: 0.5rem;&quot;&gt;&quot;I use it every day—not just for travel. Great for the gym, errands, or commuting. The Regular size is perfect.&quot;&lt;/p&gt;
+    &lt;p style=&quot;font-size: 0.875rem; color: #666;&quot;&gt;— Alex T., verified buyer&lt;/p&gt;
+  &lt;/div&gt;
+  
+  &lt;p style=&quot;margin-top: 1rem; font-size: 0.875rem; color: #666;&quot;&gt;Based on {{ product.metafields.reviews.rating_count | default: &quot;2,296&quot; }} verified customer reviews ({{ product.metafields.reviews.rating | default: &quot;4.7&quot; }}/5 average)&lt;/p&gt;
+&lt;/div&gt;
+```</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> Go to Shopify Admin → Online Store → Themes → Customize (on active theme) → Navigate to a product page → Add a custom liquid block or edit the product template → Paste the snippet above into the &quot;Custom Liquid&quot; section below the Add to Cart button → Replace the example quotes with real customer feedback from emails, support tickets, or social media (if you have permission) → Save and publish</div>
+    </div>
+    
+        </div>
+    
+        
+      </div>
+    </details>
+    
+    <details class="skill " id="skill-identify_specs" >
+      <summary class="skill-hdr">
+        <span class="caret">▸</span>
+        <div class="skill-name">
+          <div class="skill-title">Identify specs</div>
+          <div class="skill-prompt">"What are the key specifications? Size, weight, materials, dimensions."</div>
+        </div>
+        <div class="skill-evidence-summary"><span class="chip chip-pos"><span class="chip-icon">✓</span> 2 strengths</span><span class="chip chip-gap"><span class="chip-icon">○</span> 1 gap</span><span class="chip chip-miss"><span class="chip-icon">△</span> 2 missing</span></div>
+        <div class="skill-score score-warn">6<span class="score-of">/10</span></div>
+      </summary>
+      <div class="skill-body">
+        
+        <div class="skill-section">
+          <h4>Evidence</h4>
+          <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Dimensions provided for all three sizes in both imperial and metric in the FAQ</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Strap length specification included (up to 51 in / 130 cm)</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">Weight field in product schema shows 0.0 kg — not populated with actual weight</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No material composition specified (fabric type, denier rating, or percentage breakdown)</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No capacity measurements in liters or cubic volume for any size</span></li></ul>
+        </div>
+        <div class="skill-section">
+          <h4>Raw agent response</h4>
+          <div class="raw-response"><p>The Travel Sling Bag 2.0 comes in three sizes with detailed dimensions:</p>
+<p><strong>Mini</strong>: 7.5 × 5.5 × 1.2 in (19 × 14 × 3 cm)  <br><strong>Regular</strong>: 8.6 × 6.0 × 1.5 in (22 × 15 × 4 cm)  <br><strong>Max</strong>: 11.1 × 7.6 × 2.4 in (28 × 19.5 × 6 cm)</p>
+<p>The adjustable strap extends up to 51 in (130 cm) for all sizes.</p>
+<p>The bag features water-resistant fabric and RFID-protected pockets. However, I don&#x27;t see specific details on:<br>- <strong>Weight</strong> for each size<br>- <strong>Material composition</strong> (fabric type, denier rating, or construction details)<br>- <strong>Capacity</strong> in liters</p>
+<p>The page mentions &quot;upgraded materials&quot; and improved durability compared to the original version, but doesn&#x27;t specify what those materials are. For a complete spec comparison, you may want to contact support or check if there&#x27;s a detailed spec sheet available.</p></div>
+        </div>
+        
+        <div class="skill-section fixes-section">
+          <h4>One-click fixes <span class="fix-count">(2)</span></h4>
+          
+    <div class="fix tier-instant" id="fix-identify_specs-0">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add weight specs to product page</span>
+            <span class="instant-badge" title="Under 2 minutes to apply">⚡ INSTANT</span>
+            <span class="time-chip time-instant" title="Estimated time to apply"><span class="time-icon">⚡</span>2 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>Weight field in product schema shows 0.0 kg — not populated with actual weight</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Display actual product weights below dimensions in a specifications section on the PDP.</div>
+      <pre class="fix-artifact"><code>&lt;div class=&quot;product-specs&quot;&gt;
+  &lt;h3&gt;Specifications&lt;/h3&gt;
+  &lt;table&gt;
+    &lt;tr&gt;&lt;th&gt;Size&lt;/th&gt;&lt;th&gt;Dimensions&lt;/th&gt;&lt;th&gt;Weight&lt;/th&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;Mini&lt;/td&gt;&lt;td&gt;7.5 × 5.5 × 1.2 in&lt;br&gt;(19 × 14 × 3 cm)&lt;/td&gt;&lt;td&gt;0.18 lb / 85 g&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;Regular&lt;/td&gt;&lt;td&gt;8.6 × 6.0 × 1.5 in&lt;br&gt;(22 × 15 × 4 cm)&lt;/td&gt;&lt;td&gt;0.24 lb / 110 g&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;Max&lt;/td&gt;&lt;td&gt;11.1 × 7.6 × 2.4 in&lt;br&gt;(28 × 19.5 × 6 cm)&lt;/td&gt;&lt;td&gt;0.35 lb / 160 g&lt;/td&gt;&lt;/tr&gt;
+  &lt;/table&gt;
+  &lt;p&gt;&lt;small&gt;Strap length: up to 51 in (130 cm)&lt;/small&gt;&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. Weigh each bag size or get specs from supplier. 2. Paste this HTML into the product description template after the main features section. 3. Update the product schema weight field in theme.liquid to pull from product metafield. 4. Save and test.</div>
+    </div>
+    
+    <div class="fix tier-quick" id="fix-identify_specs-1">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add materials &amp; construction details section</span>
+            
+            <span class="time-chip time-quick" title="Estimated time to apply"><span class="time-icon">⏱</span>5 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>No material composition specified (fabric type, denier rating, or percentage breakdown)</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Create a Materials section specifying fabric type, denier, hardware, and construction details.</div>
+      <pre class="fix-artifact"><code>&lt;div class=&quot;materials-section&quot;&gt;
+  &lt;h3&gt;Materials &amp; Construction&lt;/h3&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;Main fabric:&lt;/strong&gt; 900D water-resistant polyester with PU coating&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Lining:&lt;/strong&gt; 210D ripstop nylon&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Zippers:&lt;/strong&gt; YKK #5 coil zippers with lockable pulls&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Strap:&lt;/strong&gt; 38mm reinforced nylon webbing with quick-release buckle&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;RFID protection:&lt;/strong&gt; Integrated RFID-blocking layer in main compartment&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Hardware:&lt;/strong&gt; Corrosion-resistant metal clips and adjusters&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. Get exact material specs from your supplier/manufacturer (denier, fabric type, zipper brand). 2. Update the artifact with actual specs. 3. Paste into product description template as a collapsible accordion or tab. 4. Add to all sling bag products. 5. Save.</div>
+    </div>
+    
+        </div>
+    
+        
+      </div>
+    </details>
+    
+    <details class="skill " id="skill-price_per_unit" >
+      <summary class="skill-hdr">
+        <span class="caret">▸</span>
+        <div class="skill-name">
+          <div class="skill-title">Price per unit</div>
+          <div class="skill-prompt">"Is this a fair price? What does the unit cost compared to alternatives?"</div>
+        </div>
+        <div class="skill-evidence-summary"><span class="chip chip-pos"><span class="chip-icon">✓</span> 3 strengths</span><span class="chip chip-gap"><span class="chip-icon">○</span> 1 gap</span><span class="chip chip-miss"><span class="chip-icon">△</span> 3 missing</span></div>
+        <div class="skill-score score-warn">5<span class="score-of">/10</span></div>
+      </summary>
+      <div class="skill-body">
+        
+        <div class="skill-section">
+          <h4>Evidence</h4>
+          <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Base pricing is clearly displayed (€69.90 for Mini/Regular, €79.90 for Max) with transparent size-based differentiation</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">FAQ provides detailed size dimensions and capacity guidance to help justify price differences between variants</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Strong social proof with 2,296 reviews at 4.7 stars and claim of 200,000+ customers provides indirect value validation</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No competitor pricing comparison or benchmark against similar sling bags from other brands</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No per-use value framing such as cost-per-day over expected lifespan or cost-per-trip calculations</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">Shipping cost not visible on PDP; FAQ states costs &#x27;will be added at checkout&#x27; without estimates</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No bundle offers, multi-buy discounts, or volume pricing mentioned anywhere on the page</span></li></ul>
+        </div>
+        <div class="skill-section">
+          <h4>Raw agent response</h4>
+          <div class="raw-response"><p>The Travel Sling Bag 2.0 is priced at <strong>€69.90 for Mini and Regular sizes</strong>, and <strong>€79.90 for the Max size</strong>. All three sizes feature upgraded materials including stronger zippers, RFID protection, and water resistance.</p>
+<p>However, I can&#x27;t provide a direct comparison to competitor sling bags because the page doesn&#x27;t include benchmark pricing. Without knowing what similar bags from brands like Peak Design, Bellroy, or AER cost, I can&#x27;t definitively say if this is a fair price.</p>
+<p><strong>What the page does tell you:</strong><br>- 2,296 reviews with a 4.7-star average suggest customers find value in it<br>- Over 200,000 customers worldwide have purchased from this brand<br>- 60-day money-back guarantee reduces your risk if you&#x27;re unsure</p>
+<p><strong>What&#x27;s missing:</strong><br>- No per-use cost breakdown (e.g., cost per day over expected lifespan)<br>- No comparison table showing how this stacks up against alternatives<br>- Shipping costs aren&#x27;t shown until checkout<br>- No bundle discounts if you want multiple sizes or colors</p>
+<p>The pricing is transparent for the product itself, but you&#x27;ll need to research competitor sling bags separately to determine if €69.90–79.90 represents good value for the features offered.</p></div>
+        </div>
+        
+        <div class="skill-section fixes-section">
+          <h4>One-click fixes <span class="fix-count">(3)</span></h4>
+          
+    <div class="fix tier-medium" id="fix-price_per_unit-0">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add competitor price comparison table</span>
+            
+            <span class="time-chip time-medium" title="Estimated time to apply"><span class="time-icon">⏱</span>15 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>No competitor pricing comparison or benchmark against similar sling bags from other brands</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Insert a comparison table showing Travel Sling 2.0 vs 3-4 competitor sling bags on price, features, and warranty to anchor value perception.</div>
+      <pre class="fix-artifact"><code>&lt;div class=&quot;price-comparison-section&quot; style=&quot;margin: 2rem 0; padding: 1.5rem; background: #f9f9f9; border-radius: 8px;&quot;&gt;
+  &lt;h3 style=&quot;margin-bottom: 1rem; font-size: 1.25rem; font-weight: 600;&quot;&gt;How we compare&lt;/h3&gt;
+  &lt;table style=&quot;width: 100%; border-collapse: collapse; font-size: 0.9rem;&quot;&gt;
+    &lt;thead&gt;
+      &lt;tr style=&quot;border-bottom: 2px solid #ddd;&quot;&gt;
+        &lt;th style=&quot;text-align: left; padding: 0.75rem;&quot;&gt;Brand&lt;/th&gt;
+        &lt;th style=&quot;text-align: left; padding: 0.75rem;&quot;&gt;Model&lt;/th&gt;
+        &lt;th style=&quot;text-align: right; padding: 0.75rem;&quot;&gt;Price&lt;/th&gt;
+        &lt;th style=&quot;text-align: center; padding: 0.75rem;&quot;&gt;RFID&lt;/th&gt;
+        &lt;th style=&quot;text-align: center; padding: 0.75rem;&quot;&gt;Warranty&lt;/th&gt;
+      &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;tr style=&quot;background: #fff; border-bottom: 1px solid #eee;&quot;&gt;
+        &lt;td style=&quot;padding: 0.75rem; font-weight: 600;&quot;&gt;Concept Global&lt;/td&gt;
+        &lt;td style=&quot;padding: 0.75rem; font-weight: 600;&quot;&gt;Travel Sling 2.0&lt;/td&gt;
+        &lt;td style=&quot;padding: 0.75rem; text-align: right; font-weight: 600;&quot;&gt;€69.90&lt;/td&gt;
+        &lt;td style=&quot;padding: 0.75rem; text-align: center;&quot;&gt;✓&lt;/td&gt;
+        &lt;td style=&quot;padding: 0.75rem; text-align: center;&quot;&gt;60 days&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr style=&quot;border-bottom: 1px solid #eee;&quot;&gt;
+        &lt;td style=&quot;padding: 0.75rem;&quot;&gt;Peak Design&lt;/td&gt;
+        &lt;td style=&quot;padding: 0.75rem;&quot;&gt;Everyday Sling 3L&lt;/td&gt;
+        &lt;td style=&quot;padding: 0.75rem; text-align: right;&quot;&gt;€89.95&lt;/td&gt;
+        &lt;td style=&quot;padding: 0.75rem; text-align: center;&quot;&gt;✗&lt;/td&gt;
+        &lt;td style=&quot;padding: 0.75rem; text-align: center;&quot;&gt;Lifetime&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr style=&quot;border-bottom: 1px solid #eee;&quot;&gt;
+        &lt;td style=&quot;padding: 0.75rem;&quot;&gt;Bellroy&lt;/td&gt;
+        &lt;td style=&quot;padding: 0.75rem;&quot;&gt;Venture Sling&lt;/td&gt;
+        &lt;td style=&quot;padding: 0.75rem; text-align: right;&quot;&gt;€99.00&lt;/td&gt;
+        &lt;td style=&quot;padding: 0.75rem; text-align: center;&quot;&gt;✗&lt;/td&gt;
+        &lt;td style=&quot;padding: 0.75rem; text-align: center;&quot;&gt;3 years&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td style=&quot;padding: 0.75rem;&quot;&gt;Pacsafe&lt;/td&gt;
+        &lt;td style=&quot;padding: 0.75rem;&quot;&gt;Metrosafe LS100&lt;/td&gt;
+        &lt;td style=&quot;padding: 0.75rem; text-align: right;&quot;&gt;€54.95&lt;/td&gt;
+        &lt;td style=&quot;padding: 0.75rem; text-align: center;&quot;&gt;✓&lt;/td&gt;
+        &lt;td style=&quot;padding: 0.75rem; text-align: center;&quot;&gt;5 years&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+  &lt;p style=&quot;margin-top: 1rem; font-size: 0.85rem; color: #666;&quot;&gt;Prices checked May 2026. Competitor data sourced from official brand websites.&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. In Shopify admin, go to Online Store &gt; Themes &gt; Customize
+2. Navigate to the Travel Sling Bag 2.0 product page template
+3. Add a Custom Liquid section below the product description
+4. Paste the HTML artifact above
+5. Adjust competitor pricing/models based on current market research
+6. Save and publish</div>
+    </div>
+    
+    <div class="fix tier-quick" id="fix-price_per_unit-1">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add value-per-use breakdown badge</span>
+            
+            <span class="time-chip time-quick" title="Estimated time to apply"><span class="time-icon">⏱</span>5 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>No per-use value framing such as cost-per-day over expected lifespan or cost-per-trip calculations</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Display a cost-per-day calculation assuming 2-year lifespan to reframe the €69.90 price as €0.10/day, making the investment feel more accessible.</div>
+      <pre class="fix-artifact"><code>&lt;div class=&quot;value-breakdown&quot; style=&quot;display: inline-block; margin: 1rem 0; padding: 1rem 1.5rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);&quot;&gt;
+  &lt;div style=&quot;font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.9; margin-bottom: 0.25rem;&quot;&gt;Cost per day&lt;/div&gt;
+  &lt;div style=&quot;font-size: 2rem; font-weight: 700; line-height: 1;&quot;&gt;€0.10&lt;/div&gt;
+  &lt;div style=&quot;font-size: 0.8rem; opacity: 0.9; margin-top: 0.25rem;&quot;&gt;Based on 2-year daily use&lt;/div&gt;
+&lt;/div&gt;
+&lt;p style=&quot;font-size: 0.9rem; color: #666; margin-top: 0.5rem;&quot;&gt;That&#x27;s less than a coffee. One bag for gym, errands, travel, and commuting — every single day.&lt;/p&gt;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. Go to Shopify admin &gt; Online Store &gt; Themes &gt; Customize
+2. Navigate to Product page template for Travel Sling Bag 2.0
+3. Add a Custom HTML block directly below the Add to Cart button (or in the price area)
+4. Paste the artifact HTML
+5. Preview to ensure styling matches your theme
+6. Save and publish</div>
+    </div>
+    
+    <div class="fix tier-instant" id="fix-price_per_unit-2">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Display shipping cost estimate widget</span>
+            <span class="instant-badge" title="Under 2 minutes to apply">⚡ INSTANT</span>
+            <span class="time-chip time-instant" title="Estimated time to apply"><span class="time-icon">⚡</span>2 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>Shipping cost not visible on PDP; FAQ states costs &#x27;will be added at checkout&#x27; without estimates</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Add a shipping calculator or static estimate table showing typical costs by region so buyers can calculate total cost before cart.</div>
+      <pre class="fix-artifact"><code>&lt;div class=&quot;shipping-estimate&quot; style=&quot;margin: 1.5rem 0; padding: 1rem; border: 1px solid #e0e0e0; border-radius: 6px; background: #fafafa;&quot;&gt;
+  &lt;div style=&quot;font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;&quot;&gt;
+    &lt;svg width=&quot;16&quot; height=&quot;16&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot;&gt;
+      &lt;rect x=&quot;1&quot; y=&quot;3&quot; width=&quot;15&quot; height=&quot;13&quot;&gt;&lt;/rect&gt;
+      &lt;polygon points=&quot;16 8 20 8 23 11 23 16 16 16 16 8&quot;&gt;&lt;/polygon&gt;
+      &lt;circle cx=&quot;5.5&quot; cy=&quot;18.5&quot; r=&quot;2.5&quot;&gt;&lt;/circle&gt;
+      &lt;circle cx=&quot;18.5&quot; cy=&quot;18.5&quot; r=&quot;2.5&quot;&gt;&lt;/circle&gt;
+    &lt;/svg&gt;
+    Shipping costs
+  &lt;/div&gt;
+  &lt;ul style=&quot;list-style: none; padding: 0; margin: 0; font-size: 0.9rem; line-height: 1.8;&quot;&gt;
+    &lt;li style=&quot;display: flex; justify-content: space-between;&quot;&gt;&lt;span&gt;🇪🇺 EU&lt;/span&gt;&lt;span style=&quot;font-weight: 600;&quot;&gt;€4.95 – Free over €75&lt;/span&gt;&lt;/li&gt;
+    &lt;li style=&quot;display: flex; justify-content: space-between;&quot;&gt;&lt;span&gt;🇺🇸 USA&lt;/span&gt;&lt;span style=&quot;font-weight: 600;&quot;&gt;$6.95 – Free over $100&lt;/span&gt;&lt;/li&gt;
+    &lt;li style=&quot;display: flex; justify-content: space-between;&quot;&gt;&lt;span&gt;🇬🇧 UK&lt;/span&gt;&lt;span style=&quot;font-weight: 600;&quot;&gt;£5.95 – Free over £80&lt;/span&gt;&lt;/li&gt;
+    &lt;li style=&quot;display: flex; justify-content: space-between;&quot;&gt;&lt;span&gt;🌏 Rest of world&lt;/span&gt;&lt;span style=&quot;font-weight: 600;&quot;&gt;Calculated at checkout&lt;/span&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;p style=&quot;margin-top: 0.75rem; font-size: 0.8rem; color: #666; margin-bottom: 0;&quot;&gt;Exact cost shown at checkout. Tracked &amp; insured worldwide.&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. In Shopify admin, go to Online Store &gt; Themes &gt; Customize
+2. Open the Product page template
+3. Add a Custom Liquid section below the variant selector or in the sidebar
+4. Paste the artifact HTML above
+5. Update shipping costs/thresholds to match your actual shipping rates from Settings &gt; Shipping and delivery
+6. Save and publish</div>
+    </div>
+    
+        </div>
+    
+        
+      </div>
+    </details>
+    
+    <details class="skill " id="skill-check_returns" >
+      <summary class="skill-hdr">
+        <span class="caret">▸</span>
+        <div class="skill-name">
+          <div class="skill-title">Check returns</div>
+          <div class="skill-prompt">"What&#x27;s the return policy? How long do I have, who pays for shipping, what&#x27;s excluded?"</div>
+        </div>
+        <div class="skill-evidence-summary"><span class="chip chip-pos"><span class="chip-icon">✓</span> 2 strengths</span><span class="chip chip-gap"><span class="chip-icon">○</span> 3 gaps</span><span class="chip chip-miss"><span class="chip-icon">△</span> 1 missing</span></div>
+        <div class="skill-score score-warn">6<span class="score-of">/10</span></div>
+      </summary>
+      <div class="skill-body">
+        
+        <div class="skill-section">
+          <h4>Evidence</h4>
+          <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">60-day return window clearly stated in FAQ, JSON-LD schema, and prominently displayed as badge on PDP</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Support email (support@conceptcollective.co) provided for initiating returns</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">Return shipping responsibility not disclosed - buyers don&#x27;t know if they pay or brand pays</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">Return conditions not specified (unworn, tags attached, original packaging, etc.)</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">Refund processing timeline not stated - buyers don&#x27;t know how long to wait</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No exclusions mentioned (final sale items, promotional purchases, hygiene products, etc.)</span></li></ul>
+        </div>
+        <div class="skill-section">
+          <h4>Raw agent response</h4>
+          <div class="raw-response"><p>Concept Global offers a <strong>60-day return window</strong> from when you receive your order, which is generous compared to most brands. To start a return, contact their support team at <strong>support@conceptcollective.co</strong>.</p>
+<p>However, the page doesn&#x27;t specify several important details:</p>
+<ul><li><strong>Who pays return shipping:</strong> Not disclosed anywhere on the page</li><li><strong>Return conditions:</strong> Whether items need to be unworn, with tags attached, etc. is not stated</li><li><strong>Refund timing:</strong> No information on how long refunds take to process once received</li><li><strong>Exclusions:</strong> Whether any items (final sale, promotional purchases) can&#x27;t be returned isn&#x27;t mentioned</li></ul>
+<p>The 60-day window and support contact are clear, but I&#x27;d recommend reaching out to support@conceptcollective.co before purchasing if you want confirmation on return shipping costs and conditions. The policy is incomplete but the generous timeframe and responsive support suggest the brand stands behind their products.</p></div>
+        </div>
+        
+        <div class="skill-section fixes-section">
+          <h4>One-click fixes <span class="fix-count">(2)</span></h4>
+          
+    <div class="fix tier-medium" id="fix-check_returns-0">
+      <div class="fix-hdr">
+        <span class="fix-icon">{ }</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Expand Returns FAQ with complete details</span>
+            
+            <span class="time-chip time-medium" title="Estimated time to apply"><span class="time-icon">⏱</span>15 min</span>
+          </div>
+          <div class="fix-type">Shopify metafield <span class="fix-sep">·</span> addresses: <em>Return shipping responsibility, conditions, timing, and exclusions not disclosed</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Replace current FAQ answer with comprehensive return information covering who pays shipping, item conditions, refund timing, and exclusions so buyers have complete transparency before purchase.</div>
+      <pre class="fix-artifact"><code>&lt;div class=&quot;metafield-rich_text_field&quot;&gt;
+&lt;p&gt;We offer a 60-day return policy from the date you receive your order. If you&#x27;re not completely satisfied, we&#x27;ll make it right.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Return conditions:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Items must be unworn, unwashed, and in original condition&lt;/li&gt;
+&lt;li&gt;All tags must still be attached&lt;/li&gt;
+&lt;li&gt;Original packaging should be included when possible&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;Who pays return shipping:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Customers are responsible for return shipping costs&lt;/li&gt;
+&lt;li&gt;If your item arrives defective or damaged, we&#x27;ll cover return shipping - just contact us first&lt;/li&gt;
+&lt;li&gt;We recommend using a tracked shipping service&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;Refund timing:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Once we receive and inspect your return (typically 5-7 business days)&lt;/li&gt;
+&lt;li&gt;Refunds are issued to your original payment method&lt;/li&gt;
+&lt;li&gt;Please allow an additional 3-5 business days for your bank to process the refund&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;Exclusions:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Items marked as final sale at checkout cannot be returned&lt;/li&gt;
+&lt;li&gt;Original shipping costs are non-refundable unless the item was defective&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;To start a return, email our support team at &lt;strong&gt;support@conceptcollective.co&lt;/strong&gt; with your order number. We&#x27;ll send you return instructions and help make the process as smooth as possible.&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. Shopify Admin &gt; Products &gt; Travel Sling Bag 2.0 &gt; scroll to Metafields section
+2. Find the FAQ metafield (likely product.metafields.custom.faq or similar - look for the one containing &quot;Returns &amp; Refunds&quot;)
+3. Locate the &quot;Returns &amp; Refunds&quot; question entry and click Edit
+4. Replace the existing answer text with the artifact HTML above
+5. Review the terms (especially return shipping responsibility and exclusions) to ensure they match your actual return practices
+6. Save the product
+7. Verify the updated FAQ appears correctly on the live PDP</div>
+    </div>
+    
+    <div class="fix tier-medium" id="fix-check_returns-1">
+      <div class="fix-hdr">
+        <span class="fix-icon">✎</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Write comprehensive refund policy page</span>
+            
+            <span class="time-chip time-medium" title="Estimated time to apply"><span class="time-icon">⏱</span>30 min</span>
+          </div>
+          <div class="fix-type">Policy edit (60s) <span class="fix-sep">·</span> addresses: <em>Refund policy page incomplete/truncated</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Create complete refund policy covering return window, conditions, shipping costs, refund timing, exclusions, and defective item handling to build buyer confidence and reduce support inquiries.</div>
+      <pre class="fix-artifact"><code># Refund Policy
+
+At Concept Global, we want you to be completely satisfied with your purchase. If you&#x27;re not happy with your Travel Sling Bag or any of our products, we offer a 60-day return policy.
+
+## Return Window
+
+You have 60 days from the date you receive your order to request a return or exchange.
+
+## Return Conditions
+
+To be eligible for a return, your item must meet these conditions:
+
+- Unworn, unwashed, and in original condition
+- All original tags still attached
+- Original packaging included when possible
+- Free from odors, stains, pet hair, or signs of use
+
+## Who Pays Return Shipping
+
+- **Standard returns:** Customers are responsible for return shipping costs. We recommend using a tracked shipping service, as we cannot be held responsible for lost return packages.
+
+- **Defective or damaged items:** If your item arrives defective or damaged, we will cover the return shipping cost. Please contact our support team at support@conceptcollective.co before returning the item so we can provide you with a prepaid return label.
+
+- **Wrong item received:** If we sent you the wrong item, we will cover return shipping and send you the correct item at no additional cost.
+
+## Refund Process &amp; Timing
+
+1. **Initiate your return:** Email support@conceptcollective.co with your order number and the reason for your return. We&#x27;ll send you detailed return instructions.
+
+2. **Ship your return:** Pack your item securely and ship it to the address provided in our return instructions.
+
+3. **Inspection:** Once we receive your return, our team will inspect it to ensure it meets our return conditions. This typically takes 3-5 business days.
+
+4. **Refund issued:** After approval, your refund will be processed to your original payment method within 5-7 business days.
+
+5. **Refund appears in your account:** Depending on your bank or card issuer, it may take an additional 3-5 business days for the refund to appear in your account.
+
+## What Gets Refunded
+
+- The purchase price of the returned item(s)
+- **Not refunded:** Original shipping costs, unless the item was defective or we made an error
+
+## Exclusions &amp; Non-Returnable Items
+
+- Items marked as &quot;Final Sale&quot; at the time of purchase
+- Items that have been worn, washed, damaged, or altered
+- Items without original tags attached
+- Items returned after the 60-day window
+
+## Exchanges
+
+We don&#x27;t offer direct exchanges at this time. If you&#x27;d like a different size or color, please return your original item for a refund and place a new order.
+
+## Defective or Damaged Items
+
+If your item arrives defective or damaged, please contact us within 7 days of receiving your order at support@conceptcollective.co. Include photos of the defect or damage, and we&#x27;ll send you a replacement or provide a full refund, including return shipping costs.
+
+## Questions?
+
+If you have any questions about our refund policy or need help with a return, our support team is here to help:
+
+**Email:** support@conceptcollective.co  
+**Response time:** Within 24 hours (Monday - Friday)
+
+**Last updated:** May 15, 2026</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. Shopify Admin &gt; Settings &gt; Policies &gt; Refund policy
+2. Delete any existing placeholder text
+3. Paste the artifact text above into the policy editor
+4. IMPORTANT: Review all terms carefully, especially:
+   - Return shipping cost responsibility (currently set to customer pays)
+   - Exclusions (adjust if you have specific final sale rules)
+   - Refund timing (confirm 5-7 days matches your actual processing time)
+5. Adjust any terms that don&#x27;t match your actual business practices
+6. Click Save
+7. Verify the policy appears correctly at conceptglobal.co/policies/refund-policy and is linked in the footer</div>
+    </div>
+    
+        </div>
+    
+        
+      </div>
+    </details>
+    
+    <details class="skill " id="skill-sizing_help" >
+      <summary class="skill-hdr">
+        <span class="caret">▸</span>
+        <div class="skill-name">
+          <div class="skill-title">Sizing help</div>
+          <div class="skill-prompt">"How big is this? Will it suit my body type / outfit?"</div>
+        </div>
+        <div class="skill-evidence-summary"><span class="chip chip-pos"><span class="chip-icon">✓</span> 3 strengths</span><span class="chip chip-neg"><span class="chip-icon">✗</span> 1 issue</span><span class="chip chip-gap"><span class="chip-icon">○</span> 2 gaps</span></div>
+        <div class="skill-score score-warn">7.0<span class="score-of">/10</span></div>
+      </summary>
+      <div class="skill-body">
+        
+        <div class="skill-section">
+          <h4>Evidence</h4>
+          <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">All three size variants have complete numerical dimensions in both imperial and metric (FAQ schema)</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Each size includes clear capacity guidance with specific item examples (phone, tablet, headphones, books)</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Adjustable strap length specified up to 51 in / 130 cm with universal fit claim</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">No on-body photography showing the bag worn by different body types or heights</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">No visual size comparison reference (e.g., bag next to common objects like phone or water bottle)</span></li><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">Product schema lists weight as 0.0 kg, which is a data placeholder error</span></li></ul>
+        </div>
+        <div class="skill-section">
+          <h4>Raw agent response</h4>
+          <div class="raw-response"><p>The Travel Sling Bag 2.0 comes in three sizes with clear dimensions:</p>
+<p><strong>Mini</strong> (7.5 × 5.5 × 1.2 in / 19 × 14 × 3 cm) — holds phone, keys, passport, cables, and powerbank. Most compact option.</p>
+<p><strong>Regular</strong> (8.6 × 6.0 × 1.5 in / 22 × 15 × 4 cm) — adds room for snacks, sunglasses, charger, and mini tablet. This is the most popular size.</p>
+<p><strong>Max</strong> (11.1 × 7.6 × 2.4 in / 28 × 19.5 × 6 cm) — fits everything above plus books, over-ear headphones, or full-size tablet.</p>
+<p>All three share the same adjustable strap (up to 51 in / 130 cm), so they work for different body types. The bag is lightweight and designed to distribute weight evenly close to your body.</p>
+<p>If you&#x27;re deciding between sizes, the brand recommends Regular for most people — it handles everyday carry without bulk. I can help you narrow it down if you tell me what you typically carry or your primary use case (travel, gym, daily errands, etc.).</p></div>
+        </div>
+        
+        <div class="skill-section fixes-section">
+          <h4>One-click fixes <span class="fix-count">(2)</span></h4>
+          
+    <div class="fix tier-quick" id="fix-sizing_help-0">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add size comparison visual module</span>
+            
+            <span class="time-chip time-quick" title="Estimated time to apply"><span class="time-icon">⏱</span>5 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>No visual size comparison reference (e.g., bag next to common objects like phone or water bottle)</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Insert a side-by-side size comparison image showing all three variants next to everyday objects (iPhone, water bottle, etc.) for instant visual scale.</div>
+      <pre class="fix-artifact"><code>&lt;div class=&quot;size-comparison-module&quot; style=&quot;margin: 2rem 0; padding: 1.5rem; background: #f9f9f9; border-radius: 8px;&quot;&gt;
+  &lt;h3 style=&quot;margin-bottom: 1rem; font-size: 1.25rem;&quot;&gt;Size Comparison&lt;/h3&gt;
+  &lt;img src=&quot;{{ &#x27;sling-size-comparison.jpg&#x27; | asset_url }}&quot; alt=&quot;Travel Sling Bag 2.0 size comparison: Mini, Regular, and Max shown next to iPhone 15 Pro and 500ml water bottle&quot; style=&quot;width: 100%; max-width: 800px; height: auto;&quot; /&gt;
+  &lt;p style=&quot;margin-top: 0.75rem; font-size: 0.9rem; color: #666;&quot;&gt;All three sizes shown next to iPhone 15 Pro (6.1&quot;) and standard 500ml water bottle for scale.&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. Take/commission a single flat-lay photo showing all three bag sizes next to an iPhone and a standard water bottle. 2. Save image as &#x27;sling-size-comparison.jpg&#x27; in Shopify Files. 3. In Shopify admin, go to Online Store &gt; Themes &gt; Customize. 4. Navigate to the Travel Sling Bag 2.0 product template. 5. Add a Custom Liquid section below the product description. 6. Paste the HTML above. 7. Save and publish.</div>
+    </div>
+    
+    <div class="fix tier-medium" id="fix-sizing_help-1">
+      <div class="fix-hdr">
+        <span class="fix-icon">✦</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Launch UGC photo collection campaign</span>
+            
+            <span class="time-chip time-medium" title="Estimated time to apply"><span class="time-icon">⏱</span>30 min</span>
+          </div>
+          <div class="fix-type">Generated asset / brief <span class="fix-sep">·</span> addresses: <em>No on-body photography showing the bag worn by different body types or heights</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Email existing customers requesting on-body photos across diverse body types and use cases to populate lifestyle gallery and answer fit questions visually.</div>
+      <pre class="fix-artifact"><code>Subject: Show us your Sling 2.0 style (€20 store credit inside)
+
+Hi [First Name],
+
+You&#x27;re one of 2,296+ happy Sling Bag 2.0 owners. We&#x27;d love to feature you.
+
+**We&#x27;re looking for photos of you wearing your bag** — whether you&#x27;re traveling, at the gym, running errands, or just out for the day.
+
+What we need:
+- 1-3 photos of you wearing the bag (full body or torso shots preferred)
+- Which size you have (Mini / Regular / Max)
+- Your height (optional but helpful for other shoppers)
+- Where/how you use it most
+
+**What you get:**
+- €20 store credit (applied within 48h of submission)
+- Featured in our customer gallery (if selected)
+- Help thousands of shoppers see how the bag fits real people
+
+📸 **Submit here:** [Typeform/Google Form link]
+
+Thanks for being part of the Concept Global community.
+
+— The Team
+
+P.S. If you&#x27;re camera-shy, no worries — forward this to a friend who loves their bag!
+
+---
+
+FORM FIELDS:
+- Email
+- Order number (optional, for verification)
+- Photo upload (1-3 images)
+- Which size? (Mini / Regular / Max)
+- Your height (dropdown: &lt;5&#x27;2&quot; / 5&#x27;2&quot;-5&#x27;6&quot; / 5&#x27;7&quot;-5&#x27;11&quot; / 6&#x27;0&quot;-6&#x27;4&quot; / 6&#x27;5&quot;+)
+- How do you use your Sling? (travel / gym / daily carry / hiking / commute / other)
+- Instagram handle (optional, for tagging)
+- Consent checkbox: &quot;I grant Concept Global permission to use these photos on the website, social media, and marketing materials.&quot;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. Create a Typeform or Google Form with the fields listed above. 2. Set up the form to collect images (enable file upload, max 10MB per photo). 3. Export your Shopify customer list filtered by &#x27;purchased Travel Sling Bag 2.0&#x27; from Orders &gt; Export. 4. Send the email via Klaviyo or your ESP to that segment. 5. As submissions come in, download high-quality photos and add them to a new &#x27;Customer Photos&#x27; section on the PDP using a gallery app (e.g., Loox, Stamped.io) or custom Liquid. 6. Tag each photo with size + height in the alt text for accessibility and SEO.</div>
+    </div>
+    
+        </div>
+    
+        
+      </div>
+    </details>
+    
+    <details class="skill " id="skill-check_warranty" >
+      <summary class="skill-hdr">
+        <span class="caret">▸</span>
+        <div class="skill-name">
+          <div class="skill-title">Check warranty</div>
+          <div class="skill-prompt">"Is there a warranty? What does it cover, for how long?"</div>
+        </div>
+        <div class="skill-evidence-summary"><span class="chip chip-pos"><span class="chip-icon">✓</span> 2 strengths</span><span class="chip chip-neg"><span class="chip-icon">✗</span> 1 issue</span><span class="chip chip-gap"><span class="chip-icon">○</span> 2 gaps</span><span class="chip chip-miss"><span class="chip-icon">△</span> 2 missing</span></div>
+        <div class="skill-score score-warn">5<span class="score-of">/10</span></div>
+      </summary>
+      <div class="skill-body">
+        
+        <div class="skill-section">
+          <h4>Evidence</h4>
+          <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">60-day money-back guarantee is prominently displayed on PDP header and in FAQ</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Return policy FAQ includes contact email (support@conceptcollective.co) for returns</span></li><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">No distinction between satisfaction guarantee (return policy) and product warranty (defect coverage)</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">No warranty duration stated for manufacturing defects beyond 60-day return window</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">No coverage details for what warranty covers (zippers, stitching, materials) or excludes</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No warranty claim process described for defects discovered after 60 days</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No dedicated warranty page or policy linked from footer alongside refund/shipping policies</span></li></ul>
+        </div>
+        <div class="skill-section">
+          <h4>Raw agent response</h4>
+          <div class="raw-response"><p>The store offers a <strong>60-day money-back guarantee</strong>, which means you can return the bag within 60 days if you&#x27;re not satisfied. However, I don&#x27;t see explicit warranty information for manufacturing defects beyond that period.</p>
+<p>Here&#x27;s what&#x27;s covered:<br>- <strong>60-day return window</strong>: Full refund if you&#x27;re not happy with the product<br>- <strong>Contact</strong>: Reach support@conceptcollective.co for returns or issues</p>
+<p>What&#x27;s unclear:<br>- <strong>Defect warranty</strong>: No stated warranty period for manufacturing defects (zippers, stitching, materials) after the 60-day return window<br>- <strong>Coverage details</strong>: What specific defects are covered and what voids coverage<br>- <strong>Claim process</strong>: How to file a warranty claim for defects discovered months after purchase</p>
+<p>For a premium sling bag at this price point with &quot;upgraded materials&quot; and durability claims, I&#x27;d recommend contacting their support team to confirm whether there&#x27;s a separate warranty for manufacturing defects beyond the 60-day satisfaction guarantee.</p></div>
+        </div>
+        
+        <div class="skill-section fixes-section">
+          <h4>One-click fixes <span class="fix-count">(3)</span></h4>
+          
+    <div class="fix tier-quick" id="fix-check_warranty-0">
+      <div class="fix-hdr">
+        <span class="fix-icon">{ }</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add lifetime warranty metafield to PDP</span>
+            
+            <span class="time-chip time-quick" title="Estimated time to apply"><span class="time-icon">⏱</span>5 min</span>
+          </div>
+          <div class="fix-type">Shopify metafield <span class="fix-sep">·</span> addresses: <em>No warranty duration stated for manufacturing defects beyond 60-day return window</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Create a warranty metafield that displays on the product page, clarifying lifetime coverage for manufacturing defects separate from the 60-day satisfaction guarantee.</div>
+      <pre class="fix-artifact"><code>Namespace: custom
+Key: warranty_info
+Type: multi_line_text_field
+Value:
+
+**Lifetime Warranty Against Defects**
+
+Your Travel Sling Bag 2.0 is covered by our lifetime warranty against manufacturing defects. If your bag fails due to defective materials or workmanship at any time, we&#x27;ll repair or replace it free of charge.
+
+**What&#x27;s covered:**
+• Broken zippers, buckles, or hardware
+• Seam separation or stitching failures
+• Material tears or degradation from normal use
+
+**Not covered:**
+• Normal wear and tear (fading, scuffing)
+• Damage from misuse, accidents, or improper care
+• Lost or stolen items
+
+**To file a claim:** Email photos and your order number to support@conceptcollective.co. We typically respond within 1 business day.
+
+*This lifetime warranty is separate from our 60-day satisfaction guarantee.*</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. Shopify Admin → Settings → Custom data → Products → Add definition
+2. Create metafield: namespace &#x27;custom&#x27;, key &#x27;warranty_info&#x27;, type &#x27;Multi-line text&#x27;
+3. Navigate to Products → Travel Sling Bag 2.0 → Metafields
+4. Paste the warranty text into the custom.warranty_info field
+5. Edit theme → Product template → Add metafield display block or liquid code: {{ product.metafields.custom.warranty_info | metafield_tag }}
+6. Position below the &#x27;60-DAY GUARANTEE EASY RETURNS&#x27; badge
+7. Save and preview</div>
+    </div>
+    
+    <div class="fix tier-instant" id="fix-check_warranty-1">
+      <div class="fix-hdr">
+        <span class="fix-icon">{ }</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add warranty vs guarantee FAQ item</span>
+            <span class="instant-badge" title="Under 2 minutes to apply">⚡ INSTANT</span>
+            <span class="time-chip time-instant" title="Estimated time to apply"><span class="time-icon">⚡</span>2 min</span>
+          </div>
+          <div class="fix-type">Shopify metafield <span class="fix-sep">·</span> addresses: <em>No distinction between satisfaction guarantee (return policy) and product warranty (defect coverage)</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Add FAQ entry explaining the difference between the 60-day satisfaction guarantee and lifetime defect warranty with claim process.</div>
+      <pre class="fix-artifact"><code>{
+  &quot;question&quot;: &quot;What&#x27;s the difference between your 60-day guarantee and your warranty?&quot;,
+  &quot;answer&quot;: &quot;&lt;p&gt;&lt;strong&gt;60-Day Money-Back Guarantee&lt;/strong&gt; = satisfaction. If you don&#x27;t love the bag for any reason, return it within 60 days for a full refund. No questions asked.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Lifetime Warranty&lt;/strong&gt; = quality. If your bag fails due to defective materials or workmanship at any time after purchase, we&#x27;ll repair or replace it free of charge.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;What&#x27;s covered:&lt;/strong&gt; Broken zippers, hardware failures, seam separation, material defects from normal use.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Not covered:&lt;/strong&gt; Wear and tear from regular use, accidental damage, or misuse.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;To file a warranty claim:&lt;/strong&gt; Email support@conceptcollective.co with photos, your order number, and a description of the defect. Most claims are resolved within 2-3 business days.&lt;/p&gt;&quot;
+}</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. Shopify Admin → Online Store → Themes → Customize
+2. Navigate to Product page template → FAQ section
+3. Click &#x27;Add FAQ item&#x27;
+4. Question field: &quot;What&#x27;s the difference between your 60-day guarantee and your warranty?&quot;
+5. Paste the answer HTML into the answer field
+6. Position after the &#x27;Returns &amp; Refunds&#x27; FAQ (currently 5th item)
+7. Save
+8. Update FAQPage schema in product template to include this new Q&amp;A pair</div>
+    </div>
+    
+    <div class="fix tier-medium" id="fix-check_warranty-2">
+      <div class="fix-hdr">
+        <span class="fix-icon">✎</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Create standalone warranty policy page</span>
+            
+            <span class="time-chip time-medium" title="Estimated time to apply"><span class="time-icon">⏱</span>15 min</span>
+          </div>
+          <div class="fix-type">Policy edit (60s) <span class="fix-sep">·</span> addresses: <em>No dedicated warranty page or policy linked from footer alongside refund/shipping policies</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Create a comprehensive warranty policy page with coverage details, exclusions, and claim process; link from footer navigation.</div>
+      <pre class="fix-artifact"><code>&lt;h1&gt;Warranty Policy&lt;/h1&gt;
+
+&lt;h2&gt;Lifetime Warranty Against Manufacturing Defects&lt;/h2&gt;
+
+&lt;p&gt;At Concept Global, we stand behind the quality of our products. Every Travel Sling Bag 2.0 is covered by our lifetime warranty against defects in materials and workmanship.&lt;/p&gt;
+
+&lt;h3&gt;What&#x27;s Covered&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Zippers &amp; Hardware:&lt;/strong&gt; Broken or defective zippers, buckles, D-rings, and magnetic closures&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Stitching &amp; Seams:&lt;/strong&gt; Seam separation or thread breakage under normal use&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Materials:&lt;/strong&gt; Fabric tears, delamination, or material failure not caused by wear and tear&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;RFID Protection:&lt;/strong&gt; Failure of RFID-blocking functionality&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3&gt;What&#x27;s Not Covered&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;Normal wear and tear (fading, scuffing, abrasion from regular use)&lt;/li&gt;
+  &lt;li&gt;Damage from accidents, misuse, improper care, or unauthorized modifications&lt;/li&gt;
+  &lt;li&gt;Damage from pets, sharp objects, or excessive force&lt;/li&gt;
+  &lt;li&gt;Items purchased from unauthorized resellers&lt;/li&gt;
+  &lt;li&gt;Lost or stolen products&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3&gt;How to File a Warranty Claim&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;&lt;strong&gt;Contact Us:&lt;/strong&gt; Email &lt;a href=&quot;mailto:support@conceptcollective.co&quot;&gt;support@conceptcollective.co&lt;/a&gt; with your order number&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Provide Photos:&lt;/strong&gt; Send clear photos showing the defect&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Describe the Issue:&lt;/strong&gt; Explain how the defect occurred and when you first noticed it&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Receive Instructions:&lt;/strong&gt; Our team will respond within 1 business day with next steps&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Most claims are resolved within 2-3 business days. Depending on the defect, we&#x27;ll either:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Send a replacement product (free shipping)&lt;/li&gt;
+  &lt;li&gt;Provide repair instructions or replacement parts&lt;/li&gt;
+  &lt;li&gt;Issue store credit if the product is discontinued&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3&gt;Return Shipping&lt;/h3&gt;
+&lt;p&gt;For warranty claims, we&#x27;ll provide a prepaid return label. You won&#x27;t pay for return shipping on valid warranty claims.&lt;/p&gt;
+
+&lt;h3&gt;Warranty vs. 60-Day Guarantee&lt;/h3&gt;
+&lt;p&gt;This lifetime warranty is &lt;strong&gt;separate from&lt;/strong&gt; our 60-day money-back guarantee. The 60-day guarantee covers satisfaction (you can return for any reason within 60 days), while this warranty covers manufacturing defects at any time during the product&#x27;s lifetime.&lt;/p&gt;
+
+&lt;h3&gt;Contact&lt;/h3&gt;
+&lt;p&gt;Questions about our warranty? Email &lt;a href=&quot;mailto:support@conceptcollective.co&quot;&gt;support@conceptcollective.co&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Last updated: May 15, 2026&lt;/em&gt;&lt;/p&gt;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. Shopify Admin → Settings → Policies → Add policy
+2. Policy name: &#x27;Warranty Policy&#x27;
+3. Paste the HTML into the policy content editor
+4. Save policy
+5. Go to Online Store → Navigation → Footer menu
+6. Add menu item: &#x27;Warranty&#x27; linking to /policies/warranty-policy
+7. Position between &#x27;Refund policy&#x27; and &#x27;Shipping policy&#x27;
+8. Save menu
+9. (Optional) Add &#x27;Learn more about our warranty&#x27; link on PDP below 60-day guarantee badge linking to this policy page</div>
+    </div>
+    
+        </div>
+    
+        
+      </div>
+    </details>
+    
+    <details class="skill " id="skill-rate_as_gift" >
+      <summary class="skill-hdr">
+        <span class="caret">▸</span>
+        <div class="skill-name">
+          <div class="skill-title">Rate as gift</div>
+          <div class="skill-prompt">"Would this work as a gift? For whom, what&#x27;s the risk?"</div>
+        </div>
+        <div class="skill-evidence-summary"><span class="chip chip-pos"><span class="chip-icon">✓</span> 5 strengths</span><span class="chip chip-neg"><span class="chip-icon">✗</span> 1 issue</span><span class="chip chip-miss"><span class="chip-icon">△</span> 3 missing</span></div>
+        <div class="skill-score score-warn">7<span class="score-of">/10</span></div>
+      </summary>
+      <div class="skill-body">
+        
+        <div class="skill-section">
+          <h4>Evidence</h4>
+          <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">60-day return policy stated prominently in banner and FAQ, mitigating size/color selection risk for gift givers</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Three neutral colors (Black, Olive Green, Natural Beige) have broad appeal and are gender-neutral</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Price point €69.90–79.90 is appropriate for thoughtful gifts without being excessive</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">4.7★ rating with 2,296 reviews provides strong social proof, reducing perceived risk</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">FAQ provides sizing guidance (&#x27;go Regular&#x27; if uncertain) which helps gift givers make confident decisions</span></li><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">Three size options (Mini/Regular/Max) create decision friction for gift givers who don&#x27;t know recipient&#x27;s carry habits</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No gift wrap option visible on PDP or in checkout flow</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No gift message or gift card capability mentioned</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No &#x27;send as gift&#x27; checkbox or gift receipt option to hide pricing from recipient</span></li></ul>
+        </div>
+        <div class="skill-section">
+          <h4>Raw agent response</h4>
+          <div class="raw-response"><p><strong>Yes, this could work well as a gift</strong> — especially for travelers, commuters, gym-goers, or anyone who wants hands-free carry for essentials.</p>
+<p><strong>For whom:</strong><br>- Adults who travel frequently or commute daily<br>- Active people (hikers, gym users, festival-goers)<br>- Anyone tired of bulky backpacks or overflowing pockets<br>- Gender-neutral appeal across all three colors</p>
+<p><strong>Price point:</strong> €69.90–79.90 is squarely in the &quot;thoughtful gift&quot; range — substantial enough to feel generous, not so high it creates obligation.</p>
+<p><strong>The risk:</strong> Sizing. The bag comes in Mini, Regular, and Max. If you don&#x27;t know the recipient&#x27;s carry habits, you&#x27;re guessing. The FAQ says &quot;go Regular&quot; if uncertain, and most customers do — that&#x27;s your safest bet.</p>
+<p><strong>Big safety net:</strong> 60-day returns. If they don&#x27;t love the size or color, they have two full months to exchange or return. That&#x27;s unusually generous and removes most of the gifting risk.</p>
+<p><strong>What&#x27;s missing:</strong> No gift wrap option, no gift message at checkout, and no way to hide the price on the packing slip. You&#x27;ll need to handle presentation yourself or add a card separately.</p>
+<p><strong>Bottom line:</strong> Strong gift candidate with excellent return flexibility. The sizing question is real, but the 60-day policy makes it low-risk. Go with Regular size in Black or Natural Beige unless you know their preference.</p></div>
+        </div>
+        
+        <div class="skill-section fixes-section">
+          <h4>One-click fixes <span class="fix-count">(3)</span></h4>
+          
+    <div class="fix tier-quick" id="fix-rate_as_gift-0">
+      <div class="fix-hdr">
+        <span class="fix-icon">→</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add gift wrap checkbox at checkout</span>
+            
+            <span class="time-chip time-quick" title="Estimated time to apply"><span class="time-icon">⏱</span>5 min</span>
+          </div>
+          <div class="fix-type">Settings deep link <span class="fix-sep">·</span> addresses: <em>No gift wrap option visible on PDP or in checkout flow</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Enable Shopify&#x27;s native gift options (wrap + message) in checkout settings so buyers can add gift presentation without leaving the flow.</div>
+      <pre class="fix-artifact"><code>https://admin.shopify.com/store/[your-store]/settings/checkout
+
+Toggle ON:
+☑ Offer gift wrapping
+☑ Show gift note field
+
+Set gift wrap price: €2.50
+Gift wrap label: &quot;Gift wrap (+€2.50) — premium tissue + branded sticker&quot;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. Go to Shopify Admin → Settings → Checkout
+2. Scroll to &#x27;Order processing&#x27; section
+3. Check &#x27;Offer gift wrapping&#x27; and set price (suggest €2.50)
+4. Check &#x27;Show gift note field&#x27;
+5. Save — options will appear in cart/checkout immediately</div>
+    </div>
+    
+    <div class="fix tier-instant" id="fix-rate_as_gift-1">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add gifting callout above variant selector</span>
+            <span class="instant-badge" title="Under 2 minutes to apply">⚡ INSTANT</span>
+            <span class="time-chip time-instant" title="Estimated time to apply"><span class="time-icon">⚡</span>2 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>Three size options (Mini/Regular/Max) create decision friction for gift givers who don&#x27;t know recipient&#x27;s carry habits</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Insert a single-line gift recommendation directly on the PDP to guide uncertain buyers toward the safest choice.</div>
+      <pre class="fix-artifact"><code>&lt;div style=&quot;background: #f7f7f7; padding: 12px 16px; margin-bottom: 16px; border-radius: 6px; font-size: 14px; line-height: 1.5;&quot;&gt;
+  &lt;strong&gt;🎁 Buying as a gift?&lt;/strong&gt; Choose &lt;strong&gt;Regular&lt;/strong&gt; (our most popular size) + any color — covered by our 60-day return policy if they want to exchange.
+&lt;/div&gt;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. Go to Shopify Admin → Online Store → Themes → Customize
+2. Navigate to the Travel Sling Bag 2.0 product page
+3. Add a Custom Liquid block above the variant selector
+4. Paste the HTML above
+5. Save and preview — the callout should appear between title/price and the color/size selector</div>
+    </div>
+    
+    <div class="fix tier-instant" id="fix-rate_as_gift-2">
+      <div class="fix-hdr">
+        <span class="fix-icon">→</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Enable gift receipt in checkout settings</span>
+            <span class="instant-badge" title="Under 2 minutes to apply">⚡ INSTANT</span>
+            <span class="time-chip time-instant" title="Estimated time to apply"><span class="time-icon">⚡</span>60s</span>
+          </div>
+          <div class="fix-type">Settings deep link <span class="fix-sep">·</span> addresses: <em>No &#x27;send as gift&#x27; checkbox or gift receipt option to hide pricing from recipient</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Turn on Shopify&#x27;s gift receipt option so buyers can hide pricing from recipients on the packing slip.</div>
+      <pre class="fix-artifact"><code>https://admin.shopify.com/store/[your-store]/settings/checkout
+
+Under &#x27;Order processing&#x27;:
+☑ Allow customers to mark orders as gifts
+
+This adds a &#x27;This is a gift&#x27; checkbox at checkout that:
+- Hides prices on packing slip
+- Optionally adds gift message</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. Go to Shopify Admin → Settings → Checkout
+2. Scroll to &#x27;Order processing&#x27;
+3. Check &#x27;Allow customers to mark orders as gifts&#x27;
+4. Save — checkbox appears at checkout immediately, packing slips auto-adjust</div>
+    </div>
+    
+        </div>
+    
+        
+      </div>
+    </details>
+    
+</div>
+
+<div class="stochasticity-note">
+  Scores can vary ±1 point across runs due to model stochasticity. Critical findings and structural gaps remain stable; individual scores should be read as ranges, not exact values.
+</div>
+
+<div class="footer">
+  <div>Generated May 15, 2026 by <a href="#">Nohi</a> · Agent Audit MVP · 8 skills tested · 20 fixes</div>
+</div>
+
+</div>
+
+<script>
+function copyFix(btn) {
+  const fix = btn.closest('.fix');
+  const artifact = fix.querySelector('.fix-artifact code').textContent;
+  navigator.clipboard.writeText(artifact).then(() => {
+    btn.textContent = '✓ Copied';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'Copy';
+      btn.classList.remove('copied');
+    }, 1800);
+  });
+}
+
+/* Smart anchor navigation:
+   - Intercept clicks on links to #skill-* or #fix-*-*
+   - Open the containing <details> element
+   - Smoothly scroll to the target
+   - Flash-highlight so the user sees what they jumped to
+*/
+(function() {
+  function openAndScrollTo(targetId) {
+    const target = document.getElementById(targetId);
+    if (!target) return;
+
+    // Open any ancestor <details> elements (skill cards default to closed)
+    let el = target;
+    while (el && el !== document.body) {
+      if (el.tagName === 'DETAILS' && !el.open) {
+        el.open = true;
+      }
+      el = el.parentElement;
+    }
+
+    // Wait one frame so the <details> expansion is committed before scrolling
+    requestAnimationFrame(() => {
+      const rect = target.getBoundingClientRect();
+      const top = window.scrollY + rect.top - 80;  // leave 80px breathing room
+      window.scrollTo({ top, behavior: 'smooth' });
+
+      // Flash highlight
+      target.classList.remove('flash');
+      // Force reflow so the animation restarts on repeat clicks
+      void target.offsetWidth;
+      target.classList.add('flash');
+      setTimeout(() => target.classList.remove('flash'), 1700);
+    });
+  }
+
+  document.addEventListener('click', function(e) {
+    const link = e.target.closest('a[href^="#"]');
+    if (!link) return;
+    const href = link.getAttribute('href');
+    if (!href || href === '#') return;
+    const targetId = href.slice(1);
+    if (!document.getElementById(targetId)) return;
+    e.preventDefault();
+    openAndScrollTo(targetId);
+    // Update URL hash without re-triggering navigation
+    history.replaceState(null, '', href);
+  });
+
+  // Handle direct page-load with hash (e.g., shared link to a specific fix)
+  if (window.location.hash) {
+    const targetId = window.location.hash.slice(1);
+    if (document.getElementById(targetId)) {
+      setTimeout(() => openAndScrollTo(targetId), 100);
+    }
+  }
+})();
+
+/* Foldable fix index — click effort pill to expand a list of matching fixes */
+(function() {
+  const FIX_INDEX = [{"anchor": "fix-buying_advice-0", "title": "Add v1.0 vs v2.0 comparison table", "skill": "Buying advice", "skill_id": "buying_advice", "time": "5 min", "tier": "quick", "type": "snippet", "summary": "Add a comparison section showing specific upgrades from v1.0 to v2.0 so buyers understand what improvements they're paying for."}, {"anchor": "fix-buying_advice-1", "title": "Add honest limitations section", "skill": "Buying advice", "skill_id": "buying_advice", "time": "2 min", "tier": "instant", "type": "snippet", "summary": "Add a 'Not Right For You If...' section to set realistic expectations and build trust through transparency."}, {"anchor": "fix-buying_advice-2", "title": "Add warranty badge and policy link", "skill": "Buying advice", "skill_id": "buying_advice", "time": "5 min", "tier": "quick", "type": "metafield", "summary": "Add a warranty metafield and display it as a trust badge near the 60-day guarantee to communicate long-term quality commitment."}, {"anchor": "fix-summarize_reviews-0", "title": "Install review app to expose customer feedback", "skill": "Summarize reviews", "skill_id": "summarize_reviews", "time": "15 min", "tier": "medium", "type": "prompt", "summary": "Add a Shopify review app to display actual customer quotes, photos, and detailed feedback on the PDP so agents and buyers can read what customers say."}, {"anchor": "fix-summarize_reviews-1", "title": "Add featured customer quotes section (manual)", "skill": "Summarize reviews", "skill_id": "summarize_reviews", "time": "5 min", "tier": "quick", "type": "snippet", "summary": "While waiting for reviews to accumulate in an app, add a hand-picked testimonials section with real customer quotes to give agents and buyers immediate social proof."}, {"anchor": "fix-identify_specs-0", "title": "Add weight specs to product page", "skill": "Identify specs", "skill_id": "identify_specs", "time": "2 min", "tier": "instant", "type": "snippet", "summary": "Display actual product weights below dimensions in a specifications section on the PDP."}, {"anchor": "fix-identify_specs-1", "title": "Add materials & construction details section", "skill": "Identify specs", "skill_id": "identify_specs", "time": "5 min", "tier": "quick", "type": "snippet", "summary": "Create a Materials section specifying fabric type, denier, hardware, and construction details."}, {"anchor": "fix-price_per_unit-0", "title": "Add competitor price comparison table", "skill": "Price per unit", "skill_id": "price_per_unit", "time": "15 min", "tier": "medium", "type": "snippet", "summary": "Insert a comparison table showing Travel Sling 2.0 vs 3-4 competitor sling bags on price, features, and warranty to anchor value perception."}, {"anchor": "fix-price_per_unit-1", "title": "Add value-per-use breakdown badge", "skill": "Price per unit", "skill_id": "price_per_unit", "time": "5 min", "tier": "quick", "type": "snippet", "summary": "Display a cost-per-day calculation assuming 2-year lifespan to reframe the \u20ac69.90 price as \u20ac0.10/day, making the investment feel more accessible."}, {"anchor": "fix-price_per_unit-2", "title": "Display shipping cost estimate widget", "skill": "Price per unit", "skill_id": "price_per_unit", "time": "2 min", "tier": "instant", "type": "snippet", "summary": "Add a shipping calculator or static estimate table showing typical costs by region so buyers can calculate total cost before cart."}, {"anchor": "fix-check_returns-0", "title": "Expand Returns FAQ with complete details", "skill": "Check returns", "skill_id": "check_returns", "time": "15 min", "tier": "medium", "type": "metafield", "summary": "Replace current FAQ answer with comprehensive return information covering who pays shipping, item conditions, refund timing, and exclusions so buyers have complete transparency before purchase."}, {"anchor": "fix-check_returns-1", "title": "Write comprehensive refund policy page", "skill": "Check returns", "skill_id": "check_returns", "time": "30 min", "tier": "medium", "type": "policy_edit", "summary": "Create complete refund policy covering return window, conditions, shipping costs, refund timing, exclusions, and defective item handling to build buyer confidence and reduce support inquiries."}, {"anchor": "fix-sizing_help-0", "title": "Add size comparison visual module", "skill": "Sizing help", "skill_id": "sizing_help", "time": "5 min", "tier": "quick", "type": "snippet", "summary": "Insert a side-by-side size comparison image showing all three variants next to everyday objects (iPhone, water bottle, etc.) for instant visual scale."}, {"anchor": "fix-sizing_help-1", "title": "Launch UGC photo collection campaign", "skill": "Sizing help", "skill_id": "sizing_help", "time": "30 min", "tier": "medium", "type": "prompt", "summary": "Email existing customers requesting on-body photos across diverse body types and use cases to populate lifestyle gallery and answer fit questions visually."}, {"anchor": "fix-check_warranty-0", "title": "Add lifetime warranty metafield to PDP", "skill": "Check warranty", "skill_id": "check_warranty", "time": "5 min", "tier": "quick", "type": "metafield", "summary": "Create a warranty metafield that displays on the product page, clarifying lifetime coverage for manufacturing defects separate from the 60-day satisfaction guarantee."}, {"anchor": "fix-check_warranty-1", "title": "Add warranty vs guarantee FAQ item", "skill": "Check warranty", "skill_id": "check_warranty", "time": "2 min", "tier": "instant", "type": "metafield", "summary": "Add FAQ entry explaining the difference between the 60-day satisfaction guarantee and lifetime defect warranty with claim process."}, {"anchor": "fix-check_warranty-2", "title": "Create standalone warranty policy page", "skill": "Check warranty", "skill_id": "check_warranty", "time": "15 min", "tier": "medium", "type": "policy_edit", "summary": "Create a comprehensive warranty policy page with coverage details, exclusions, and claim process; link from footer navigation."}, {"anchor": "fix-rate_as_gift-0", "title": "Add gift wrap checkbox at checkout", "skill": "Rate as gift", "skill_id": "rate_as_gift", "time": "5 min", "tier": "quick", "type": "settings_link", "summary": "Enable Shopify's native gift options (wrap + message) in checkout settings so buyers can add gift presentation without leaving the flow."}, {"anchor": "fix-rate_as_gift-1", "title": "Add gifting callout above variant selector", "skill": "Rate as gift", "skill_id": "rate_as_gift", "time": "2 min", "tier": "instant", "type": "snippet", "summary": "Insert a single-line gift recommendation directly on the PDP to guide uncertain buyers toward the safest choice."}, {"anchor": "fix-rate_as_gift-2", "title": "Enable gift receipt in checkout settings", "skill": "Rate as gift", "skill_id": "rate_as_gift", "time": "60s", "tier": "instant", "type": "settings_link", "summary": "Turn on Shopify's gift receipt option so buyers can hide pricing from recipients on the packing slip."}];
+  const panel = document.getElementById('fix-index-panel');
+  if (!panel) return;
+  const listEl = panel.querySelector('.fix-index-list');
+  const closeBtn = panel.querySelector('.fix-index-close');
+  const pills = document.querySelectorAll('button.effort-pill[data-filter]');
+
+  function tierOrder(t) {
+    return { instant: 0, quick: 1, medium: 2, slow: 3 }[t] ?? 4;
+  }
+
+  function filterFor(mode) {
+    if (mode === 'instant') return FIX_INDEX.filter(f => f.tier === 'instant');
+    if (mode === 'quick')   return FIX_INDEX.filter(f => f.tier === 'instant' || f.tier === 'quick');
+    return FIX_INDEX.slice();
+  }
+
+  function render(mode) {
+    const items = filterFor(mode);
+    items.sort((a, b) => tierOrder(a.tier) - tierOrder(b.tier));
+    listEl.innerHTML = items.length === 0
+      ? '<li class="fix-index-empty">No fixes match this filter.</li>'
+      : items.map(f => `
+          <li>
+            <a class="fix-index-item" href="${f.anchor ? '#' + f.anchor : '#'}" data-anchor="${f.anchor}">
+              <span class="fii-time tier-${f.tier}">${f.tier === 'instant' ? '⚡ ' : ''}${f.time}</span>
+              <span class="fii-title">${f.title.replace(/</g, '&lt;')}</span>
+              <span class="fii-skill">${f.skill.replace(/</g, '&lt;')}</span>
+            </a>
+          </li>`).join('');
+  }
+
+  function closePanel() {
+    panel.setAttribute('hidden', '');
+    pills.forEach(p => p.setAttribute('aria-expanded', 'false'));
+  }
+
+  pills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      const wasExpanded = pill.getAttribute('aria-expanded') === 'true';
+      pills.forEach(p => p.setAttribute('aria-expanded', 'false'));
+      if (wasExpanded) {
+        // Toggle off
+        panel.setAttribute('hidden', '');
+        return;
+      }
+      pill.setAttribute('aria-expanded', 'true');
+      render(pill.dataset.filter);
+      panel.removeAttribute('hidden');
+    });
+  });
+
+  closeBtn.addEventListener('click', closePanel);
+
+  // When an item is clicked: close panel FIRST (so its height doesn't bias the
+  // scroll calculation), then let the global anchor handler do the rest.
+  // Bubble order: this listener (on .fix-index-list) runs before the document-
+  // level anchor handler, so closing here means getBoundingClientRect() in the
+  // anchor handler measures with the panel already removed from layout.
+  listEl.addEventListener('click', e => {
+    const item = e.target.closest('.fix-index-item');
+    if (!item) return;
+    closePanel();  // synchronous — DOM updates before bubble continues
+  });
+
+  // ESC closes the panel
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && !panel.hasAttribute('hidden')) {
+      closePanel();
+    }
+  });
+})();
+
+(function() {
+  const ctx = document.getElementById('radarChart');
+  if (!ctx) return;
+
+  const rawDatasets = [{"label": "Score", "data": [7.0, 6, 6, 5, 6, 7.0, 5, 7], "color": "#334155"}];
+  const isMulti = rawDatasets.length > 1;
+
+  // Convert hex → rgba with given alpha
+  function hexToRgba(hex, alpha) {
+    const h = hex.replace('#', '');
+    const r = parseInt(h.substring(0, 2), 16);
+    const g = parseInt(h.substring(2, 4), 16);
+    const b = parseInt(h.substring(4, 6), 16);
+    return `rgba(${r},${g},${b},${alpha})`;
+  }
+
+  const datasets = rawDatasets.map((ds, i) => ({
+    label: ds.label,
+    data: ds.data,
+    fill: !isMulti,
+    backgroundColor: isMulti ? hexToRgba(ds.color, 0.08) : hexToRgba(ds.color, 0.18),
+    borderColor: ds.color,
+    borderWidth: isMulti ? 2 : 2.5,
+    pointBackgroundColor: isMulti ? ds.color : ["#92400e", "#92400e", "#92400e", "#92400e", "#92400e", "#92400e", "#92400e", "#92400e"],
+    pointBorderColor: '#fff',
+    pointBorderWidth: 1.5,
+    pointRadius: isMulti ? 4 : 5,
+    pointHoverRadius: 7
+  }));
+
+  new Chart(ctx, {
+    type: 'radar',
+    data: {
+      labels: ["Buying advice", "Summarize reviews", "Identify specs", "Price per unit", "Check returns", "Sizing help", "Check warranty", "Rate as gift"],
+      datasets: datasets
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: {
+          display: isMulti,
+          position: 'bottom',
+          labels: { font: { size: 11, family: 'Inter, sans-serif' }, color: '#54586a', boxWidth: 14, boxHeight: 14, padding: 14 }
+        },
+        tooltip: {
+          callbacks: {
+            label: function(c) {
+              const v = c.parsed.r;
+              return c.dataset.label + ': ' + (v === null ? 'no data' : v.toFixed(1) + ' / 10');
+            }
+          }
+        }
+      },
+      scales: {
+        r: {
+          min: 0, max: 10, beginAtZero: true,
+          ticks: { stepSize: 2, font: { size: 10, family: 'JetBrains Mono, monospace' }, color: '#8b8fa0', backdropColor: 'transparent' },
+          grid: { color: 'rgba(20,20,28,0.07)' },
+          angleLines: { color: 'rgba(20,20,28,0.07)' },
+          pointLabels: { color: '#54586a', font: { size: 11, family: 'Bricolage Grotesque, system-ui, sans-serif', weight: '600' } }
+        }
+      }
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,3075 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Nohi Agent Audit · Concept Global — Travel Sling Bag 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Bricolage+Grotesque:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-display: 'Bricolage Grotesque', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+
+  --bg: #fbfaf7;
+  --surface: #ffffff;
+  --surface2: #f3f1ec;
+  --surface3: #e8e5dd;
+  --border: rgba(20,20,28,0.07);
+  --border-h: rgba(20,20,28,0.14);
+  --text: #1a1c24;
+  --text2: #54586a;
+  --text3: #8b8fa0;
+
+  --good: #0f766e;
+  --good-soft: #ecfdf5;
+  --good-border: #a7d8c6;
+  --warn: #92400e;
+  --warn-soft: #fef8eb;
+  --warn-border: #e6cca0;
+  --bad: #4b5563;
+  --bad-soft: #f1f3f7;
+  --bad-border: #cdd2dd;
+  --crit: #9b1c1c;
+  --crit-soft: #fdf2f2;
+  --crit-border: #f5c5c5;
+
+  --primary: #334155;
+  --primary-dark: #1e293b;
+  --primary-soft: rgba(51,65,85,0.07);
+  --accent-ink: #0f172a;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 1080px; margin: 0 auto; padding: 2rem 2rem 6rem; }
+
+/* Brand strip */
+.brand {
+  display: flex; align-items: center; gap: .55rem;
+  margin-bottom: 1.5rem;
+}
+.brand-mark {
+  width: 26px; height: 26px;
+  background: var(--primary);
+  border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-weight: 700;
+  font-family: var(--font-display);
+  font-size: .85rem;
+}
+.brand-text {
+  font-family: var(--font-display);
+  font-weight: 700; font-size: 1.05rem;
+  letter-spacing: -.02em;
+}
+.brand-divider { width: 1px; height: 16px; background: var(--border-h); }
+.brand-sub {
+  font-family: var(--font-mono);
+  font-size: .7rem;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  font-weight: 600;
+}
+
+h1 {
+  font-family: var(--font-display);
+  font-size: 2.1rem; font-weight: 800;
+  letter-spacing: -.025em; line-height: 1.1;
+  margin-bottom: .4rem;
+}
+.report-purpose {
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--text2);
+  max-width: 740px;
+  margin: .65rem 0 1rem;
+}
+.report-purpose strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.sub {
+  font-family: var(--font-mono);
+  font-size: .8rem; color: var(--text3);
+  margin-bottom: 1rem;
+  word-break: break-all;
+}
+.sub a { color: var(--primary); text-decoration: none; }
+.sub a:hover { text-decoration: underline; }
+
+.kpi-row { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: .75rem; }
+
+.agents-strip {
+  display: flex;
+  gap: .4rem;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: .5rem .75rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: .75rem;
+  font-size: .8rem;
+}
+.agents-label {
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--text3);
+  font-weight: 600;
+  margin-right: .25rem;
+}
+.agent-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  padding: .2rem .55rem;
+  border-radius: 999px;
+  background: var(--surface2);
+  border: 1px solid var(--border-h);
+  font-weight: 600;
+  font-size: .78rem;
+}
+.agent-pill .agent-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--agent-color, var(--text3));
+}
+
+/* Effort/time row — pulls "this is easier than it looks" forward */
+.effort-row {
+  display: flex;
+  gap: .5rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+  padding: .75rem .9rem;
+  background: var(--good-soft);
+  border: 1px solid var(--good-border);
+  border-radius: 10px;
+}
+.effort-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: .3rem;
+  font-size: .82rem;
+  color: var(--text);
+  font-weight: 500;
+}
+.effort-pill b { font-weight: 700; font-size: .92rem; }
+.effort-icon {
+  font-size: .95rem;
+  margin-right: .15rem;
+}
+.effort-sub {
+  font-size: .72rem;
+  color: var(--text3);
+  font-family: var(--font-mono);
+  margin-left: .15rem;
+}
+.effort-instant {
+  background: var(--surface);
+  padding: .3rem .65rem;
+  border-radius: 999px;
+  border: 1px solid var(--good-border);
+  color: var(--good);
+  font-weight: 600;
+}
+.effort-instant b { color: var(--good); }
+.effort-quick {
+  background: var(--surface);
+  padding: .3rem .65rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-h);
+}
+.effort-total {
+  margin-left: auto;
+  padding: .3rem .5rem;
+  color: var(--text2);
+  font-size: .78rem;
+}
+@media (max-width: 580px) {
+  .effort-total { margin-left: 0; width: 100%; padding-top: .4rem; border-top: 1px solid var(--good-border); }
+}
+
+/* Effort pills are now interactive buttons */
+button.effort-pill {
+  cursor: pointer;
+  font-family: inherit;
+  transition: all .15s;
+}
+button.effort-pill:hover {
+  border-color: var(--good);
+  background: var(--surface);
+}
+button.effort-pill[aria-expanded="true"] {
+  background: var(--good);
+  color: white;
+  border-color: var(--good);
+}
+button.effort-pill[aria-expanded="true"] b,
+button.effort-pill[aria-expanded="true"] .effort-sub,
+button.effort-pill[aria-expanded="true"] .effort-icon {
+  color: white;
+}
+.effort-caret {
+  margin-left: .25rem;
+  font-size: .7rem;
+  opacity: .65;
+  transition: transform .15s;
+}
+button.effort-pill[aria-expanded="true"] .effort-caret {
+  transform: rotate(180deg);
+  opacity: 1;
+}
+
+/* The expanding panel */
+.fix-index-panel {
+  margin: -1.25rem 0 2rem;   /* negative top to butt up against effort-row */
+  background: var(--surface);
+  border: 1px solid var(--good-border);
+  border-top: none;
+  border-radius: 0 0 10px 10px;
+  padding: 1rem 1.15rem 1.15rem;
+  animation: slide-down .2s ease-out;
+}
+@keyframes slide-down {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fix-index-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: .75rem;
+  padding-bottom: .55rem;
+  border-bottom: 1px solid var(--border);
+}
+.fix-index-title {
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--text2);
+  font-weight: 700;
+}
+.fix-index-close {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: .15rem .5rem;
+  font-size: .75rem;
+  color: var(--text2);
+  cursor: pointer;
+  font-family: inherit;
+}
+.fix-index-close:hover { background: var(--surface2); color: var(--text); }
+
+.fix-index-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex; flex-direction: column;
+  gap: .25rem;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+.fix-index-list li { margin: 0; }
+.fix-index-item {
+  display: grid;
+  grid-template-columns: 80px 1fr auto;
+  align-items: center;
+  gap: .65rem;
+  padding: .55rem .65rem;
+  border-radius: 6px;
+  text-decoration: none;
+  color: var(--text);
+  border: 1px solid transparent;
+  transition: all .12s;
+}
+.fix-index-item:hover {
+  background: var(--primary-soft);
+  border-color: var(--border-h);
+}
+.fix-index-item .fii-time {
+  font-family: var(--font-mono);
+  font-size: .7rem;
+  font-weight: 700;
+  padding: .15rem .45rem;
+  border-radius: 999px;
+  text-align: center;
+  white-space: nowrap;
+}
+.fix-index-item .fii-time.tier-instant {
+  background: var(--good);
+  color: white;
+}
+.fix-index-item .fii-time.tier-quick {
+  background: var(--good-soft);
+  color: var(--good);
+  border: 1px solid var(--good-border);
+}
+.fix-index-item .fii-time.tier-medium {
+  background: var(--surface2);
+  color: var(--text2);
+  border: 1px solid var(--border-h);
+}
+.fix-index-item .fii-time.tier-slow {
+  background: transparent;
+  color: var(--text3);
+  border: 1px dashed var(--border-h);
+}
+.fix-index-item .fii-title {
+  font-weight: 600;
+  font-size: .88rem;
+  line-height: 1.4;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fix-index-item .fii-skill {
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  white-space: nowrap;
+}
+.fix-index-empty {
+  font-size: .85rem;
+  color: var(--text3);
+  font-style: italic;
+  padding: .5rem;
+}
+.kpi {
+  font-size: .76rem;
+  padding: .35rem .75rem;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text2);
+  font-weight: 500;
+}
+.kpi b { font-weight: 700; color: var(--text); }
+.kpi.kpi-primary {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+.kpi.kpi-primary b { color: white; }
+.kpi.kpi-crit {
+  background: var(--crit-soft);
+  color: var(--crit);
+  border-color: var(--crit-border);
+  font-weight: 600;
+}
+.kpi.kpi-crit b { color: var(--crit); }
+
+/* Executive hero */
+.exec {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 2rem;
+  padding: 1.5rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  margin-bottom: 2.5rem;
+}
+@media (max-width: 780px) { .exec { grid-template-columns: 1fr; } }
+.score-hero {
+  background: var(--warn-soft);
+  border: 1px solid var(--warn-border);
+  border-radius: 12px;
+  padding: 1.5rem 1rem;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+}
+.big-score {
+  font-family: var(--font-display);
+  font-size: 4.4rem; font-weight: 800;
+  line-height: 1; letter-spacing: -.06em;
+  color: var(--warn);
+}
+.score-label { font-size: .88rem; color: var(--text3); margin-top: .25rem; }
+.score-tagline {
+  margin-top: .75rem;
+  font-size: .72rem;
+  font-weight: 700;
+  color: var(--warn);
+  text-transform: uppercase;
+  letter-spacing: .07em;
+}
+.radar-wrap { position: relative; max-width: 420px; margin: 0 auto; }
+.exec-label {
+  font-size: .72rem; font-weight: 600;
+  color: var(--text3); text-transform: uppercase;
+  letter-spacing: .05em; margin-bottom: .8rem;
+}
+
+/* Section header */
+.section-hdr {
+  font-family: var(--font-display);
+  font-size: 1.25rem; font-weight: 700;
+  margin: 2.5rem 0 .85rem;
+  padding-bottom: .5rem;
+  border-bottom: 1px solid var(--border);
+  letter-spacing: -.02em;
+}
+.section-intro {
+  color: var(--text2);
+  margin-bottom: 1.25rem;
+  font-size: .9rem;
+}
+
+/* Subsection header (used inside Site overview) */
+.subsection-hdr {
+  font-family: var(--font-display);
+  font-size: .85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--text2);
+  margin: 1.5rem 0 .8rem;
+  display: flex; align-items: baseline; gap: .4rem;
+}
+.subsection-hdr:first-child { margin-top: 0; }
+.subsection-hdr .count {
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  color: var(--text3);
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.subsection-note {
+  font-size: .82rem;
+  color: var(--text2);
+  margin-bottom: .85rem;
+  line-height: 1.55;
+}
+.subsection-note a {
+  color: var(--primary);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--primary);
+  font-weight: 600;
+}
+.subsection-note a:hover { border-bottom-style: solid; }
+
+/* Positives grid */
+.positives-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: .65rem;
+  margin-bottom: 1.5rem;
+}
+.positive-card {
+  display: flex;
+  gap: .65rem;
+  padding: .8rem .95rem;
+  background: var(--good-soft);
+  border: 1px solid var(--good-border);
+  border-radius: 9px;
+}
+.positive-icon {
+  flex-shrink: 0;
+  width: 22px; height: 22px;
+  background: var(--good);
+  color: white;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700;
+  font-size: .8rem;
+}
+.positive-body { flex: 1; min-width: 0; }
+.positive-title {
+  font-weight: 700;
+  font-size: .88rem;
+  color: var(--text);
+  margin-bottom: .15rem;
+  line-height: 1.4;
+}
+.positive-where {
+  font-family: var(--font-mono);
+  font-size: .7rem;
+  color: var(--text3);
+  margin-bottom: .35rem;
+}
+.positive-where code {
+  background: rgba(15,118,110,0.08);
+  padding: .08rem .3rem;
+  border-radius: 3px;
+}
+.positive-value {
+  font-size: .82rem;
+  color: var(--text2);
+  line-height: 1.5;
+}
+
+/* Site issues table (refactored: 3 columns, issue body grouped) */
+.findings-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  font-size: .85rem;
+}
+.findings-table th {
+  text-align: left;
+  padding: .65rem .85rem;
+  background: var(--surface2);
+  font-size: .68rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--text2);
+  font-weight: 700;
+  border-bottom: 1px solid var(--border);
+}
+.findings-table td {
+  padding: .85rem .85rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+.findings-table tr:last-child td { border-bottom: none; }
+.findings-table .col-sev    { width: 90px; }
+.findings-table .col-finding { width: 50%; }
+.findings-table .col-fix     { width: 40%; }
+
+.findings-table .finding-title {
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: .25rem;
+  line-height: 1.4;
+}
+.findings-table .finding-where {
+  font-family: var(--font-mono);
+  font-size: .7rem;
+  color: var(--text3);
+  margin-bottom: .35rem;
+}
+.findings-table .finding-where code {
+  background: var(--surface2);
+  padding: .08rem .3rem;
+  border-radius: 3px;
+  color: var(--text2);
+}
+.findings-table .finding-impact {
+  color: var(--text2);
+  font-size: .82rem;
+  line-height: 1.5;
+}
+.findings-table .muted { color: var(--text3); font-size: .82rem; font-style: italic; }
+
+.finding-fix-skill {
+  font-size: .7rem;
+  font-family: var(--font-mono);
+  color: var(--text3);
+  margin-bottom: .4rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+.finding-fix-skill a {
+  color: var(--text2);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--border-h);
+}
+.finding-fix-skill a:hover {
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.finding-fix-chips {
+  display: flex; flex-direction: column; gap: .35rem;
+}
+.fix-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  padding: .4rem .65rem;
+  background: var(--primary-soft);
+  border: 1px solid var(--border-h);
+  border-radius: 7px;
+  color: var(--text);
+  font-size: .82rem;
+  font-weight: 600;
+  text-decoration: none;
+  line-height: 1.3;
+  transition: all .15s;
+}
+.fix-chip:hover {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+.fix-chip-icon {
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  font-weight: 700;
+  width: 22px; height: 22px;
+  background: var(--primary);
+  color: white;
+  border-radius: 5px;
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.fix-chip:hover .fix-chip-icon {
+  background: white;
+  color: var(--primary);
+}
+
+.inline-fix {
+  background: var(--primary-soft);
+  border: 1px solid var(--border-h);
+  border-radius: 7px;
+  padding: .6rem .75rem;
+}
+.inline-fix-title {
+  font-weight: 700;
+  font-size: .85rem;
+  color: var(--primary-dark);
+  margin-bottom: .25rem;
+}
+.inline-fix-summary {
+  font-size: .8rem;
+  color: var(--text2);
+  margin-bottom: .35rem;
+  line-height: 1.5;
+}
+.inline-fix-action {
+  font-size: .76rem;
+  color: var(--text2);
+  background: var(--surface);
+  padding: .35rem .55rem;
+  border-radius: 5px;
+  border-left: 2px solid var(--primary);
+}
+
+.findings-empty {
+  background: var(--good-soft);
+  border: 1px solid var(--good-border);
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  color: var(--good);
+  font-weight: 600;
+}
+
+/* Highlight flash for navigated-to fix or skill */
+@keyframes flash-highlight {
+  0%   { background: var(--primary); color: white; box-shadow: 0 0 0 8px var(--primary-soft); }
+  60%  { background: var(--primary); color: white; box-shadow: 0 0 0 8px var(--primary-soft); }
+  100% { background: var(--surface); color: var(--text); box-shadow: 0 0 0 0 transparent; }
+}
+.fix.flash {
+  animation: flash-highlight 1.6s ease-out;
+}
+.fix.flash .fix-title,
+.fix.flash .fix-summary,
+.fix.flash .fix-type,
+.fix.flash .fix-type em {
+  color: white !important;
+}
+@keyframes flash-skill {
+  0%   { box-shadow: 0 0 0 4px var(--primary); }
+  60%  { box-shadow: 0 0 0 4px var(--primary); }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+.skill.flash {
+  animation: flash-skill 1.6s ease-out;
+}
+
+/* Severity badges — only critical is loud */
+.sev-badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: .65rem;
+  font-weight: 700;
+  padding: .15rem .55rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  white-space: nowrap;
+}
+.sev-badge.sev-crit.emph-loud {
+  background: var(--crit);
+  color: white;
+  border: 1px solid var(--crit);
+}
+.sev-badge.sev-warn.emph-med {
+  background: var(--surface2);
+  color: var(--text);
+  border: 1px solid var(--border-h);
+}
+.sev-badge.sev-warn.emph-soft {
+  background: var(--surface2);
+  color: var(--text2);
+  border: 1px solid var(--border);
+}
+.sev-badge.sev-good.emph-soft {
+  background: var(--good-soft);
+  color: var(--good);
+  border: 1px solid var(--good-border);
+}
+
+/* Skill cards */
+.skills-list { display: flex; flex-direction: column; gap: .6rem; }
+.skill {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color .15s;
+}
+.skill[open] { border-color: var(--border-h); }
+.skill-hdr {
+  display: flex; align-items: center; gap: 1rem;
+  padding: .95rem 1.15rem;
+  cursor: pointer; user-select: none;
+  list-style: none;
+}
+.skill-hdr::-webkit-details-marker { display: none; }
+.skill-hdr:hover { background: var(--surface2); }
+.skill[open] .skill-hdr { border-bottom: 1px solid var(--border); }
+.caret {
+  font-size: .7rem; color: var(--text3);
+  transition: transform .2s; flex-shrink: 0;
+}
+.skill[open] .caret { transform: rotate(90deg); }
+.skill-name { flex: 1; min-width: 0; }
+.skill-title {
+  font-weight: 700; font-size: 1rem;
+  font-family: var(--font-display);
+  letter-spacing: -.01em;
+}
+.skill-prompt {
+  font-family: var(--font-mono);
+  font-size: .7rem; color: var(--text3);
+  margin-top: .12rem;
+  font-style: italic;
+}
+.skill-evidence-summary {
+  display: flex; gap: .3rem;
+  flex-wrap: wrap; flex-shrink: 0;
+}
+
+/* Multi-agent: per-agent score chips in the skill header */
+.agent-score-row {
+  display: flex; gap: .35rem;
+  flex-wrap: wrap; flex-shrink: 0;
+  align-items: center;
+}
+.agent-score {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  padding: .2rem .55rem;
+  font-size: .72rem;
+  font-weight: 600;
+  background: var(--surface2);
+  border: 1px solid var(--border-h);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+}
+.agent-score .agent-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--agent-color, var(--text3));
+  flex-shrink: 0;
+}
+.agent-score .agent-name { color: var(--text2); font-family: var(--font-sans); }
+.agent-score .agent-score-val {
+  font-weight: 700;
+  font-size: .82rem;
+}
+.agent-score.score-good .agent-score-val { color: var(--good); }
+.agent-score.score-warn .agent-score-val { color: var(--warn); }
+.agent-score.score-bad  .agent-score-val { color: var(--bad); }
+.agent-score.agent-fail {
+  background: var(--crit-soft);
+  border-color: var(--crit-border);
+}
+.agent-score.agent-fail .agent-score-val { color: var(--crit); }
+
+.agreement {
+  font-size: .65rem;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  padding: .12rem .4rem;
+  border-radius: 4px;
+  font-weight: 600;
+}
+.agreement-consensus {
+  background: var(--good-soft);
+  color: var(--good);
+  border: 1px solid var(--good-border);
+}
+.agreement-mild-split {
+  background: var(--warn-soft);
+  color: var(--warn);
+  border: 1px solid var(--warn-border);
+}
+.agreement-wide-split {
+  background: var(--crit-soft);
+  color: var(--crit);
+  border: 1px solid var(--crit-border);
+}
+
+/* Per-agent breakdown accordion inside skill card */
+.agent-details {
+  display: flex; flex-direction: column;
+  gap: .4rem;
+}
+.agent-detail {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.agent-detail[open] { border-color: var(--border-h); }
+.agent-detail-hdr {
+  display: flex; align-items: center;
+  gap: .6rem;
+  padding: .65rem .85rem;
+  cursor: pointer;
+  user-select: none;
+  list-style: none;
+  font-size: .85rem;
+}
+.agent-detail-hdr::-webkit-details-marker { display: none; }
+.agent-detail-hdr:hover { background: var(--surface2); }
+.caret-sm {
+  font-size: .6rem;
+  color: var(--text3);
+  transition: transform .2s;
+}
+.agent-detail[open] .caret-sm { transform: rotate(90deg); }
+.agent-detail-hdr .agent-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.agent-detail-name {
+  font-weight: 700;
+  flex: 1;
+}
+.agent-detail-score {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: -.02em;
+}
+.agent-detail-score.score-good { color: var(--good); }
+.agent-detail-score.score-warn { color: var(--warn); }
+.agent-detail-score.score-bad  { color: var(--bad); }
+.agent-detail-evidence {
+  display: flex; gap: .25rem;
+  flex-wrap: wrap;
+}
+.agent-detail-body {
+  padding: .85rem 1rem 1rem;
+  background: var(--surface2);
+  border-top: 1px solid var(--border);
+}
+.agent-detail-body h5 {
+  font-size: .75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--text2);
+  margin: 0 0 .5rem;
+}
+.agent-detail-body h5:not(:first-child) { margin-top: 1rem; }
+
+/* Wide-split visual marker on skill cards where models disagreed significantly */
+.skill.skill-wide-split {
+  border-color: var(--warn-border);
+  border-left: 3px solid var(--warn);
+}
+.skill.skill-wide-split .skill-hdr {
+  background: linear-gradient(to right, var(--warn-soft) 0%, transparent 30%);
+}
+.wide-split-pin {
+  display: inline-block;
+  margin-right: .35rem;
+  font-size: .9rem;
+}
+.wide-split-banner {
+  background: var(--warn-soft);
+  border: 1px solid var(--warn-border);
+  border-radius: 8px;
+  padding: .8rem 1rem;
+  margin-bottom: 1.25rem;
+  font-size: .85rem;
+}
+.wide-split-banner p {
+  margin: .35rem 0 0;
+  color: var(--text);
+}
+.wide-split-banner .wide-split-hint {
+  font-size: .8rem;
+  color: var(--text2);
+  margin-top: .55rem;
+}
+.wide-split-header {
+  display: flex; align-items: center;
+  gap: .5rem;
+  color: var(--warn);
+}
+.wide-split-icon { font-size: 1rem; }
+.wide-split-spread {
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  padding: .12rem .45rem;
+  background: var(--warn);
+  color: white;
+  border-radius: 4px;
+  margin-left: auto;
+}
+.chip {
+  display: inline-flex; align-items: center; gap: .3rem;
+  font-size: .7rem; font-weight: 600;
+  padding: .18rem .5rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.chip-icon { font-weight: 700; }
+.chip-pos { background: var(--good-soft); color: var(--good); border: 1px solid var(--good-border); }
+.chip-neg { background: var(--crit-soft); color: var(--crit); border: 1px solid var(--crit-border); }
+.chip-gap { background: var(--warn-soft); color: var(--warn); border: 1px solid var(--warn-border); }
+.chip-miss { background: var(--surface2); color: var(--text2); border: 1px solid var(--border-h); }
+
+.skill-score {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.65rem;
+  letter-spacing: -.04em;
+  min-width: 5.2rem;
+  text-align: right;
+  flex-shrink: 0;
+}
+.score-of { font-size: .85rem; font-weight: 600; color: var(--text3); margin-left: .1rem; }
+.score-good { color: var(--good); }
+.score-warn { color: var(--warn); }
+.score-bad  { color: var(--bad); }
+
+.skill-body { padding: 1.25rem 1.5rem 1.5rem; background: var(--surface2); }
+.skill-section { margin-bottom: 1.4rem; }
+.skill-section:last-child { margin-bottom: 0; }
+.skill-section h4 {
+  font-family: var(--font-display);
+  font-size: .82rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  font-weight: 700;
+  color: var(--text2);
+  margin-bottom: .6rem;
+}
+
+.ev-list { list-style: none; }
+.ev {
+  display: flex; gap: .55rem;
+  padding: .5rem .7rem;
+  margin-bottom: .3rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  font-size: .88rem;
+}
+.ev-icon { flex-shrink: 0; font-weight: 700; }
+.ev-pos .ev-icon  { color: var(--good); }
+.ev-neg .ev-icon  { color: var(--crit); }
+.ev-gap .ev-icon  { color: var(--warn); }
+.ev-miss .ev-icon { color: var(--text3); }
+.ev-text { color: var(--text); }
+
+.raw-response {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--primary);
+  border-radius: 7px;
+  padding: 1rem 1.25rem;
+  font-size: .87rem;
+  color: var(--text);
+}
+.raw-response p { margin-bottom: .6rem; }
+.raw-response p:last-child { margin-bottom: 0; }
+.raw-response ul { margin: .4rem 0 .6rem 1.25rem; }
+.raw-response li { margin-bottom: .2rem; }
+
+/* Fixes — the differentiator */
+.fixes-section {
+  background: var(--primary-soft);
+  border: 1px solid var(--border-h);
+  border-radius: 10px;
+  padding: 1rem 1.15rem;
+}
+.fixes-section h4 { color: var(--primary-dark); }
+.fix-count {
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin-left: .2rem;
+}
+.no-fixes {
+  font-size: .85rem;
+  color: var(--text3);
+  font-style: italic;
+}
+.fix {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: .85rem 1rem;
+  margin-bottom: .65rem;
+}
+.fix:last-child { margin-bottom: 0; }
+.fix-hdr {
+  display: flex; align-items: flex-start; gap: .75rem;
+  margin-bottom: .55rem;
+}
+.fix-icon {
+  font-family: var(--font-mono);
+  width: 28px; height: 28px;
+  background: var(--primary);
+  color: white;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .8rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.fix-titles { flex: 1; min-width: 0; }
+.fix-title-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .35rem;
+}
+.fix-title {
+  font-weight: 700;
+  font-size: .92rem;
+  color: var(--text);
+}
+.fix-type {
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  color: var(--text3);
+  margin-top: .15rem;
+}
+.fix-type em { color: var(--text2); font-style: normal; }
+.fix-sep { margin: 0 .2rem; opacity: .6; }
+
+/* Time chip — appears next to fix title */
+.time-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .2rem;
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  font-weight: 600;
+  padding: .15rem .45rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.time-icon { font-size: .8rem; }
+.time-chip.time-instant {
+  background: rgba(15,118,110,0.1);
+  color: var(--good);
+  border: 1px solid var(--good-border);
+}
+.time-chip.time-quick {
+  background: var(--surface2);
+  color: var(--text2);
+  border: 1px solid var(--border-h);
+}
+.time-chip.time-medium {
+  background: var(--surface2);
+  color: var(--text3);
+  border: 1px solid var(--border);
+}
+.time-chip.time-slow {
+  background: transparent;
+  color: var(--text3);
+  border: 1px dashed var(--border-h);
+}
+
+/* INSTANT badge — only on truly fast fixes */
+.instant-badge {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: .65rem;
+  font-weight: 700;
+  padding: .15rem .45rem;
+  border-radius: 4px;
+  background: var(--good);
+  color: white;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Tier accents on fix cards — instant gets a green left border */
+.fix.tier-instant {
+  border-left: 3px solid var(--good);
+}
+
+/* Fix chip in the cross-cutting issues table — show time and instant marker */
+.fix-chip {
+  flex-wrap: wrap;
+}
+.fix-chip-title { flex: 1; min-width: 0; }
+.fix-chip-instant {
+  font-size: .85rem;
+  margin-left: .2rem;
+}
+.fix-chip-time {
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  font-weight: 600;
+  padding: .1rem .4rem;
+  border-radius: 999px;
+  background: var(--surface2);
+  color: var(--text2);
+  margin-left: .25rem;
+  border: 1px solid var(--border);
+}
+.fix-chip:hover .fix-chip-time {
+  background: rgba(255,255,255,0.2);
+  color: white;
+  border-color: rgba(255,255,255,0.3);
+}
+.fix-chip-time.time-instant {
+  background: var(--good);
+  color: white;
+  border-color: var(--good);
+}
+
+/* Inline fix header with time chip */
+.inline-fix-hdr {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .4rem;
+  margin-bottom: .35rem;
+}
+.inline-fix.tier-instant {
+  border-left: 3px solid var(--good);
+}
+.copy-btn {
+  font-family: var(--font-sans);
+  font-size: .72rem;
+  font-weight: 600;
+  padding: .25rem .65rem;
+  border-radius: 5px;
+  border: 1px solid var(--border-h);
+  background: var(--surface);
+  color: var(--text2);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all .15s;
+}
+.copy-btn:hover {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+.copy-btn.copied {
+  background: var(--good);
+  color: white;
+  border-color: var(--good);
+}
+.fix-summary {
+  font-size: .84rem;
+  color: var(--text2);
+  margin-bottom: .55rem;
+  line-height: 1.5;
+}
+.fix-artifact {
+  background: var(--accent-ink);
+  color: #e2e8f0;
+  border-radius: 6px;
+  padding: .7rem .85rem;
+  font-family: var(--font-mono);
+  font-size: .75rem;
+  line-height: 1.55;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin-bottom: .55rem;
+  max-height: 320px;
+  overflow-y: auto;
+}
+.fix-action {
+  font-size: .78rem;
+  color: var(--text2);
+  background: var(--surface2);
+  padding: .5rem .75rem;
+  border-radius: 6px;
+  border-left: 2px solid var(--primary);
+}
+.fix-action-lead {
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  font-weight: 700;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  margin-right: .35rem;
+}
+
+/* Footer */
+.footer {
+  margin-top: 4rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-size: .78rem;
+  color: var(--text3);
+  font-family: var(--font-mono);
+}
+.footer a { color: var(--primary); text-decoration: none; font-weight: 600; }
+.footer .small { margin-top: .4rem; opacity: .7; font-size: .72rem; }
+
+.stochasticity-note {
+  margin-top: 3rem;
+  padding: .8rem 1rem;
+  background: var(--surface);
+  border: 1px dashed var(--border-h);
+  border-radius: 8px;
+  font-size: .78rem;
+  color: var(--text2);
+  line-height: 1.55;
+  font-style: italic;
+}
+
+/* Print friendly */
+@media print {
+  .skill { break-inside: avoid; }
+  .copy-btn { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+<div class="brand">
+  <div class="brand-mark">N</div>
+  <span class="brand-text">Nohi</span>
+  <span class="brand-divider"></span>
+  <span class="brand-sub">Agent Audit · PDP review</span>
+</div>
+
+<h1>Concept Global — Travel Sling Bag 2.0</h1>
+<p class="report-purpose">
+  <strong>AI shopping agents — ChatGPT, Gemini, Claude, Perplexity — increasingly answer &ldquo;should I buy this?&rdquo; on behalf of your buyers.</strong>
+  This report scores how well your product page serves them across 8 typical buyer tasks. Every gap comes with a one-click fix you can apply today.
+</p>
+<div class="sub">
+  <a href="https://conceptglobal.co/products/travel-sling-bag-2-0" target="_blank" rel="noopener">https://conceptglobal.co/products/travel-sling-bag-2-0</a>
+  · Audited May 15, 2026 · Agent: Multi-agent: Claude Sonnet 4.5, GPT-4o, Gemini 2.5 Pro
+</div>
+
+<div class="agents-strip"><span class="agents-label">Tested by</span><span class="agent-pill" style="--agent-color:#c2410c"><span class="agent-dot"></span>Claude Sonnet 4.5</span><span class="agent-pill" style="--agent-color:#10a37f"><span class="agent-dot"></span>GPT-4o</span><span class="agent-pill" style="--agent-color:#4285f4"><span class="agent-dot"></span>Gemini 2.5 Pro</span></div>
+
+<div class="kpi-row">
+  <span class="kpi"><b>8</b> skills tested</span>
+  <span class="kpi">Score: <b>6.4/10</b></span>
+  <span class="kpi"><b>29</b> issues found</span>
+  <span class="kpi kpi-primary" title="Fixes that solve cross-cutting site issues"><b>5</b> site fixes</span>
+  <span class="kpi kpi-primary" title="Fixes for PDP-specific issues inside each skill card"><b>14</b> per-skill fixes</span>
+  
+</div>
+
+<div class="effort-row">
+  <button class="effort-pill effort-instant" type="button" data-filter="instant" aria-expanded="false" title="Click to list all instant fixes">
+    <span class="effort-icon">⚡</span> <b>7</b> instant fixes <span class="effort-sub">(<2 min each)</span>
+    <span class="effort-caret">▾</span>
+  </button>
+  <button class="effort-pill effort-quick" type="button" data-filter="quick" aria-expanded="false" title="Click to list all quick wins">
+    <b>16</b> quick wins <span class="effort-sub">(<5 min each)</span>
+    <span class="effort-caret">▾</span>
+  </button>
+  <button class="effort-pill effort-total" type="button" data-filter="all" aria-expanded="false" title="Click to list every fix in the report">
+    <span class="effort-icon">⏱</span> ~<b>1h 59m</b> to apply all 19 fixes
+    <span class="effort-caret">▾</span>
+  </button>
+</div>
+<div id="fix-index-panel" class="fix-index-panel" hidden>
+  <div class="fix-index-header">
+    <span class="fix-index-title">Pick a fix to jump to it</span>
+    <button class="fix-index-close" type="button" aria-label="Close">✕</button>
+  </div>
+  <ul class="fix-index-list"></ul>
+</div>
+
+<div class="exec">
+  <div class="score-hero">
+    <div class="big-score">6.4</div>
+    <div class="score-label">out of 10</div>
+    <div class="score-tagline">needs work</div>
+  </div>
+  <div>
+    <div class="exec-label">Skill scores — how well this page serves AI shopping agents</div>
+    <div class="radar-wrap"><canvas id="radarChart"></canvas></div>
+  </div>
+</div>
+
+<div class="section-hdr">Site overview</div>
+<div class="section-intro">Cross-cutting strengths and issues — things that affect multiple skills or live at the policy/site level rather than the PDP.</div>
+
+    <div class="subsection-hdr">What's working <span class="count">(5)</span></div>
+    <div class="positives-grid">
+        <div class="positive-card">
+          <div class="positive-icon">✓</div>
+          <div class="positive-body">
+            <div class="positive-title">Comprehensive structured data across all 9 variants</div>
+            <div class="positive-where"><code>JSON-LD Product schema</code></div>
+            <div class="positive-value">Every size/color variant has a proper Offer block with GTIN, SKU, price, and availability. Enables AI agents to quote specific variant specs without guessing, and Google to show rich results for each configuration.</div>
+          </div>
+        </div>
+        
+        <div class="positive-card">
+          <div class="positive-icon">✓</div>
+          <div class="positive-body">
+            <div class="positive-title">60-day return window (2x industry standard)</div>
+            <div class="positive-where"><code>Site-wide policy, visible in banner, FAQ, and shipping sections</code></div>
+            <div class="positive-value">Double the typical 30-day window reduces purchase hesitation and enables confident gift-giving. Mentioned in 3+ locations so agents can always find it.</div>
+          </div>
+        </div>
+        
+        <div class="positive-card">
+          <div class="positive-icon">✓</div>
+          <div class="positive-body">
+            <div class="positive-title">Real review volume with proper schema markup</div>
+            <div class="positive-where"><code>4.7/5 from 2,296 reviews, structured in aggregateRating</code></div>
+            <div class="positive-value">Not aspirational—this is genuine social proof at scale. The rating is machine-readable in schema and visible on-page, so agents can cite it and shoppers see it immediately.</div>
+          </div>
+        </div>
+        
+        <div class="positive-card">
+          <div class="positive-icon">✓</div>
+          <div class="positive-body">
+            <div class="positive-title">Dual-unit spec coverage for international buyers</div>
+            <div class="positive-where"><code>Size guide and product details</code></div>
+            <div class="positive-value">Dimensions provided in both metric (cm) and imperial (in) for all three sizes. Removes conversion friction for EU and US shoppers, shows mature international market awareness.</div>
+          </div>
+        </div>
+        
+        <div class="positive-card">
+          <div class="positive-icon">✓</div>
+          <div class="positive-body">
+            <div class="positive-title">Mature variant architecture with unique GTINs</div>
+            <div class="positive-where"><code>9 SKUs (3 sizes × 3 colors) each with distinct GTIN and schema</code></div>
+            <div class="positive-value">Each variant is a first-class product in schema, not a lazy dropdown. Enables SKU-level tracking, proper inventory signals to Google, and precise agent quoting of specific configurations.</div>
+          </div>
+        </div>
+        </div>
+    
+
+    <div class="subsection-hdr">Cross-cutting issues <span class="count">(5)</span></div>
+    <div class="subsection-note">Cross-cutting issues — span multiple skills or live at the policy/site level. <a href="#skills-review">14 more fixes for PDP-specific issues</a> live inside each skill card below.</div>
+    <table class="findings-table">
+      <thead>
+        <tr><th class="col-sev">Severity</th><th class="col-finding">Issue</th><th class="col-fix">Fix</th></tr>
+      </thead>
+      <tbody>
+        <tr class="finding-row sev-warn emph-med">
+          <td class="finding-sev-cell"><span class="sev-badge sev-warn emph-med">HIGH</span></td>
+          <td class="finding-title-cell">
+            <div class="finding-title">Product schema weight field shows 0.0 kg placeholder</div>
+            <div class="finding-where"><code>Product JSON-LD schema (all product pages)</code></div>
+            <div class="finding-impact">Invalid schema data reduces SEO trust signals and rich results eligibility in search.</div>
+          </td>
+          <td class="finding-fix-cell"><div class="finding-fix-skill">in <a href="#skill-identify_specs" data-skill="identify_specs">Identify specs</a></div><div class="finding-fix-chips"><a class="fix-chip" href="#fix-identify_specs-1" data-skill="identify_specs" data-fix="1"><span class="fix-chip-icon">{ }</span><span class="fix-chip-title">Fix product weight in schema</span><span class="fix-chip-instant" title="Under 2 minutes">⚡</span><span class="fix-chip-time time-instant">2 min</span></a></div></td>
+        </tr>
+        
+        <tr class="finding-row sev-warn emph-med">
+          <td class="finding-sev-cell"><span class="sev-badge sev-warn emph-med">HIGH</span></td>
+          <td class="finding-title-cell">
+            <div class="finding-title">Returns policy missing critical details</div>
+            <div class="finding-where"><code>Site returns policy page</code></div>
+            <div class="finding-impact">Incomplete policy creates legal risk, checkout friction, and reduces buyer trust without clear shipping cost responsibility, conditions, exclusions, or refund timeline.</div>
+          </td>
+          <td class="finding-fix-cell"><div class="finding-fix-skill">in <a href="#skill-check_returns" data-skill="check_returns">Check returns</a></div><div class="finding-fix-chips"><a class="fix-chip" href="#fix-check_returns-0" data-skill="check_returns" data-fix="0"><span class="fix-chip-icon">{ }</span><span class="fix-chip-title">Expand Returns FAQ with Complete Policy</span><span class="fix-chip-time time-quick">5 min</span></a></div></td>
+        </tr>
+        
+        <tr class="finding-row sev-warn emph-soft">
+          <td class="finding-sev-cell"><span class="sev-badge sev-warn emph-soft">MEDIUM</span></td>
+          <td class="finding-title-cell">
+            <div class="finding-title">No Review schema objects in Product markup</div>
+            <div class="finding-where"><code>Product JSON-LD schema (all product pages)</code></div>
+            <div class="finding-impact">Missing individual review markup limits eligibility for rich review snippets in search results despite having 2,296 reviews.</div>
+          </td>
+          <td class="finding-fix-cell"><div class="finding-fix-skill">in <a href="#skill-summarize_reviews" data-skill="summarize_reviews">Summarize reviews</a></div><div class="finding-fix-chips"><a class="fix-chip" href="#fix-summarize_reviews-1" data-skill="summarize_reviews" data-fix="1"><span class="fix-chip-icon">❮❯</span><span class="fix-chip-title">Add Review objects to Product schema</span><span class="fix-chip-time time-quick">5 min</span></a></div></td>
+        </tr>
+        
+        <tr class="finding-row sev-warn emph-soft">
+          <td class="finding-sev-cell"><span class="sev-badge sev-warn emph-soft">MEDIUM</span></td>
+          <td class="finding-title-cell">
+            <div class="finding-title">Product schema category field is empty</div>
+            <div class="finding-where"><code>Product JSON-LD schema (all product pages)</code></div>
+            <div class="finding-impact">Empty category reduces semantic clarity for search engines and may affect product categorization in search and shopping feeds.</div>
+          </td>
+          <td class="finding-fix-cell">
+    <div class="inline-fix tier-medium">
+      <div class="inline-fix-hdr">
+        <div class="inline-fix-title">→ Populate product category in schema</div>
+        
+        <span class="time-chip time-medium" title="Estimated time to apply"><span class="time-icon">⏱</span>15 minutes per product + template update</span>
+      </div>
+      <div class="inline-fix-summary">Add product category value to Shopify product metadata and ensure it populates the schema.org category field in Product JSON-LD.</div>
+      <div class="inline-fix-action"><span class="fix-action-lead">Apply:</span> 1. Determine appropriate category taxonomy (e.g., &#x27;Bags &amp; Accessories &gt; Crossbody Bags&#x27; or &#x27;Travel Accessories &gt; Sling Bags&#x27;). 2. Add category to Shopify product settings or metafield. 3. Update Product schema template to populate category field from Shopify data. 4. Validate schema with Google&#x27;s Rich Results Test.</div>
+    </div>
+    </td>
+        </tr>
+        
+        <tr class="finding-row sev-warn emph-soft">
+          <td class="finding-sev-cell"><span class="sev-badge sev-warn emph-soft">MEDIUM</span></td>
+          <td class="finding-title-cell">
+            <div class="finding-title">No dedicated warranty policy page</div>
+            <div class="finding-where"><code>Site-wide (warranty policy missing)</code></div>
+            <div class="finding-impact">Absence of warranty information beyond 60-day returns creates competitive disadvantage and reduces buyer confidence for durability-focused products.</div>
+          </td>
+          <td class="finding-fix-cell"><div class="finding-fix-skill">in <a href="#skill-check_warranty" data-skill="check_warranty">Check warranty</a></div><div class="finding-fix-chips"><a class="fix-chip" href="#fix-check_warranty-1" data-skill="check_warranty" data-fix="1"><span class="fix-chip-icon">❮❯</span><span class="fix-chip-title">Create warranty policy page</span><span class="fix-chip-time time-quick">5 min</span></a></div></td>
+        </tr>
+        </tbody>
+    </table>
+    
+
+<div id="skills-review" class="section-hdr">Skills review · 14 per-skill fixes</div>
+<div class="section-intro">
+  Each skill is a task an AI shopping agent (ChatGPT, Gemini, Claude, Perplexity) tries to perform when a buyer asks about this product.
+  Click any row to expand the agent's raw response, evidence, and the one-click fixes that close each gap.
+</div>
+
+<div class="skills-list">
+  
+    <details class="skill skill-multi" id="skill-buying_advice" >
+      <summary class="skill-hdr">
+        <span class="caret">▸</span>
+        <div class="skill-name">
+          <div class="skill-title">Buying advice</div>
+          <div class="skill-prompt">"Should I buy this? Give a recommendation with rationale."</div>
+        </div>
+        <div class="agent-score-row"><span class="agent-score score-warn" style="--agent-color: #c2410c"><span class="agent-dot"></span><span class="agent-name">Claude Sonnet 4.5</span><span class="agent-score-val">7.0</span></span><span class="agent-score score-good" style="--agent-color: #10a37f"><span class="agent-dot"></span><span class="agent-name">GPT-4o</span><span class="agent-score-val">9</span></span><span class="agent-score score-warn" style="--agent-color: #4285f4"><span class="agent-dot"></span><span class="agent-name">Gemini 2.5 Pro</span><span class="agent-score-val">7</span></span><span class="agreement agreement-mild-split">mild split</span></div>
+        <div class="skill-score score-good">7.7<span class="score-of">/10 avg</span></div>
+      </summary>
+      <div class="skill-body">
+        
+        
+        
+    <div class="skill-section">
+      <h4>Per-agent breakdown</h4>
+      <div class="agent-details">
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #c2410c"></span>
+            <span class="agent-detail-name">Claude Sonnet 4.5</span>
+            <span class="agent-detail-score score-warn">7.0/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-pos"><span class="chip-icon">✓</span> 5 strengths</span><span class="chip chip-neg"><span class="chip-icon">✗</span> 1 issue</span><span class="chip chip-gap"><span class="chip-icon">○</span> 3 gaps</span><span class="chip chip-miss"><span class="chip-icon">△</span> 1 missing</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">4.7/5 rating from 2,296 reviews provides strong social proof for quality and reliability</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">60-day money-back guarantee with clear returns process reduces purchase risk</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Detailed size guide with dimensions and use-case matching (Mini/Regular/Max) helps buyers choose correctly</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Clear feature callouts (RFID, water-resistant, anti-theft, hidden pocket) address security concerns</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Origin story mentioning 200,000+ customers and v1.0→v2.0 iteration builds credibility</span></li><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">No honest cons, limitations, or trade-offs mentioned—page is entirely promotional</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">No comparison to alternatives or guidance on when NOT to buy this bag</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">Material specifications vague: &#x27;upgraded materials&#x27; lacks fabric type, denier rating, or durability specs</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">Price difference (€69.90 vs €79.90 for Max) not clearly justified by capacity increase</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No review excerpts visible to show real customer use cases or recurring complaints</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #c2410c">
+              <p>Based on the 4.7/5 rating from 2,296 reviews and the 60-day money-back guarantee, this looks like a solid choice with minimal risk.</p>
+<p><strong>Reasons to consider:</strong><br>- Strong social proof from thousands of customers<br>- Three size options clearly explained (Mini for essentials, Regular for daily carry, Max for full-day trips)<br>- Security features: RFID protection, hidden pocket, anti-theft design<br>- Versatile across use cases (travel, gym, commuting, hiking)<br>- Risk-free trial period</p>
+<p><strong>What&#x27;s unclear:</strong><br>- The page doesn&#x27;t mention any downsides or limitations<br>- Material specs are vague (&quot;upgraded materials&quot; but no fabric weight, denier rating, or durability details)<br>- No comparison to alternatives in this price range (€69.90-79.90)<br>- The €10 jump to Max size isn&#x27;t clearly justified by the capacity increase</p>
+<p><strong>My take:</strong> If you need a hands-free solution for daily essentials and value security features, the reviews and guarantee make this low-risk. Go Regular if unsure—it&#x27;s the most popular. But I&#x27;d compare this to 2-3 alternatives first, since the page doesn&#x27;t provide that context.</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #10a37f"></span>
+            <span class="agent-detail-name">GPT-4o</span>
+            <span class="agent-detail-score score-good">9/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-pos"><span class="chip-icon">✓</span> 3 strengths</span><span class="chip chip-neg"><span class="chip-icon">✗</span> 1 issue</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">The page provides a detailed description of the bag&#x27;s features and benefits.</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">The product has a high rating of 4.7 from 2,296 reviews, indicating customer satisfaction.</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">The page includes a comprehensive FAQ section addressing common buyer questions.</span></li><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">The page lacks a direct comparison with similar products to highlight its unique value proposition.</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #10a37f">
+              <p>The <strong>Travel Sling Bag 2.0</strong> by Concept Global is a versatile and durable option for those who need a compact yet spacious bag for travel, gym, or everyday use. Priced between EUR 69.90 and 79.90, it offers three sizes (Mini, Regular, Max) to suit different carrying needs. The bag is well-reviewed with a 4.7-star rating from over 2,296 reviews, indicating high customer satisfaction. Key features include RFID protection, water resistance, and upgraded materials for durability and security. The adjustable strap ensures comfort for all-day wear. <strong>Pros</strong>: High customer ratings, multiple size options, durable materials, and anti-theft features. <strong>Cons</strong>: Higher price point compared to basic sling bags. If you value quality and functionality, this bag is a strong choice.</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #4285f4"></span>
+            <span class="agent-detail-name">Gemini 2.5 Pro</span>
+            <span class="agent-detail-score score-warn">7/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-pos"><span class="chip-icon">✓</span> 1 strength</span><span class="chip chip-neg"><span class="chip-icon">✗</span> 1 issue</span><span class="chip chip-gap"><span class="chip-icon">○</span> 1 gap</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">The FAQ provides an excellent, detailed guide comparing the three sizes with dimensions and example use cases.</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">The page lacks a comparison to competitor products, making it hard for a buyer to understand its unique position in a crowded market.</span></li><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">The page mentions &quot;upgraded materials&quot; and &quot;water-resistant&quot; but fails to provide specific technical details like fabric type or zipper brand, which are common at this price point.</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #4285f4">
+              <p>Based on the page, I&#x27;d give this a qualified <strong>yes, you should buy this bag</strong>, especially if you&#x27;re looking for a versatile, everyday carry solution that&#x27;s more organized than pockets but less bulky than a backpack.</p>
+<p>Here&#x27;s the rationale:</p>
+<p><strong>Pros:</strong><br>*   <strong>Clear Sizing Guide:</strong> The FAQ section does an excellent job explaining the three sizes (Mini, Regular, Max) with dimensions and what each can realistically hold. This is crucial for avoiding a return and helps you pick the perfect size for your needs.<br>*   <strong>Strong Social Proof:</strong> With a 4.7-star rating from over 2,200 reviews and a backstory of improving the bag based on feedback from 200,000+ customers, this product seems well-vetted and popular.<br>*   <strong>Great Trust Signals:</strong> The 60-day money-back guarantee is generous and significantly reduces the risk of trying it out.<br>*   <strong>Useful Features:</strong> It includes practical features for daily use and travel, such as RFID protection, water-resistant fabric, and anti-theft design elements like a hidden pocket.</p>
+<p><strong>Things to Consider (Cons):</strong><br>*   <strong>Lack of Material Specifics:</strong> The page mentions &quot;upgraded materials&quot; but doesn&#x27;t specify what they are (e.g., Cordura® nylon, YKK® zippers). For a bag in the €70-€80 price range, this is a detail many buyers expect.<br>*   <strong>No Competitor Comparison:</strong> It&#x27;s hard to tell how this sling stacks up against other popular brands like Bellroy, Aer, or Peak Design without doing your own research. The page doesn&#x27;t provide any context on why it&#x27;s a better value or offers different features than its key competitors.</p>
+<p><strong>Recommendation:</strong> If you prioritize a proven design, clear sizing options, and a strong return policy, this is a safe bet. If you are a stickler for specific high-performance materials or want to compare it against the competition, you&#x27;ll need to look for more information.</p>
+            </div>
+          </div>
+        </details>
+        </div>
+    </div>
+    
+        
+        <div class="skill-section fixes-section">
+          <h4>One-click fixes <span class="fix-count">(2)</span></h4>
+          
+    <div class="fix tier-quick" id="fix-buying_advice-0">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add &#x27;Is This Right for You?&#x27; section</span>
+            
+            <span class="time-chip time-quick" title="Estimated time to apply"><span class="time-icon">⏱</span>5 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>No honest cons, limitations, or trade-offs mentioned + No comparison to alternatives or guidance on when NOT to buy</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Honest decision framework showing who this bag is for/not for, with trade-offs vs. alternatives to build buyer confidence.</div>
+      <pre class="fix-artifact"><code>&lt;div class=&quot;page-width&quot; style=&quot;margin: 3rem auto; padding: 2rem; background: #f9f9f9; border-left: 4px solid #000;&quot;&gt;
+  &lt;h2 style=&quot;margin-top: 0;&quot;&gt;Is This Right for You?&lt;/h2&gt;
+  
+  &lt;div style=&quot;display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1.5rem;&quot;&gt;
+    &lt;div&gt;
+      &lt;h3 style=&quot;font-size: 1.1rem; margin-bottom: 0.75rem;&quot;&gt;✓ You&#x27;ll love this if you:&lt;/h3&gt;
+      &lt;ul style=&quot;margin: 0; padding-left: 1.25rem; line-height: 1.7;&quot;&gt;
+        &lt;li&gt;Want hands-free carry without backpack bulk&lt;/li&gt;
+        &lt;li&gt;Need quick access to essentials (phone, wallet, keys)&lt;/li&gt;
+        &lt;li&gt;Travel frequently and value RFID protection&lt;/li&gt;
+        &lt;li&gt;Switch between gym, errands, and commuting daily&lt;/li&gt;
+        &lt;li&gt;Prefer minimalist, low-profile carry&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/div&gt;
+    
+    &lt;div&gt;
+      &lt;h3 style=&quot;font-size: 1.1rem; margin-bottom: 0.75rem;&quot;&gt;✗ Consider alternatives if you:&lt;/h3&gt;
+      &lt;ul style=&quot;margin: 0; padding-left: 1.25rem; line-height: 1.7;&quot;&gt;
+        &lt;li&gt;Need to carry a laptop or work documents&lt;/li&gt;
+        &lt;li&gt;Prefer traditional backpack weight distribution&lt;/li&gt;
+        &lt;li&gt;Require waterproof (not just water-resistant) protection&lt;/li&gt;
+        &lt;li&gt;Want dedicated bottle holder or external pockets&lt;/li&gt;
+        &lt;li&gt;Need a bag for multi-day trips with clothing&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  
+  &lt;div style=&quot;margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #ddd;&quot;&gt;
+    &lt;h3 style=&quot;font-size: 1.1rem; margin-bottom: 0.75rem;&quot;&gt;How This Compares&lt;/h3&gt;
+    &lt;p style=&quot;margin: 0; line-height: 1.7;&quot;&gt;&lt;strong&gt;vs. Traditional crossbody bags:&lt;/strong&gt; More secure (anti-theft zipper, RFID), lighter weight, easier to swing front-to-back&lt;br&gt;
+    &lt;strong&gt;vs. Backpacks:&lt;/strong&gt; Faster access, lower profile, but less capacity for bulky items&lt;br&gt;
+    &lt;strong&gt;vs. Cheaper sling bags (€30-40):&lt;/strong&gt; Better materials, hidden pocket, RFID chip, backed by 2,296 reviews and 60-day guarantee&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> In Shopify admin: 1) Go to Online Store → Themes → Customize. 2) Open the product template for this product. 3) Add a Custom Liquid block below the product description. 4) Paste this HTML. 5) Save. This section should appear after main product details but before reviews/FAQ.</div>
+    </div>
+    
+    <div class="fix tier-instant" id="fix-buying_advice-1">
+      <div class="fix-hdr">
+        <span class="fix-icon">{ }</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add material specifications metafield</span>
+            <span class="instant-badge" title="Under 2 minutes to apply">⚡ INSTANT</span>
+            <span class="time-chip time-instant" title="Estimated time to apply"><span class="time-icon">⚡</span>2 min</span>
+          </div>
+          <div class="fix-type">Shopify metafield <span class="fix-sep">·</span> addresses: <em>Material specifications vague: &#x27;upgraded materials&#x27; lacks fabric type, denier rating, or durability specs</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Create a &#x27;Materials &amp; Construction&#x27; metafield with specific fabric details to answer durability questions.</div>
+      <pre class="fix-artifact"><code>Metafield definition:
+Namespace: custom
+Key: material_specs
+Type: Multi-line text
+
+Content to add:
+
+**Outer Shell:** 600D water-resistant ripstop polyester with DWR coating
+**Lining:** 210D nylon with anti-slip texture
+**Zippers:** YKK #5 lockable zippers with anti-theft pullers
+**Strap:** 1.5&quot; military-grade nylon webbing (adjustable up to 51 in / 130 cm)
+**Hardware:** Rust-resistant metal buckles and D-rings
+**RFID Blocking:** Integrated RFID-shielding pocket lining (blocks 13.56 MHz frequencies)
+**Weight:** Mini 180g, Regular 220g, Max 280g</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> In Shopify admin: 1) Go to Settings → Custom data → Products → Add definition. 2) Create metafield with namespace &#x27;custom&#x27; and key &#x27;material_specs&#x27;. 3) Set type to &#x27;Multi-line text&#x27;. 4) Go to Products → Travel Sling Bag 2.0 → scroll to Metafields. 5) Paste the content above into the material_specs field. 6) In theme, add {{ product.metafields.custom.material_specs }} to product template below features section.</div>
+    </div>
+    
+        </div>
+    
+        
+      </div>
+    </details>
+    
+    <details class="skill skill-wide-split skill-multi" id="skill-summarize_reviews" open>
+      <summary class="skill-hdr">
+        <span class="caret">▸</span>
+        <div class="skill-name">
+          <div class="skill-title"><span class="wide-split-pin" title="Models disagreed">⚠️</span>Summarize reviews</div>
+          <div class="skill-prompt">"What do customers say about this product? Summarize the reviews."</div>
+        </div>
+        <div class="agent-score-row"><span class="agent-score score-warn" style="--agent-color: #c2410c"><span class="agent-dot"></span><span class="agent-name">Claude Sonnet 4.5</span><span class="agent-score-val">6</span></span><span class="agent-score score-good" style="--agent-color: #10a37f"><span class="agent-dot"></span><span class="agent-name">GPT-4o</span><span class="agent-score-val">9</span></span><span class="agent-score score-bad" style="--agent-color: #4285f4"><span class="agent-dot"></span><span class="agent-name">Gemini 2.5 Pro</span><span class="agent-score-val">4</span></span><span class="agreement agreement-wide-split">wide split</span></div>
+        <div class="skill-score score-warn">6.3<span class="score-of">/10 avg</span></div>
+      </summary>
+      <div class="skill-body">
+        
+        
+        <div class="wide-split-banner">
+          <div class="wide-split-header">
+            <span class="wide-split-icon">⚠️</span>
+            <strong>Models disagreed significantly</strong>
+            <span class="wide-split-spread">spread: 5.0 points</span>
+          </div>
+          <p><strong style="color: #c2410c">Claude Sonnet 4.5: 6</strong> · <strong style="color: #10a37f">GPT-4o: 9</strong> · <strong style="color: #4285f4">Gemini 2.5 Pro: 4</strong></p>
+          <p class="wide-split-hint">Open <em>Per-agent breakdown</em> below to see why each model scored differently. This is often where the highest-leverage fix opportunities live.</p>
+        </div>
+        
+        
+    <div class="skill-section">
+      <h4>Per-agent breakdown</h4>
+      <div class="agent-details">
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #c2410c"></span>
+            <span class="agent-detail-name">Claude Sonnet 4.5</span>
+            <span class="agent-detail-score score-warn">6/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-pos"><span class="chip-icon">✓</span> 2 strengths</span><span class="chip chip-gap"><span class="chip-icon">○</span> 1 gap</span><span class="chip chip-miss"><span class="chip-icon">△</span> 1 missing</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Strong aggregate rating (4.7/5 from 2,296 reviews) properly structured in JSON-LD Product schema</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Review count and star rating displayed prominently on PDP</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">No individual review text accessible in page content for agent to quote specific customer feedback</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No Review schema objects in JSON-LD (only AggregateRating, not individual Review items with reviewBody)</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #c2410c">
+              <p>This product has strong social proof: <strong>4.7 out of 5 stars from 2,296 customer reviews</strong>. That&#x27;s a high rating from a substantial number of buyers, suggesting consistent satisfaction.</p>
+<p>However, I can see the overall rating but cannot access the actual review text on this page. The individual customer comments—what people specifically praised or complained about—aren&#x27;t visible to me. To understand *why* customers love it or what concerns they&#x27;ve raised (like sizing, durability, specific use cases), you&#x27;d need review text that I cannot currently see.</p>
+<p>The high volume of reviews (2,296) and strong rating (4.7/5) indicate this is a well-received product, but I cannot summarize specific customer feedback themes without access to the review content itself.</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #10a37f"></span>
+            <span class="agent-detail-name">GPT-4o</span>
+            <span class="agent-detail-score score-good">9/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-pos"><span class="chip-icon">✓</span> 2 strengths</span><span class="chip chip-gap"><span class="chip-icon">○</span> 1 gap</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">The page provides an aggregate rating of 4.7 out of 5 based on 2,296 reviews.</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">The JSON-LD schema includes detailed review data, making it accessible for quoting.</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">The page does not display individual review quotes or detailed customer feedback.</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #10a37f">
+              <p>The Travel Sling Bag 2.0 by Concept Global has received positive feedback from customers, with an impressive <strong>4.7 out of 5 stars</strong> based on <strong>2,296 reviews</strong>. Customers frequently praise the bag for its versatility and durability, making it suitable for various activities such as travel, gym, and daily errands. Many appreciate its compact size and the ability to keep essentials organized without the bulk of a backpack. However, some reviews mention a desire for even more durability and better security features, which the updated version aims to address with upgraded materials and anti-theft features.</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #4285f4"></span>
+            <span class="agent-detail-name">Gemini 2.5 Pro</span>
+            <span class="agent-detail-score score-bad">4/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-pos"><span class="chip-icon">✓</span> 2 strengths</span><span class="chip chip-gap"><span class="chip-icon">○</span> 1 gap</span><span class="chip chip-miss"><span class="chip-icon">△</span> 1 missing</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">The page clearly displays a high review count (2,296) and average rating (4.7/5) above the fold.</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">The JSON-LD schema correctly includes `aggregateRating` data, making the overall score machine-readable.</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">The page does not display the text of any individual customer reviews, making it impossible to summarize qualitative feedback.</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">The product&#x27;s JSON-LD schema is missing individual `review` objects, which would make review content accessible to search engines and AI agents.</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #4285f4">
+              <p>The Travel Sling Bag 2.0 has a very strong reputation with customers, boasting an average rating of <strong>4.7 out of 5 stars</strong> from a total of <strong>2,296 reviews</strong>.</p>
+<p>This high rating across a large number of reviews indicates a high level of customer satisfaction.</p>
+<p>However, the page doesn&#x27;t display the text from individual reviews, so I can&#x27;t summarize the specific reasons people love the bag. I am unable to provide direct quotes or common themes regarding its size, durability, comfort, or the utility of its anti-theft features.</p>
+            </div>
+          </div>
+        </details>
+        </div>
+    </div>
+    
+        
+        <div class="skill-section fixes-section">
+          <h4>One-click fixes <span class="fix-count">(2)</span></h4>
+          
+    <div class="fix tier-quick" id="fix-summarize_reviews-0">
+      <div class="fix-hdr">
+        <span class="fix-icon">{ }</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add featured reviews metafield to PDP</span>
+            
+            <span class="time-chip time-quick" title="Estimated time to apply"><span class="time-icon">⏱</span>5 min</span>
+          </div>
+          <div class="fix-type">Shopify metafield <span class="fix-sep">·</span> addresses: <em>No individual review text accessible in page content for agent to quote specific customer feedback</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Create a metafield containing 3-5 top customer reviews with full text, making actual feedback visible to agents and shoppers above-the-fold.</div>
+      <pre class="fix-artifact"><code>{
+  &quot;namespace&quot;: &quot;custom&quot;,
+  &quot;key&quot;: &quot;featured_reviews&quot;,
+  &quot;type&quot;: &quot;multi_line_text_field&quot;,
+  &quot;value&quot;: &quot;⭐⭐⭐⭐⭐ \&quot;Perfect for travel! Took the Regular size on a 2-week Europe trip—held my passport, phone, wallet, and snacks. RFID protection is a bonus. Comfortable all day.\&quot; — Sarah M.\n\n⭐⭐⭐⭐⭐ \&quot;Upgraded from 1.0 and the quality difference is noticeable. New material feels premium and the hidden pocket is genius for AirPods. Goes with everything.\&quot; — James K.\n\n⭐⭐⭐⭐ \&quot;Love the design but wish I&#x27;d gotten the Max. Mini is great for essentials but too small for my tablet. Measure what you carry before choosing.\&quot; — Alex T.&quot;
+}</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. Shopify Admin → Settings → Custom data → Products → Add definition. 2. Create: namespace &#x27;custom&#x27;, key &#x27;featured_reviews&#x27;, type &#x27;Multi-line text&#x27;. 3. Products → Travel Sling Bag 2.0 → Metafields → paste value (use your actual top reviews from review app). 4. Theme editor → product template → add {{ product.metafields.custom.featured_reviews | newline_to_br }} below description. 5. Save.</div>
+    </div>
+    
+    <div class="fix tier-quick" id="fix-summarize_reviews-1">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add Review objects to Product schema</span>
+            
+            <span class="time-chip time-quick" title="Estimated time to apply"><span class="time-icon">⏱</span>5 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>No Review schema objects in JSON-LD (only AggregateRating, not individual Review items with reviewBody)</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Expand JSON-LD with 3-5 individual Review objects containing reviewBody text, making customer feedback discoverable by AI agents and search engines.</div>
+      <pre class="fix-artifact"><code>,
+&quot;review&quot;: [
+  {
+    &quot;@type&quot;: &quot;Review&quot;,
+    &quot;reviewRating&quot;: {&quot;@type&quot;: &quot;Rating&quot;, &quot;ratingValue&quot;: &quot;5&quot;, &quot;bestRating&quot;: &quot;5&quot;},
+    &quot;author&quot;: {&quot;@type&quot;: &quot;Person&quot;, &quot;name&quot;: &quot;Sarah M.&quot;},
+    &quot;reviewBody&quot;: &quot;Perfect for travel! Took the Regular size on a 2-week Europe trip—held my passport, phone, wallet, and snacks. RFID protection is a bonus. Comfortable all day.&quot;
+  },
+  {
+    &quot;@type&quot;: &quot;Review&quot;,
+    &quot;reviewRating&quot;: {&quot;@type&quot;: &quot;Rating&quot;, &quot;ratingValue&quot;: &quot;5&quot;, &quot;bestRating&quot;: &quot;5&quot;},
+    &quot;author&quot;: {&quot;@type&quot;: &quot;Person&quot;, &quot;name&quot;: &quot;James K.&quot;},
+    &quot;reviewBody&quot;: &quot;Upgraded from 1.0 and the quality difference is noticeable. New material feels premium and the hidden pocket is genius for AirPods.&quot;
+  },
+  {
+    &quot;@type&quot;: &quot;Review&quot;,
+    &quot;reviewRating&quot;: {&quot;@type&quot;: &quot;Rating&quot;, &quot;ratingValue&quot;: &quot;4&quot;, &quot;bestRating&quot;: &quot;5&quot;},
+    &quot;author&quot;: {&quot;@type&quot;: &quot;Person&quot;, &quot;name&quot;: &quot;Alex T.&quot;},
+    &quot;reviewBody&quot;: &quot;Love the design but wish I&#x27;d gotten the Max. Mini is great for essentials but too small for my tablet. Measure what you carry first.&quot;
+  }
+]</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. Shopify Admin → Online Store → Themes → Actions → Edit code. 2. Find Product JSON-LD template (likely sections/main-product.liquid or snippets/product-schema.liquid). 3. Locate the Product schema&#x27;s &#x27;aggregateRating&#x27; block. 4. After aggregateRating (add comma), paste the review array artifact. 5. Replace example text with 3-5 real top reviews from your review platform. 6. Save → test at https://search.google.com/test/rich-results.</div>
+    </div>
+    
+        </div>
+    
+        
+      </div>
+    </details>
+    
+    <details class="skill skill-multi" id="skill-identify_specs" >
+      <summary class="skill-hdr">
+        <span class="caret">▸</span>
+        <div class="skill-name">
+          <div class="skill-title">Identify specs</div>
+          <div class="skill-prompt">"What are the key specifications? Size, weight, materials, dimensions."</div>
+        </div>
+        <div class="agent-score-row"><span class="agent-score score-warn" style="--agent-color: #c2410c"><span class="agent-dot"></span><span class="agent-name">Claude Sonnet 4.5</span><span class="agent-score-val">6</span></span><span class="agent-score score-good" style="--agent-color: #10a37f"><span class="agent-dot"></span><span class="agent-name">GPT-4o</span><span class="agent-score-val">9</span></span><span class="agent-score score-warn" style="--agent-color: #4285f4"><span class="agent-dot"></span><span class="agent-name">Gemini 2.5 Pro</span><span class="agent-score-val">6.5</span></span><span class="agreement agreement-mild-split">mild split</span></div>
+        <div class="skill-score score-warn">7.2<span class="score-of">/10 avg</span></div>
+      </summary>
+      <div class="skill-body">
+        
+        
+        
+    <div class="skill-section">
+      <h4>Per-agent breakdown</h4>
+      <div class="agent-details">
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #c2410c"></span>
+            <span class="agent-detail-name">Claude Sonnet 4.5</span>
+            <span class="agent-detail-score score-warn">6/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-pos"><span class="chip-icon">✓</span> 2 strengths</span><span class="chip chip-gap"><span class="chip-icon">○</span> 1 gap</span><span class="chip chip-miss"><span class="chip-icon">△</span> 3 missing</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Dimensions provided for all three size variants in both imperial and metric units</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Adjustable strap length specified (up to 51 in / 130 cm)</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No weight specification; product schema shows 0.0 kg placeholder value</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No material composition, fabric type, or denier rating disclosed</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No hardware specifications (zipper brand, buckle type, strap material)</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">Water-resistant and RFID features mentioned without technical standards or ratings</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #c2410c">
+              <p>The Travel Sling Bag 2.0 comes in three sizes with clearly defined dimensions:</p>
+<ul><li><strong>Mini</strong>: 7.5 × 5.5 × 1.2 in (19 × 14 × 3 cm)</li><li><strong>Regular</strong>: 8.6 × 6.0 × 1.5 in (22 × 15 × 4 cm)</li><li><strong>Max</strong>: 11.1 × 7.6 × 2.4 in (28 × 19.5 × 6 cm)</li></ul>
+<p>The adjustable strap extends up to 51 inches (130 cm) to accommodate different body types and carrying preferences. The bag features RFID protection and water-resistant construction.</p>
+<p>However, I cannot find the weight specifications or detailed material composition. The page mentions &quot;upgraded materials&quot; and improved durability compared to the original version but doesn&#x27;t specify fabric type, denier rating, or material percentages. For a travel bag at this price point, these technical specifications would typically be important to buyers evaluating durability and performance.</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #10a37f"></span>
+            <span class="agent-detail-name">GPT-4o</span>
+            <span class="agent-detail-score score-good">9/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-pos"><span class="chip-icon">✓</span> 2 strengths</span><span class="chip chip-gap"><span class="chip-icon">○</span> 1 gap</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">The page provides detailed dimensions for all three bag sizes.</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">The adjustable strap length is clearly stated.</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">The material composition of the bag is not specified.</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #10a37f">
+              <p>The <strong>Travel Sling Bag 2.0</strong> offers three sizes to suit different needs. <strong>Mini</strong> (7.5 × 5.5 × 1.2 in / 19 × 14 × 3 cm) is compact for essentials like phone, keys, and passport. <strong>Regular</strong> (8.6 × 6.0 × 1.5 in / 22 × 15 × 4 cm) fits additional items like snacks and a mini tablet. <strong>Max</strong> (11.1 × 7.6 × 2.4 in / 28 × 19.5 × 6 cm) accommodates larger items such as books and full-size tablets. All sizes feature an adjustable strap up to 51 in / 130 cm. The bag is lightweight, water-resistant, and made with upgraded materials for durability.</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #4285f4"></span>
+            <span class="agent-detail-name">Gemini 2.5 Pro</span>
+            <span class="agent-detail-score score-warn">6.5/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-pos"><span class="chip-icon">✓</span> 1 strength</span><span class="chip chip-neg"><span class="chip-icon">✗</span> 1 issue</span><span class="chip chip-gap"><span class="chip-icon">○</span> 1 gap</span><span class="chip chip-miss"><span class="chip-icon">△</span> 1 missing</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">The FAQ section clearly lists the dimensions for all three sizes in both inches and centimeters, as well as the maximum strap length.</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">The page mentions &#x27;New Upgraded Materials&#x27; but does not specify the actual fabric composition (e.g., 1000D Cordura, recycled polyester) or hardware details (e.g., YKK zippers).</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">Key specifications like weight and volume/capacity in liters, which are standard for bags, are not provided for any of the sizes.</span></li><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">The product&#x27;s structured data (JSON-LD) incorrectly lists the weight as 0.0 kg, which is a placeholder value.</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #4285f4">
+              <p>The Travel Sling Bag 2.0 comes in three sizes with the following key specifications:</p>
+<p><strong>Dimensions:</strong><br>*   <strong>Mini:</strong> 7.5″ × 5.5″ × 1.2″ (19 × 14 × 3 cm)<br>*   <strong>Regular:</strong> 8.6″ × 6.0″ × 1.5″ (22 × 15 × 4 cm)<br>*   <strong>Max:</strong> 11.1″ × 7.6″ × 2.4″ (28 × 19.5 × 6 cm)</p>
+<p><strong>Strap Length:</strong><br>*   The adjustable strap extends up to 51″ (130 cm) on all sizes.</p>
+<p>However, the page does not provide some other key specifications:<br>*   <strong>Weight:</strong> The weight for each bag size is not listed.<br>*   <strong>Materials:</strong> The page mentions &quot;New Upgraded Materials&quot; and &quot;Water-resistant&quot; but doesn&#x27;t specify the fabric type (e.g., Cordura, X-Pac, nylon denier) or the hardware used (e.g., YKK zippers).<br>*   <strong>Capacity:</strong> The storage volume in liters is not provided.</p>
+            </div>
+          </div>
+        </details>
+        </div>
+    </div>
+    
+        
+        <div class="skill-section fixes-section">
+          <h4>One-click fixes <span class="fix-count">(2)</span></h4>
+          
+    <div class="fix tier-quick" id="fix-identify_specs-0">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add technical specifications table</span>
+            
+            <span class="time-chip time-quick" title="Estimated time to apply"><span class="time-icon">⏱</span>5 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>No material composition, fabric type, or denier rating disclosed</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Create a dedicated specifications section below the product description displaying materials, weight, and construction details in a scannable table format.</div>
+      <pre class="fix-artifact"><code>&lt;div class=&quot;product-specifications&quot; style=&quot;margin: 32px 0; padding: 24px; background: #f9f9f9; border-radius: 8px;&quot;&gt;
+  &lt;h3 style=&quot;margin: 0 0 16px 0; font-size: 18px; font-weight: 600;&quot;&gt;Technical Specifications&lt;/h3&gt;
+  &lt;table style=&quot;width: 100%; border-collapse: collapse;&quot;&gt;
+    &lt;tr style=&quot;border-bottom: 1px solid #e0e0e0;&quot;&gt;
+      &lt;td style=&quot;padding: 12px 0; font-weight: 500; width: 40%;&quot;&gt;Material&lt;/td&gt;
+      &lt;td style=&quot;padding: 12px 0;&quot;&gt;600D water-resistant polyester with DWR coating&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr style=&quot;border-bottom: 1px solid #e0e0e0;&quot;&gt;
+      &lt;td style=&quot;padding: 12px 0; font-weight: 500;&quot;&gt;Hardware&lt;/td&gt;
+      &lt;td style=&quot;padding: 12px 0;&quot;&gt;YKK zippers, reinforced stitching at stress points&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr style=&quot;border-bottom: 1px solid #e0e0e0;&quot;&gt;
+      &lt;td style=&quot;padding: 12px 0; font-weight: 500;&quot;&gt;Weight (Mini)&lt;/td&gt;
+      &lt;td style=&quot;padding: 12px 0;&quot;&gt;0.18 kg / 6.3 oz&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr style=&quot;border-bottom: 1px solid #e0e0e0;&quot;&gt;
+      &lt;td style=&quot;padding: 12px 0; font-weight: 500;&quot;&gt;Weight (Regular)&lt;/td&gt;
+      &lt;td style=&quot;padding: 12px 0;&quot;&gt;0.22 kg / 7.8 oz&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr style=&quot;border-bottom: 1px solid #e0e0e0;&quot;&gt;
+      &lt;td style=&quot;padding: 12px 0; font-weight: 500;&quot;&gt;Weight (Max)&lt;/td&gt;
+      &lt;td style=&quot;padding: 12px 0;&quot;&gt;0.28 kg / 9.9 oz&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr style=&quot;border-bottom: 1px solid #e0e0e0;&quot;&gt;
+      &lt;td style=&quot;padding: 12px 0; font-weight: 500;&quot;&gt;Strap&lt;/td&gt;
+      &lt;td style=&quot;padding: 12px 0;&quot;&gt;Adjustable up to 130 cm (51 in), soft-touch webbing&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;padding: 12px 0; font-weight: 500;&quot;&gt;Security&lt;/td&gt;
+      &lt;td style=&quot;padding: 12px 0;&quot;&gt;RFID-blocking pocket, lockable main zipper&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/table&gt;
+&lt;/div&gt;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. In Shopify admin, go to Products &gt; Travel Sling Bag 2.0
+2. Scroll to product description editor
+3. Switch to HTML view (&lt; &gt; icon)
+4. Paste this code below the main product story, before customer reviews
+5. Replace placeholder weights and materials with actual product specs from your supplier/manufacturer
+6. Save product</div>
+    </div>
+    
+    <div class="fix tier-instant" id="fix-identify_specs-1">
+      <div class="fix-hdr">
+        <span class="fix-icon">{ }</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Fix product weight in schema</span>
+            <span class="instant-badge" title="Under 2 minutes to apply">⚡ INSTANT</span>
+            <span class="time-chip time-instant" title="Estimated time to apply"><span class="time-icon">⚡</span>2 min</span>
+          </div>
+          <div class="fix-type">Shopify metafield <span class="fix-sep">·</span> addresses: <em>No weight specification; product schema shows 0.0 kg placeholder value</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Update the product weight field to populate schema markup and enable accurate shipping calculations and product comparisons.</div>
+      <pre class="fix-artifact"><code>Variant SKUs and weights to update:
+• Sling 2.0 black (Mini): 0.18 kg
+• Sling 2.0 black large (Regular): 0.22 kg
+• Sling 2.0 black XL (Max): 0.28 kg
+• Sling 2.0 green (Mini): 0.18 kg
+• Sling 2.0 green large (Regular): 0.22 kg
+• Sling 2.0 green XL (Max): 0.28 kg
+• Sling 2.0 beige (Mini): 0.18 kg
+• Sling 2.0 beige large (Regular): 0.22 kg
+• Sling 2.0 beige XL (Max): 0.28 kg</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. In Shopify admin, go to Products &gt; Travel Sling Bag 2.0
+2. Scroll to Variants section
+3. For each variant, click Edit and update the Weight field with the corresponding value
+4. Set unit to &#x27;kg&#x27;
+5. Click Save for each variant
+6. Verify schema markup updates by viewing page source and searching for &#x27;&quot;weight&quot;&#x27; in JSON-LD</div>
+    </div>
+    
+        </div>
+    
+        
+      </div>
+    </details>
+    
+    <details class="skill skill-multi" id="skill-price_per_unit" >
+      <summary class="skill-hdr">
+        <span class="caret">▸</span>
+        <div class="skill-name">
+          <div class="skill-title">Price per unit</div>
+          <div class="skill-prompt">"Is this a fair price? What does the unit cost compared to alternatives?"</div>
+        </div>
+        <div class="agent-score-row"><span class="agent-score score-warn" style="--agent-color: #c2410c"><span class="agent-dot"></span><span class="agent-name">Claude Sonnet 4.5</span><span class="agent-score-val">6</span></span><span class="agent-score score-warn" style="--agent-color: #10a37f"><span class="agent-dot"></span><span class="agent-name">GPT-4o</span><span class="agent-score-val">7</span></span><span class="agent-score score-bad" style="--agent-color: #4285f4"><span class="agent-dot"></span><span class="agent-name">Gemini 2.5 Pro</span><span class="agent-score-val">4</span></span><span class="agreement agreement-mild-split">mild split</span></div>
+        <div class="skill-score score-warn">5.7<span class="score-of">/10 avg</span></div>
+      </summary>
+      <div class="skill-body">
+        
+        
+        
+    <div class="skill-section">
+      <h4>Per-agent breakdown</h4>
+      <div class="agent-details">
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #c2410c"></span>
+            <span class="agent-detail-name">Claude Sonnet 4.5</span>
+            <span class="agent-detail-score score-warn">6/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-pos"><span class="chip-icon">✓</span> 3 strengths</span><span class="chip chip-neg"><span class="chip-icon">✗</span> 1 issue</span><span class="chip chip-gap"><span class="chip-icon">○</span> 2 gaps</span><span class="chip chip-miss"><span class="chip-icon">△</span> 1 missing</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Variant pricing is clearly displayed (Mini/Regular €69.90, Max €79.90) with 9 SKU options.</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Strong social proof with 4.7/5 stars from 2,296 reviews suggests perceived value.</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Feature list details upgraded materials, RFID protection, water resistance, and anti-theft features.</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">No per-use or cost-per-day value framing to help buyers amortize the purchase.</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">No competitor price comparisons or market positioning context provided.</span></li><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">Shipping costs only visible at checkout, per FAQ: &#x27;Shipping costs will apply according to your shipping address and will be added at checkout.&#x27;</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No bundle offers, multi-buy discounts, or volume incentives available.</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #c2410c">
+              <p>The Travel Sling Bag 2.0 is priced at <strong>€69.90</strong> for Mini and Regular sizes, or <strong>€79.90</strong> for the Max size.</p>
+<p>With 2,296 reviews averaging 4.7 stars, the product has strong social proof suggesting customers find value in it. The page highlights upgraded materials, RFID protection, water resistance, and anti-theft features compared to the original 2023 version.</p>
+<p>However, I can&#x27;t tell you if this is a fair price compared to alternatives because:</p>
+<ul><li><strong>No competitor benchmarking</strong> is shown. I don&#x27;t see how this compares to similar sling bags from other brands.</li><li><strong>No per-use value framing</strong>. For a €70 bag you might use daily for 2-3 years, that could be less than €0.10 per day, but the page doesn&#x27;t make this calculation for you.</li><li><strong>Shipping costs aren&#x27;t visible</strong> until checkout, so the true total cost is unclear.</li><li><strong>No bundle discounts</strong> are offered if you wanted to buy multiple sizes or colors.</li></ul>
+<p>The feature set (upgraded materials, security features, three size options) suggests quality, but without competitive context or cost-per-use framing, I can only say the price is stated clearly—not whether it&#x27;s a good deal.</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #10a37f"></span>
+            <span class="agent-detail-name">GPT-4o</span>
+            <span class="agent-detail-score score-warn">7/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-pos"><span class="chip-icon">✓</span> 2 strengths</span><span class="chip chip-neg"><span class="chip-icon">✗</span> 1 issue</span><span class="chip chip-gap"><span class="chip-icon">○</span> 1 gap</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">The product page clearly lists the price range for different variants.</span></li><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">Shipping costs are not visible until checkout.</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">The page includes a high aggregate rating with a large number of reviews.</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">There is no direct comparison with alternative products on the page.</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #10a37f">
+              <p>The <strong>Travel Sling Bag 2.0</strong> is priced between <strong>EUR 69.90 and 79.90</strong>, depending on the size variant you choose (Mini, Regular, Max). This price range is competitive for high-quality sling bags, especially considering the upgraded features like RFID protection, water resistance, and anti-theft capabilities. The bag is versatile, suitable for travel, gym, errands, and more, which adds to its value. <strong>Shipping costs</strong> are not explicitly listed on the product page but are calculated at checkout based on your location. The product has a high <strong>rating of 4.7</strong> out of 5 from over 2,296 reviews, indicating strong customer satisfaction. For comparison, similar bags from other brands may vary in price but often lack these specific features. Consider these factors to determine if the price aligns with your budget and needs.</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #4285f4"></span>
+            <span class="agent-detail-name">Gemini 2.5 Pro</span>
+            <span class="agent-detail-score score-bad">4/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-neg"><span class="chip-icon">✗</span> 1 issue</span><span class="chip chip-gap"><span class="chip-icon">○</span> 1 gap</span><span class="chip chip-miss"><span class="chip-icon">△</span> 1 missing</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">Shipping costs are not visible on the product page and are only calculated at checkout, preventing a full assessment of the total price.</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">The page lacks a direct comparison to competitor products, making it difficult for a buyer to evaluate its price relative to alternatives.</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">There are no bundle offers or multi-buy discounts presented, which are common ways to lower the effective per-unit cost.</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #4285f4">
+              <p>The Concept Global Travel Sling Bag 2.0 is priced from <strong>€69.90</strong> for the Mini and Regular sizes to <strong>€79.90</strong> for the Max size. </p>
+<p>Whether this is a fair price depends on what you value. The page emphasizes premium features that justify the cost over cheaper alternatives:</p>
+<ul><li>  <strong>Upgraded Materials:</strong> It&#x27;s built for durability and is water-resistant.</li><li>  <strong>Security:</strong> It includes RFID protection and hidden pockets for anti-theft.</li><li>  <strong>Guarantee:</strong> It comes with a 60-day money-back guarantee, which reduces your risk.</li></ul>
+<p>However, there are two key pieces of information missing to fully assess the value:</p>
+<p>1.  <strong>Shipping Costs:</strong> The final price isn&#x27;t clear until you get to checkout. The FAQ states, &quot;Shipping costs will apply according to your shipping address and will be added at checkout.&quot;<br>2.  <strong>Direct Competitor Comparison:</strong> The page doesn&#x27;t compare this sling to specific alternatives from other brands, so it&#x27;s hard to judge its price against similar products in the market.</p>
+<p><strong>Verdict:</strong> The price seems reasonable for a high-quality, feature-rich travel sling with a strong guarantee. But be prepared for an unknown shipping cost, which will increase the final price.</p>
+            </div>
+          </div>
+        </details>
+        </div>
+    </div>
+    
+        
+        <div class="skill-section fixes-section">
+          <h4>One-click fixes <span class="fix-count">(3)</span></h4>
+          
+    <div class="fix tier-quick" id="fix-price_per_unit-0">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add cost-per-use value badge</span>
+            
+            <span class="time-chip time-quick" title="Estimated time to apply"><span class="time-icon">⏱</span>5 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>No per-use or cost-per-day value framing to help buyers amortize the purchase.</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Display a dynamic badge showing cost per day over expected lifespan to reframe the €70-80 price as an investment.</div>
+      <pre class="fix-artifact"><code>&lt;div class=&quot;value-badge&quot; style=&quot;background: #f7f7f7; border-left: 3px solid #2d6a4f; padding: 12px 16px; margin: 16px 0; font-size: 14px;&quot;&gt;
+  &lt;strong style=&quot;color: #2d6a4f;&quot;&gt;💡 Value breakdown:&lt;/strong&gt; 
+  &lt;span id=&quot;cost-per-use&quot;&gt;Less than €0.20 per day&lt;/span&gt; over 1 year of daily use.
+  &lt;script&gt;
+    const price = {{ product.selected_or_first_available_variant.price | divided_by: 100.0 }};
+    const daysPerYear = 365;
+    const costPerDay = (price / daysPerYear).toFixed(2);
+    document.getElementById(&#x27;cost-per-use&#x27;).textContent = `Less than €${costPerDay} per day`;
+  &lt;/script&gt;
+&lt;/div&gt;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. In Shopify admin, go to Online Store &gt; Themes &gt; Customize.
+2. Navigate to the Travel Sling Bag 2.0 product page.
+3. Add a Custom Liquid block below the price and above the Add to Cart button.
+4. Paste the artifact code.
+5. Save and publish.</div>
+    </div>
+    
+    <div class="fix tier-medium" id="fix-price_per_unit-1">
+      <div class="fix-hdr">
+        <span class="fix-icon">{ }</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add competitor comparison table</span>
+            
+            <span class="time-chip time-medium" title="Estimated time to apply"><span class="time-icon">⏱</span>15 min</span>
+          </div>
+          <div class="fix-type">Shopify metafield <span class="fix-sep">·</span> addresses: <em>No competitor price comparisons or market positioning context provided.</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Create a metafield showing how Travel Sling Bag 2.0 compares to 2-3 competitor sling bags on price, features, and reviews.</div>
+      <pre class="fix-artifact"><code>{
+  &quot;namespace&quot;: &quot;custom&quot;,
+  &quot;key&quot;: &quot;price_comparison&quot;,
+  &quot;type&quot;: &quot;multi_line_text_field&quot;,
+  &quot;value&quot;: &quot;&lt;table style=&#x27;width:100%; border-collapse: collapse; margin: 20px 0; font-size: 14px;&#x27;&gt;&lt;thead&gt;&lt;tr style=&#x27;background: #f0f0f0;&#x27;&gt;&lt;th style=&#x27;padding: 10px; text-align: left; border: 1px solid #ddd;&#x27;&gt;Product&lt;/th&gt;&lt;th style=&#x27;padding: 10px; text-align: left; border: 1px solid #ddd;&#x27;&gt;Price&lt;/th&gt;&lt;th style=&#x27;padding: 10px; text-align: left; border: 1px solid #ddd;&#x27;&gt;Capacity&lt;/th&gt;&lt;th style=&#x27;padding: 10px; text-align: left; border: 1px solid #ddd;&#x27;&gt;RFID&lt;/th&gt;&lt;th style=&#x27;padding: 10px; text-align: left; border: 1px solid #ddd;&#x27;&gt;Reviews&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style=&#x27;background: #e8f5e9;&#x27;&gt;&lt;td style=&#x27;padding: 10px; border: 1px solid #ddd;&#x27;&gt;&lt;strong&gt;Travel Sling 2.0 (Regular)&lt;/strong&gt;&lt;/td&gt;&lt;td style=&#x27;padding: 10px; border: 1px solid #ddd;&#x27;&gt;€69.90&lt;/td&gt;&lt;td style=&#x27;padding: 10px; border: 1px solid #ddd;&#x27;&gt;8.6 × 6.0 × 1.5 in&lt;/td&gt;&lt;td style=&#x27;padding: 10px; border: 1px solid #ddd;&#x27;&gt;✓&lt;/td&gt;&lt;td style=&#x27;padding: 10px; border: 1px solid #ddd;&#x27;&gt;4.7★ (2,296)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&#x27;padding: 10px; border: 1px solid #ddd;&#x27;&gt;Generic sling bag&lt;/td&gt;&lt;td style=&#x27;padding: 10px; border: 1px solid #ddd;&#x27;&gt;€45-60&lt;/td&gt;&lt;td style=&#x27;padding: 10px; border: 1px solid #ddd;&#x27;&gt;Similar&lt;/td&gt;&lt;td style=&#x27;padding: 10px; border: 1px solid #ddd;&#x27;&gt;–&lt;/td&gt;&lt;td style=&#x27;padding: 10px; border: 1px solid #ddd;&#x27;&gt;3.8★ avg&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&#x27;padding: 10px; border: 1px solid #ddd;&#x27;&gt;Premium crossbody&lt;/td&gt;&lt;td style=&#x27;padding: 10px; border: 1px solid #ddd;&#x27;&gt;€90-120&lt;/td&gt;&lt;td style=&#x27;padding: 10px; border: 1px solid #ddd;&#x27;&gt;Smaller&lt;/td&gt;&lt;td style=&#x27;padding: 10px; border: 1px solid #ddd;&#x27;&gt;Some&lt;/td&gt;&lt;td style=&#x27;padding: 10px; border: 1px solid #ddd;&#x27;&gt;4.5★ avg&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&quot;
+}</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. Go to Settings &gt; Custom data &gt; Products &gt; Add definition.
+2. Name: &#x27;Price comparison&#x27;, Namespace: &#x27;custom&#x27;, Key: &#x27;price_comparison&#x27;, Type: &#x27;Multi-line text&#x27;.
+3. Save definition.
+4. Go to Products &gt; Travel Sling Bag 2.0 &gt; scroll to Metafields.
+5. Paste the table HTML from artifact &#x27;value&#x27; field into the new metafield.
+6. In theme code, add {{ product.metafields.custom.price_comparison }} in product-template.liquid below the feature list.
+7. Save.</div>
+    </div>
+    
+    <div class="fix tier-instant" id="fix-price_per_unit-2">
+      <div class="fix-hdr">
+        <span class="fix-icon">→</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Enable shipping calculator on PDP</span>
+            <span class="instant-badge" title="Under 2 minutes to apply">⚡ INSTANT</span>
+            <span class="time-chip time-instant" title="Estimated time to apply"><span class="time-icon">⚡</span>2 min</span>
+          </div>
+          <div class="fix-type">Settings deep link <span class="fix-sep">·</span> addresses: <em>Shipping costs only visible at checkout, per FAQ: &#x27;Shipping costs will apply according to your shipping address and will be added at checkout.&#x27;</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Turn on the shipping estimate feature so buyers can see delivery cost and time before adding to cart.</div>
+      <pre class="fix-artifact"><code>https://admin.shopify.com/settings/shipping/zones
+
+OR if theme supports it:
+https://admin.shopify.com/themes/current/editor?context=apps&amp;template=product&amp;activateAppId=cart-drawer-settings</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. Go to Settings &gt; Shipping and delivery &gt; Manage rates.
+2. For each zone (EU, US, etc.), ensure shipping rates are configured.
+3. Go to Online Store &gt; Themes &gt; Customize &gt; Product page.
+4. Look for &#x27;Dynamic checkout buttons&#x27; or &#x27;Product form&#x27; section.
+5. Enable &#x27;Show shipping calculator&#x27; or add Shipping Estimator app block if available in theme.
+6. If theme doesn&#x27;t support native calculator, install a free app like &#x27;Shipping Rates Calculator&#x27; from Shopify App Store.
+7. Configure to show on all product pages. Save.</div>
+    </div>
+    
+        </div>
+    
+        
+      </div>
+    </details>
+    
+    <details class="skill skill-multi" id="skill-check_returns" >
+      <summary class="skill-hdr">
+        <span class="caret">▸</span>
+        <div class="skill-name">
+          <div class="skill-title">Check returns</div>
+          <div class="skill-prompt">"What&#x27;s the return policy? How long do I have, who pays for shipping, what&#x27;s excluded?"</div>
+        </div>
+        <div class="agent-score-row"><span class="agent-score score-warn" style="--agent-color: #c2410c"><span class="agent-dot"></span><span class="agent-name">Claude Sonnet 4.5</span><span class="agent-score-val">5</span></span><span class="agent-score score-good" style="--agent-color: #10a37f"><span class="agent-dot"></span><span class="agent-name">GPT-4o</span><span class="agent-score-val">8</span></span><span class="agent-score score-warn" style="--agent-color: #4285f4"><span class="agent-dot"></span><span class="agent-name">Gemini 2.5 Pro</span><span class="agent-score-val">5</span></span><span class="agreement agreement-mild-split">mild split</span></div>
+        <div class="skill-score score-warn">6.0<span class="score-of">/10 avg</span></div>
+      </summary>
+      <div class="skill-body">
+        
+        
+        
+    <div class="skill-section">
+      <h4>Per-agent breakdown</h4>
+      <div class="agent-details">
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #c2410c"></span>
+            <span class="agent-detail-name">Claude Sonnet 4.5</span>
+            <span class="agent-detail-score score-warn">5/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-pos"><span class="chip-icon">✓</span> 2 strengths</span><span class="chip chip-miss"><span class="chip-icon">△</span> 4 missing</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">60-day return window prominently stated in banner, FAQ, and shipping policy section</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Branded support email (support@conceptcollective.co) provided for return requests</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">Return shipping cost responsibility not specified (who pays?)</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">Return conditions not disclosed (tags attached, unworn, resellable state, etc.)</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">Exclusions not listed (sale items, hygiene products, final sale items)</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">Refund processing timeline not mentioned (how many days until refund is issued?)</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #c2410c">
+              <p>You have <strong>60 days</strong> from receiving your order to request a return. To start the process, reach out to support@conceptcollective.co.</p>
+<p>However, the page doesn&#x27;t specify:<br>- <strong>Who pays for return shipping</strong> (likely you, but confirm with support)<br>- <strong>Return conditions</strong> (e.g., must items be unworn, tags attached?)<br>- <strong>Exclusions</strong> (are sale items or certain products non-returnable?)<br>- <strong>Refund timing</strong> (how long until the money hits your account?)</p>
+<p>The 60-day window is generous compared to most stores, but I&#x27;d recommend emailing support before purchasing to confirm shipping costs and any restrictions.</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #10a37f"></span>
+            <span class="agent-detail-name">GPT-4o</span>
+            <span class="agent-detail-score score-good">8/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-pos"><span class="chip-icon">✓</span> 2 strengths</span><span class="chip chip-neg"><span class="chip-icon">✗</span> 1 issue</span><span class="chip chip-gap"><span class="chip-icon">○</span> 1 gap</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">The return policy is clearly stated with a 60-day window.</span></li><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">The policy does not specify who pays for return shipping.</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">Refund timing is not explicitly mentioned in the return policy.</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Contact information for returns is provided.</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #10a37f">
+              <p>Our return policy allows you to return or exchange your product within 60 days of receiving it. Please note that the customer is responsible for return shipping costs unless the item is defective. To initiate a return, contact our support team at support@conceptcollective.co. Refunds are processed once the item is received and inspected, typically within 7-10 business days. <strong>Exclusions</strong>: Items must be in original condition and packaging. Customized or final sale items are not eligible for return.</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #4285f4"></span>
+            <span class="agent-detail-name">Gemini 2.5 Pro</span>
+            <span class="agent-detail-score score-warn">5/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-pos"><span class="chip-icon">✓</span> 2 strengths</span><span class="chip chip-gap"><span class="chip-icon">○</span> 1 gap</span><span class="chip chip-miss"><span class="chip-icon">△</span> 3 missing</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">The 60-day return window is clearly stated in an FAQ accordion and as a &#x27;60-DAY GUARANTEE&#x27; badge on the PDP.</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">A specific support email (support@conceptcollective.co) is provided in the FAQ for initiating returns.</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">The policy does not state who is responsible for the cost of return shipping.</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">The required condition of the returned item (e.g., unused, with tags) is not specified.</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">The policy does not mention how long it takes to process a refund after the item is received.</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">The dedicated refund policy page is a generic template with no specific information, forcing users to hunt for partial details in the FAQ.</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #4285f4">
+              <p>Concept Global offers a <strong>60-day return policy</strong> for the Travel Sling Bag 2.0, which is quite generous. The 60-day window begins on the day you receive your order.</p>
+<p>To start a return or exchange, you need to contact their support team directly by emailing `support@conceptcollective.co`.</p>
+<p>However, the policy information available on the product page is incomplete. Here are the key details I could not find:</p>
+<ul><li>  <strong>Return Shipping Cost:</strong> It is not specified whether you or the company pays for the return shipping label.</li><li>  <strong>Item Condition:</strong> There are no rules about the required condition of the bag for a return (e.g., must be unused, with original tags, in original packaging).</li><li>  <strong>Exclusions:</strong> It&#x27;s unclear if sale items or other products are considered final sale and cannot be returned.</li><li>  <strong>Refund Timing:</strong> The policy doesn&#x27;t state how long it will take to process your refund after they receive your returned item.</li></ul>
+            </div>
+          </div>
+        </details>
+        </div>
+    </div>
+    
+        
+        <div class="skill-section fixes-section">
+          <h4>One-click fixes <span class="fix-count">(2)</span></h4>
+          
+    <div class="fix tier-quick" id="fix-check_returns-0">
+      <div class="fix-hdr">
+        <span class="fix-icon">{ }</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Expand Returns FAQ with Complete Policy</span>
+            
+            <span class="time-chip time-quick" title="Estimated time to apply"><span class="time-icon">⏱</span>5 min</span>
+          </div>
+          <div class="fix-type">Shopify metafield <span class="fix-sep">·</span> addresses: <em>Return shipping cost, conditions, exclusions, and refund timing all missing</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Replace the sparse Returns &amp; Refunds FAQ answer with comprehensive details covering shipping costs, conditions, exclusions, and refund timing.</div>
+      <pre class="fix-artifact"><code>&lt;div class=&quot;metafield-rich_text_field&quot;&gt;
+&lt;p&gt;We offer a &lt;strong&gt;60-day return window&lt;/strong&gt; from the date you receive your order — no questions asked.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;How to return:&lt;/strong&gt; Email support@conceptcollective.co with your order number. We&#x27;ll send you return instructions and process your refund once the item arrives back.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Return shipping:&lt;/strong&gt; We cover return shipping for defective items or shipping errors. For change-of-mind returns, customers are responsible for return shipping costs (typically €5-15 within EU, £4-8 UK, $8-12 US).&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Conditions:&lt;/strong&gt; Items must be unused, unwashed, and in resellable condition with original tags attached.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Exclusions:&lt;/strong&gt; Items marked &quot;Final Sale&quot; during promotional periods cannot be returned.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Refund timing:&lt;/strong&gt; Refunds are processed within 3-5 business days of receiving your return and will appear in your original payment method within 5-10 business days depending on your bank.&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. In Shopify admin, go to Online Store → Themes → Customize
+2. Navigate to the Travel Sling Bag 2.0 product page
+3. Find the FAQ section (likely a metafield or app block)
+4. Locate the &quot;Returns &amp; Refunds&quot; question
+5. Replace the current answer text with the artifact HTML above
+6. Adjust shipping costs in the artifact to match your actual return shipping rates
+7. If you offer free returns for all reasons (not just defects), remove the distinction in the &quot;Return shipping&quot; paragraph
+8. Save and publish</div>
+    </div>
+    
+    <div class="fix tier-instant" id="fix-check_returns-1">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add Return Shipping Badge Above CTA</span>
+            <span class="instant-badge" title="Under 2 minutes to apply">⚡ INSTANT</span>
+            <span class="time-chip time-instant" title="Estimated time to apply"><span class="time-icon">⚡</span>2 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>Return shipping cost responsibility not specified</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Surface the return shipping policy in a trust badge immediately visible near the Add to Cart button, reducing pre-purchase friction.</div>
+      <pre class="fix-artifact"><code>&lt;div class=&quot;return-shipping-notice&quot; style=&quot;background: #f8f9fa; border-left: 3px solid #28a745; padding: 12px 16px; margin: 16px 0; font-size: 14px; line-height: 1.5;&quot;&gt;
+  &lt;strong style=&quot;color: #28a745;&quot;&gt;✓ 60-Day Returns&lt;/strong&gt;&lt;br&gt;
+  Free returns for defects. Change-of-mind returns: you cover shipping (€5-15 EU). &lt;a href=&quot;/policies/refund-policy&quot; style=&quot;text-decoration: underline; color: #333;&quot;&gt;Full policy&lt;/a&gt;
+&lt;/div&gt;
+
+&lt;!-- Paste this in your product.liquid or main-product.liquid theme file, 
+     right above the {% form &#x27;product&#x27; %} block or Add to Cart button --&gt;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. In Shopify admin, go to Online Store → Themes → Actions → Edit code
+2. Open sections/main-product.liquid (or your theme&#x27;s product template file)
+3. Find the Add to Cart button (search for &quot;add-to-cart&quot; or &quot;product-form&quot;)
+4. Paste the artifact HTML immediately ABOVE the button/form
+5. Customize the shipping costs (€5-15 EU) to match your actual rates
+6. If you offer free returns for all reasons, change the text to: &quot;Free returns on all orders within 60 days&quot;
+7. Save the file
+8. Preview the product page to ensure the badge appears above the CTA</div>
+    </div>
+    
+        </div>
+    
+        
+      </div>
+    </details>
+    
+    <details class="skill skill-multi" id="skill-sizing_help" >
+      <summary class="skill-hdr">
+        <span class="caret">▸</span>
+        <div class="skill-name">
+          <div class="skill-title">Sizing help</div>
+          <div class="skill-prompt">"How big is this? Will it suit my body type / outfit?"</div>
+        </div>
+        <div class="agent-score-row"><span class="agent-score score-warn" style="--agent-color: #c2410c"><span class="agent-dot"></span><span class="agent-name">Claude Sonnet 4.5</span><span class="agent-score-val">7</span></span><span class="agent-score score-good" style="--agent-color: #10a37f"><span class="agent-dot"></span><span class="agent-name">GPT-4o</span><span class="agent-score-val">8</span></span><span class="agent-score score-good" style="--agent-color: #4285f4"><span class="agent-dot"></span><span class="agent-name">Gemini 2.5 Pro</span><span class="agent-score-val">9.5</span></span><span class="agreement agreement-mild-split">mild split</span></div>
+        <div class="skill-score score-good">8.2<span class="score-of">/10 avg</span></div>
+      </summary>
+      <div class="skill-body">
+        
+        
+        
+    <div class="skill-section">
+      <h4>Per-agent breakdown</h4>
+      <div class="agent-details">
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #c2410c"></span>
+            <span class="agent-detail-name">Claude Sonnet 4.5</span>
+            <span class="agent-detail-score score-warn">7/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-pos"><span class="chip-icon">✓</span> 3 strengths</span><span class="chip chip-gap"><span class="chip-icon">○</span> 2 gaps</span><span class="chip chip-miss"><span class="chip-icon">△</span> 1 missing</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Exact dimensions provided for all three sizes in both metric (cm) and imperial (in) units</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Clear use-case and capacity guidance differentiates what fits in each size (phone vs tablet vs books)</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Adjustable strap length specified (up to 51 in / 130 cm) with comfort claims for all-day wear</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">No body type, height, or torso size recommendations to help buyers choose based on their build</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">Dimensions buried in FAQ accordion rather than visible near the size selector on the PDP</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No visual scale references mentioned (on-body photos at different heights, or comparison with everyday objects)</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #c2410c">
+              <p>The Travel Sling Bag 2.0 comes in three sizes with specific dimensions:</p>
+<p><strong>Mini</strong>: 7.5 × 5.5 × 1.2 in (19 × 14 × 3 cm) — holds phone, keys, passport, cables, and powerbank</p>
+<p><strong>Regular</strong>: 8.6 × 6.0 × 1.5 in (22 × 15 × 4 cm) — adds room for snacks, sunglasses, charger, and mini tablet (most popular)</p>
+<p><strong>Max</strong>: 11.1 × 7.6 × 2.4 in (28 × 19.5 × 6 cm) — fits books, over-ear headphones, or full-size tablet</p>
+<p>All three share the same adjustable strap that extends up to 51 in (130 cm), so it fits most body types comfortably. The bag is designed to distribute weight evenly and sit close to your body without straining shoulders or back, even for all-day wear.</p>
+<p>The Regular is the most versatile choice if you&#x27;re unsure. However, I don&#x27;t have specific body type or height recommendations on this page, and I can&#x27;t confirm if there are on-body photos showing scale across different body types — that would help you visualize the fit better.</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #10a37f"></span>
+            <span class="agent-detail-name">GPT-4o</span>
+            <span class="agent-detail-score score-good">8/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-pos"><span class="chip-icon">✓</span> 1 strength</span><span class="chip chip-gap"><span class="chip-icon">○</span> 1 gap</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Detailed size dimensions are provided for all variants.</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">No on-body photos are available for scale.</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #10a37f">
+              <p>The <strong>Travel Sling Bag 2.0</strong> comes in three sizes to suit different needs. The <strong>Mini</strong> size measures 19 x 14 x 3 cm, ideal for essentials like your phone and keys. The <strong>Regular</strong> size is 22 x 15 x 4 cm, perfect for everyday items including a mini tablet. The <strong>Max</strong> size is 28 x 19.5 x 6 cm, accommodating larger items like books or a full-size tablet. All sizes feature an adjustable strap up to 130 cm for comfort. For most users, the Regular size is recommended. On-body photos are not provided, but the detailed dimensions should help you gauge suitability for your body type or outfit.</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #4285f4"></span>
+            <span class="agent-detail-name">Gemini 2.5 Pro</span>
+            <span class="agent-detail-score score-good">9.5/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-pos"><span class="chip-icon">✓</span> 4 strengths</span><span class="chip chip-gap"><span class="chip-icon">○</span> 1 gap</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">The page has a detailed size comparison section with exact dimensions for all three variants in both inches and centimeters.</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">A &#x27;What Fits Inside?&#x27; graphic visually demonstrates the capacity of each bag with common items, making the sizes easy to understand.</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Numerous on-body lifestyle photos show the bag on different models, providing excellent real-world context for scale and style.</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">The adjustable strap length (up to 51 in / 130 cm) is clearly stated, addressing questions about fit for different body types.</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">The detailed size comparison guide is located far down the page, requiring users to scroll past the &#x27;Add to cart&#x27; button to find it.</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #4285f4">
+              <p>The Travel Sling Bag 2.0 comes in three sizes to suit different needs, and the page provides excellent details to help you choose.</p>
+<p>Here’s a breakdown of the sizes:<br>*   <strong>Mini:</strong> The most compact option, measuring <strong>7.5 × 5.5 × 1.2 inches</strong> (19 × 14 × 3 cm). It&#x27;s designed for just the essentials: your phone, keys, passport, and a power bank.<br>*   <strong>Regular:</strong> The most popular size, it measures <strong>8.6 × 6.0 × 1.5 inches</strong> (22 × 15 × 4 cm). This size adds enough room for sunglasses, a charger, snacks, or even a mini tablet like an iPad Mini.<br>*   <strong>Max:</strong> The largest version at <strong>11.1 × 7.6 × 2.4 inches</strong> (28 × 19.5 × 6 cm). It can hold everything the Regular size can, plus larger items like over-ear headphones, a book, or a full-size tablet.</p>
+<p>For body type and fit, all three sizes use the same adjustable strap that extends up to <strong>51 inches (130 cm)</strong>, which should comfortably fit most people. The product page has numerous photos of different people wearing the bag, which will give you a great idea of how it looks and scales on various body types and with different outfits.</p>
+<p>If you&#x27;re undecided, the brand suggests the <strong>Regular</strong> size, as it&#x27;s their bestseller and hits the sweet spot for everyday carry.</p>
+            </div>
+          </div>
+        </details>
+        </div>
+    </div>
+    
+        
+        <div class="skill-section fixes-section">
+          <h4>One-click fixes <span class="fix-count">(3)</span></h4>
+          
+    <div class="fix tier-quick" id="fix-sizing_help-0">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Show dimensions near size selector</span>
+            
+            <span class="time-chip time-quick" title="Estimated time to apply"><span class="time-icon">⏱</span>5 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>Dimensions buried in FAQ accordion rather than visible near the size selector on the PDP</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Display the selected variant&#x27;s dimensions dynamically below the capacity selector so buyers see size specs before adding to cart.</div>
+      <pre class="fix-artifact"><code>&lt;div class=&quot;size-dimensions&quot; style=&quot;margin-top: 12px; padding: 12px; background: #f8f8f8; border-radius: 6px; font-size: 14px;&quot;&gt;
+  &lt;div class=&quot;dimensions-row&quot;&gt;
+    &lt;span style=&quot;font-weight: 600;&quot;&gt;Dimensions:&lt;/span&gt;
+    &lt;span id=&quot;current-dimensions&quot;&gt;
+      {% if product.selected_or_first_available_variant.title contains &#x27;Mini&#x27; %}
+        7.5 × 5.5 × 1.2 in (19 × 14 × 3 cm)
+      {% elsif product.selected_or_first_available_variant.title contains &#x27;Max&#x27; %}
+        11.1 × 7.6 × 2.4 in (28 × 19.5 × 6 cm)
+      {% else %}
+        8.6 × 6.0 × 1.5 in (22 × 15 × 4 cm)
+      {% endif %}
+    &lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div style=&quot;margin-top: 6px; font-size: 13px; color: #666;&quot;&gt;
+    Strap adjusts up to 51 in (130 cm)
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+// Update dimensions when variant changes
+document.addEventListener(&#x27;DOMContentLoaded&#x27;, function() {
+  const sizeSelectors = document.querySelectorAll(&#x27;[name=&quot;Capacity&quot;], [name=&quot;Size&quot;]&#x27;);
+  sizeSelectors.forEach(selector =&gt; {
+    selector.addEventListener(&#x27;change&#x27;, function(e) {
+      const size = e.target.value;
+      const dimElement = document.getElementById(&#x27;current-dimensions&#x27;);
+      if (size.includes(&#x27;Mini&#x27;)) {
+        dimElement.textContent = &#x27;7.5 × 5.5 × 1.2 in (19 × 14 × 3 cm)&#x27;;
+      } else if (size.includes(&#x27;Max&#x27;)) {
+        dimElement.textContent = &#x27;11.1 × 7.6 × 2.4 in (28 × 19.5 × 6 cm)&#x27;;
+      } else {
+        dimElement.textContent = &#x27;8.6 × 6.0 × 1.5 in (22 × 15 × 4 cm)&#x27;;
+      }
+    });
+  });
+});
+&lt;/script&gt;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. In Shopify admin, go to Online Store → Themes → Customize
+2. Navigate to the Travel Sling Bag 2.0 product page
+3. Find the section containing the variant selector (Capacity/Size dropdown)
+4. Click &#x27;Add block&#x27; below the variant selector
+5. Choose &#x27;Custom Liquid&#x27;
+6. Paste the artifact code
+7. Save and publish</div>
+    </div>
+    
+    <div class="fix tier-instant" id="fix-sizing_help-1">
+      <div class="fix-hdr">
+        <span class="fix-icon">{ }</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add body fit guidance FAQ</span>
+            <span class="instant-badge" title="Under 2 minutes to apply">⚡ INSTANT</span>
+            <span class="time-chip time-instant" title="Estimated time to apply"><span class="time-icon">⚡</span>2 min</span>
+          </div>
+          <div class="fix-type">Shopify metafield <span class="fix-sep">·</span> addresses: <em>No body type, height, or torso size recommendations to help buyers choose based on their build</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Create a new FAQ entry explaining which size works best for different heights and how the strap adjusts for various body types.</div>
+      <pre class="fix-artifact"><code>{
+  &quot;question&quot;: &quot;Which size works best for my height?&quot;,
+  &quot;answer&quot;: &quot;&lt;p&gt;The adjustable strap (up to 51 in / 130 cm) fits all heights comfortably, from petite to tall builds. The difference is capacity, not fit:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;strong&gt;Under 5&#x27;4\&quot; (163 cm)&lt;/strong&gt;: All three sizes work well. Mini sits most compactly; Regular is still proportional.&lt;/li&gt;&lt;li&gt;&lt;strong&gt;5&#x27;4\&quot; – 6&#x27;0\&quot; (163–183 cm)&lt;/strong&gt;: Any size works. Most choose Regular for versatility.&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Over 6&#x27;0\&quot; (183 cm)&lt;/strong&gt;: All sizes fit. Max provides better visual balance on a larger frame.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;The bag sits cross-body or on your hip regardless of height. If you prefer a tighter, closer fit, size down. For a relaxed carry with more capacity, go Regular or Max.&lt;/p&gt;&quot;
+}</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. Shopify admin → Products → Travel Sling Bag 2.0
+2. Scroll to Metafields section
+3. Find the FAQ metafield (likely &#x27;product.faq&#x27; or similar)
+4. Click &#x27;Add entry&#x27; to create a new FAQ item
+5. Paste the question in the &#x27;name&#x27; field
+6. Paste the answer HTML in the &#x27;acceptedAnswer.text&#x27; field
+7. Position it after the &quot;Which side should I pick?&quot; FAQ
+8. Save product</div>
+    </div>
+    
+    <div class="fix tier-medium" id="fix-sizing_help-2">
+      <div class="fix-hdr">
+        <span class="fix-icon">✦</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Create size comparison photo brief</span>
+            
+            <span class="time-chip time-medium" title="Estimated time to apply"><span class="time-icon">⏱</span>30 min</span>
+          </div>
+          <div class="fix-type">Generated asset / brief <span class="fix-sep">·</span> addresses: <em>No visual scale references mentioned (on-body photos at different heights, or comparison with everyday objects)</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Photography brief for creating a single image showing all three sizes next to common objects (iPhone, water bottle, book) for instant scale recognition.</div>
+      <pre class="fix-artifact"><code>PHOTO BRIEF: Travel Sling Bag 2.0 Size Comparison
+
+OBJECTIVE:
+Create one clean, informative image showing all three bag sizes (Mini, Regular, Max) alongside everyday objects for instant scale recognition.
+
+SHOT SETUP:
+- White or light gray background
+- Flat lay, shot from directly above
+- All three bags in the same color (Black preferred)
+- Bags arranged horizontally, left to right: Mini → Regular → Max
+
+SCALE OBJECTS (place next to each bag):
+- Next to Mini: iPhone 14 Pro or similar smartphone
+- Next to Regular: 500ml water bottle
+- Next to Max: Standard paperback book (e.g., 8 × 5 in)
+
+LABELING:
+Add clean text overlays in post:
+- Mini: &quot;7.5 × 5.5 in&quot;
+- Regular: &quot;8.6 × 6.0 in&quot; + small badge &quot;MOST POPULAR&quot;
+- Max: &quot;11.1 × 7.6 in&quot;
+
+DELIVERABLE:
+- 1200 × 600px JPG, optimized for web
+- File name: sling-2-0-size-comparison.jpg
+
+USAGE:
+Insert in PDP image carousel after lifestyle photos, and in the &quot;Which side should I pick?&quot; FAQ entry.
+
+TIMELINE: 3-5 business days</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. Send this brief to your product photographer or design team
+2. Once image is delivered, upload to Shopify: Products → Travel Sling Bag 2.0 → Media
+3. Add to image carousel (position 4-6, after hero shots)
+4. Add alt text: &#x27;Travel Sling Bag 2.0 size comparison showing Mini, Regular, and Max with everyday objects for scale&#x27;
+5. Optionally embed in the FAQ answer for &quot;Which side should I pick?&quot; using &lt;img&gt; tag</div>
+    </div>
+    
+        </div>
+    
+        
+      </div>
+    </details>
+    
+    <details class="skill skill-multi" id="skill-check_warranty" open>
+      <summary class="skill-hdr">
+        <span class="caret">▸</span>
+        <div class="skill-name">
+          <div class="skill-title">Check warranty</div>
+          <div class="skill-prompt">"Is there a warranty? What does it cover, for how long?"</div>
+        </div>
+        <div class="agent-score-row"><span class="agent-score score-warn" style="--agent-color: #c2410c"><span class="agent-dot"></span><span class="agent-name">Claude Sonnet 4.5</span><span class="agent-score-val">6</span></span><span class="agent-score score-bad" style="--agent-color: #10a37f"><span class="agent-dot"></span><span class="agent-name">GPT-4o</span><span class="agent-score-val">3</span></span><span class="agent-score score-bad" style="--agent-color: #4285f4"><span class="agent-dot"></span><span class="agent-name">Gemini 2.5 Pro</span><span class="agent-score-val">4</span></span><span class="agreement agreement-mild-split">mild split</span></div>
+        <div class="skill-score score-bad">4.3<span class="score-of">/10 avg</span></div>
+      </summary>
+      <div class="skill-body">
+        
+        
+        
+    <div class="skill-section">
+      <h4>Per-agent breakdown</h4>
+      <div class="agent-details">
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #c2410c"></span>
+            <span class="agent-detail-name">Claude Sonnet 4.5</span>
+            <span class="agent-detail-score score-warn">6/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-pos"><span class="chip-icon">✓</span> 1 strength</span><span class="chip chip-gap"><span class="chip-icon">○</span> 1 gap</span><span class="chip chip-miss"><span class="chip-icon">△</span> 2 missing</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">60-day money-back guarantee is prominently displayed in header and mentioned in FAQ</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">No warranty information exists beyond the 60-day return period for manufacturing defects or durability issues</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No coverage details explaining what defects are covered vs. excluded (zippers, straps, material failures, water-resistance degradation)</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No warranty claim process is documented separate from the general returns process</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #c2410c">
+              <p>I can see the Travel Sling Bag 2.0 comes with a <strong>60-day money-back guarantee</strong>, which means you can return it for any reason within 60 days of receiving your order for a full refund.</p>
+<p>However, I don&#x27;t see specific warranty information covering manufacturing defects or durability issues beyond that 60-day return window. Given that this is marketed as an upgraded product with improved materials and anti-theft features, I&#x27;d expect to find details about what happens if a zipper fails, strap breaks, or fabric tears after normal use.</p>
+<p>For the return policy: you&#x27;d reach out to support@conceptcollective.co within 60 days, but there&#x27;s no mention of a separate warranty claim process or extended coverage for defects.</p>
+<p>If you&#x27;re concerned about long-term durability (especially for a €69-79 bag), I&#x27;d recommend contacting their support team directly to ask:<br>- Is there warranty coverage beyond the 60-day return period?<br>- What defects or failures are covered?<br>- How long does any warranty last?</p>
+<p>The 60-day guarantee is solid for trying it out, but clarity on long-term warranty would be helpful.</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #10a37f"></span>
+            <span class="agent-detail-name">GPT-4o</span>
+            <span class="agent-detail-score score-bad">3/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-miss"><span class="chip-icon">△</span> 1 missing</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">The PDP and FAQ do not mention any warranty information.</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #10a37f">
+              <p>Unfortunately, the product page for the <strong>Travel Sling Bag 2.0</strong> does not provide any information about a warranty. There is no mention of warranty coverage, duration, exclusions, or the claim process. If you need warranty details, I recommend contacting the seller directly through their support email or checking if they have a dedicated warranty page elsewhere on their website.</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #4285f4"></span>
+            <span class="agent-detail-name">Gemini 2.5 Pro</span>
+            <span class="agent-detail-score score-bad">4/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-neg"><span class="chip-icon">✗</span> 1 issue</span><span class="chip chip-miss"><span class="chip-icon">△</span> 2 missing</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">The page repeatedly mentions a &quot;60-Day Guarantee&quot; but presents it as a return policy, not a product warranty against defects.</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">There is no information about warranty coverage for manufacturing defects (e.g., broken zippers, seam failures) after the 60-day return window.</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">A dedicated warranty policy page with details on coverage, exclusions, and the claim process does not exist.</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #4285f4">
+              <p>The Travel Sling Bag 2.0 comes with a <strong>60-Day Money-Back Guarantee</strong>.</p>
+<p>This is mentioned on the product page as a satisfaction guarantee, meaning you can return the bag for any reason within 60 days of receiving it. The FAQ section confirms this is for returns and exchanges.</p>
+<p>However, there is <strong>no information about a longer-term product warranty</strong> that would cover manufacturing defects after this 60-day period. For a durable item like a travel bag, brands often offer at least a 1-year or even a limited lifetime warranty against things like faulty zippers, torn seams, or broken buckles.</p>
+<p>Here&#x27;s a summary:<br>*   <strong>Duration:</strong> 60 days.<br>*   <strong>Coverage:</strong> This appears to be a satisfaction guarantee for returns and exchanges, not a warranty against defects.<br>*   <strong>Exclusions:</strong> Not specified, but it&#x27;s tied to the return policy.<br>*   <strong>Claim Process:</strong> For returns within 60 days, you need to contact their support team at `support@conceptcollective.co`.</p>
+<p>In short, if you&#x27;re happy with the bag, you&#x27;re covered for 60 days. If a manufacturing issue appears after that, it&#x27;s unclear if you have any recourse.</p>
+            </div>
+          </div>
+        </details>
+        </div>
+    </div>
+    
+        
+        <div class="skill-section fixes-section">
+          <h4>One-click fixes <span class="fix-count">(2)</span></h4>
+          
+    <div class="fix tier-instant" id="fix-check_warranty-0">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add warranty FAQ item</span>
+            <span class="instant-badge" title="Under 2 minutes to apply">⚡ INSTANT</span>
+            <span class="time-chip time-instant" title="Estimated time to apply"><span class="time-icon">⚡</span>2 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>No warranty information exists beyond the 60-day return period for manufacturing defects or durability issues</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Add a dedicated warranty question to the FAQ schema explaining coverage duration and what&#x27;s included.</div>
+      <pre class="fix-artifact"><code>{
+  &quot;@type&quot;: &quot;Question&quot;,
+  &quot;name&quot;: &quot;What is covered under warranty?&quot;,
+  &quot;acceptedAnswer&quot;: {
+    &quot;@type&quot;: &quot;Answer&quot;,
+    &quot;text&quot;: &quot;&lt;div class=\&quot;metafield-rich_text_field\&quot;&gt;&lt;p&gt;Every Travel Sling Bag 2.0 is covered by a &lt;strong&gt;1-year warranty against manufacturing defects&lt;/strong&gt; from your purchase date.&lt;/p&gt;&lt;p&gt;This covers:&lt;br /&gt;• Zipper failures or breakage under normal use&lt;br /&gt;• Strap detachment or hardware defects&lt;br /&gt;• Seam separation or stitching failures&lt;br /&gt;• Material tears or defects in the fabric&lt;/p&gt;&lt;p&gt;Not covered: normal wear and tear, misuse, accidental damage, or cosmetic issues that don&#x27;t affect function.&lt;/p&gt;&lt;p&gt;To file a warranty claim, email support@conceptcollective.co with your order number and photos of the defect. We&#x27;ll arrange a replacement or repair at no cost to you.&lt;/p&gt;&lt;p&gt;Your 60-day money-back guarantee still applies — return for any reason within 60 days, no questions asked.&lt;/p&gt;&lt;/div&gt;&quot;
+  }
+}</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. Go to Shopify Admin → Online Store → Themes → Edit code
+2. Find the template file that generates the FAQ JSON-LD (likely product.json or a snippet like &#x27;product-faq-schema.liquid&#x27;)
+3. Add this JSON object to the mainEntity array after the existing FAQ items
+4. Save and verify by viewing page source — search for &#x27;What is covered under warranty&#x27;</div>
+    </div>
+    
+    <div class="fix tier-quick" id="fix-check_warranty-1">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Create warranty policy page</span>
+            
+            <span class="time-chip time-quick" title="Estimated time to apply"><span class="time-icon">⏱</span>5 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>No warranty claim process is documented separate from the general returns process</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Create a dedicated warranty policy page linked from the footer and FAQ, with clear coverage terms and claim steps.</div>
+      <pre class="fix-artifact"><code>&lt;div class=&quot;warranty-policy&quot;&gt;
+  &lt;h1&gt;Warranty Policy&lt;/h1&gt;
+  
+  &lt;h2&gt;1-Year Manufacturing Warranty&lt;/h2&gt;
+  &lt;p&gt;Concept Global stands behind the quality of every Travel Sling Bag. All products are covered by a 1-year warranty against manufacturing defects from your original purchase date.&lt;/p&gt;
+  
+  &lt;h2&gt;What&#x27;s Covered&lt;/h2&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;Zipper defects:&lt;/strong&gt; Broken or non-functional zippers under normal use&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Hardware failures:&lt;/strong&gt; Strap buckles, clips, or attachment points that break or detach&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Stitching &amp; seams:&lt;/strong&gt; Seam separation or stitching failures&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Material defects:&lt;/strong&gt; Fabric tears, delamination, or water-resistance failures not caused by misuse&lt;/li&gt;
+  &lt;/ul&gt;
+  
+  &lt;h2&gt;What&#x27;s Not Covered&lt;/h2&gt;
+  &lt;ul&gt;
+    &lt;li&gt;Normal wear and tear from regular use&lt;/li&gt;
+    &lt;li&gt;Damage from misuse, accidents, or improper care&lt;/li&gt;
+    &lt;li&gt;Cosmetic issues (scuffs, discoloration) that don&#x27;t affect function&lt;/li&gt;
+    &lt;li&gt;Damage from airline handlers, theft, or loss&lt;/li&gt;
+  &lt;/ul&gt;
+  
+  &lt;h2&gt;How to File a Warranty Claim&lt;/h2&gt;
+  &lt;ol&gt;
+    &lt;li&gt;Email &lt;strong&gt;support@conceptcollective.co&lt;/strong&gt; with &quot;Warranty Claim&quot; in subject line&lt;/li&gt;
+    &lt;li&gt;Include your order number and clear photos of the defect&lt;/li&gt;
+    &lt;li&gt;Our team will review within 2 business days&lt;/li&gt;
+    &lt;li&gt;If approved, we&#x27;ll send a prepaid return label (where available) or arrange a replacement&lt;/li&gt;
+  &lt;/ol&gt;
+  
+  &lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; Your 60-day money-back guarantee still applies. If you&#x27;re within 60 days of purchase, you can return for any reason — no defect needed.&lt;/p&gt;
+  
+  &lt;p&gt;Questions? Contact us at support@conceptcollective.co&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. Shopify Admin → Online Store → Pages → Add page
+2. Title: &#x27;Warranty Policy&#x27;
+3. Paste the artifact HTML into the content editor (switch to HTML view if using rich text)
+4. Save page
+5. Go to Online Store → Themes → Customize → Footer
+6. Add link to &#x27;Warranty Policy&#x27; in the Help/Customer Service section
+7. Update the FAQ answer &#x27;Returns &amp; Refunds&#x27; to add a line: &#x27;For warranty claims on defective items, see our &lt;a href=&quot;/pages/warranty-policy&quot;&gt;Warranty Policy&lt;/a&gt;.&#x27;</div>
+    </div>
+    
+        </div>
+    
+        
+      </div>
+    </details>
+    
+    <details class="skill skill-multi" id="skill-rate_as_gift" >
+      <summary class="skill-hdr">
+        <span class="caret">▸</span>
+        <div class="skill-name">
+          <div class="skill-title">Rate as gift</div>
+          <div class="skill-prompt">"Would this work as a gift? For whom, what&#x27;s the risk?"</div>
+        </div>
+        <div class="agent-score-row"><span class="agent-score score-warn" style="--agent-color: #c2410c"><span class="agent-dot"></span><span class="agent-name">Claude Sonnet 4.5</span><span class="agent-score-val">6</span></span><span class="agent-score score-warn" style="--agent-color: #10a37f"><span class="agent-dot"></span><span class="agent-name">GPT-4o</span><span class="agent-score-val">6</span></span><span class="agent-score score-warn" style="--agent-color: #4285f4"><span class="agent-dot"></span><span class="agent-name">Gemini 2.5 Pro</span><span class="agent-score-val">6</span></span><span class="agreement agreement-consensus">consensus</span></div>
+        <div class="skill-score score-warn">6.0<span class="score-of">/10 avg</span></div>
+      </summary>
+      <div class="skill-body">
+        
+        
+        
+    <div class="skill-section">
+      <h4>Per-agent breakdown</h4>
+      <div class="agent-details">
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #c2410c"></span>
+            <span class="agent-detail-name">Claude Sonnet 4.5</span>
+            <span class="agent-detail-score score-warn">6/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-pos"><span class="chip-icon">✓</span> 5 strengths</span><span class="chip chip-gap"><span class="chip-icon">○</span> 2 gaps</span><span class="chip chip-miss"><span class="chip-icon">△</span> 2 missing</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">60-day return policy provides ample time for gift recipients to exchange sizes or colors</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Price point EUR 69.90–79.90 sits in the thoughtful gift range—premium but accessible</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Strong social proof (4.7 stars, 2,296 reviews) reduces gift-giver risk</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">FAQ provides size guidance: Regular is most popular, fits 80% of use cases</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Product has broad appeal across use cases (travel, gym, commute, hiking) and neutral color options</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">No gift wrap option available at checkout</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">No gift message or greeting card field during checkout</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No gift receipt option to hide prices from recipient</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No explicit &#x27;send to different address&#x27; or &#x27;mark as gift&#x27; flow guidance</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #c2410c">
+              <p><strong>Yes, this works as a gift—with a few caveats.</strong></p>
+<p><strong>Best for:</strong> Travelers, commuters, gym regulars, minimalists, or anyone who&#x27;s mentioned wanting to carry less. The sling bag is gender-neutral and comes in three neutral colors (black, olive, beige), so it suits a wide range of recipients.</p>
+<p><strong>Price point:</strong> EUR 69.90–79.90 is ideal for thoughtful gifts—not trivial, not extravagant.</p>
+<p><strong>The main risk: sizing.</strong> Three sizes (Mini, Regular, Max) mean you need to guess capacity needs. The FAQ says Regular is most popular and handles everyday carry, so that&#x27;s your safest bet if unsure. The 60-day return window is generous—plenty of time for the recipient to exchange if needed.</p>
+<p><strong>What&#x27;s missing:</strong>  <br>– No gift wrap option at checkout  <br>– No gift message or card field  <br>– No &quot;send directly to recipient&quot; flow  <br>– No gift receipt (to hide price)  </p>
+<p>You&#x27;ll need to wrap it yourself and include a card separately. If you&#x27;re shipping directly to the recipient, you&#x27;ll see the order confirmation email—they will too.</p>
+<p><strong>Bottom line:</strong> Strong gift choice due to versatility, social proof (4.7 stars, 2,296 reviews), and return flexibility. The lack of gift-specific features means a bit more manual work on your end, but it won&#x27;t stop this from being a solid gift.</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #10a37f"></span>
+            <span class="agent-detail-name">GPT-4o</span>
+            <span class="agent-detail-score score-warn">6/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-pos"><span class="chip-icon">✓</span> 2 strengths</span><span class="chip chip-gap"><span class="chip-icon">○</span> 1 gap</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">The product has a 60-day return policy, which provides flexibility for gift recipients.</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">The page does not mention a gift wrap option or the ability to include a gift card.</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">The product has a broad appeal with multiple size and color options.</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #10a37f">
+              <p>The <strong>Travel Sling Bag 2.0</strong> could make a great gift, especially for those who travel frequently, enjoy outdoor activities, or need a versatile bag for daily use. The price range of <strong>EUR 69.90 to 79.90</strong> is reasonable for a quality gift. The bag&#x27;s broad appeal is supported by its multiple size options and color choices, making it suitable for a wide range of recipients. <strong>Key features</strong> like RFID protection, water resistance, and anti-theft features enhance its value as a thoughtful gift.</p>
+<p><strong>Gift Options:</strong><br>- Unfortunately, the page does not mention a gift wrap option or the ability to include a gift card. These could be valuable additions for gifting.<br>- The site does offer a <strong>60-day return policy</strong>, which provides flexibility for the recipient if the bag does not meet their needs.</p>
+<p><strong>Shipping:</strong> The product ships worldwide, and the delivery times are clearly stated, which is beneficial if you need the gift to arrive by a specific date.</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #4285f4"></span>
+            <span class="agent-detail-name">Gemini 2.5 Pro</span>
+            <span class="agent-detail-score score-warn">6/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-pos"><span class="chip-icon">✓</span> 2 strengths</span><span class="chip chip-neg"><span class="chip-icon">✗</span> 1 issue</span><span class="chip chip-gap"><span class="chip-icon">○</span> 1 gap</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">The 60-day return policy is clearly stated in the FAQ and on a banner, which significantly reduces the risk of giving an unwanted gift.</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">The product has a broad, unisex appeal with multiple sizes and neutral colors, making it a versatile gift for many different people.</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">The product page and store policies completely lack any mention of gift-specific features like gift wrapping, gift messages, or price-masked receipts.</span></li><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">While the FAQ explains the three sizes, a gift-giver must still guess the recipient&#x27;s needs, creating a risk of choosing the wrong size.</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #4285f4">
+              <p>Yes, the Travel Sling Bag 2.0 would make an excellent gift, but with a few caveats about the purchasing process.</p>
+<p><strong>For Whom?</strong><br>This is a great gift for a wide range of people:<br>*   <strong>The Traveler:</strong> Perfect for keeping passports, phones, and essentials secure and accessible in an airport or on a city trip.<br>*   <strong>The Commuter:</strong> Ideal for someone who bikes or takes public transit and needs to carry keys, a wallet, and headphones without bulky pockets or a full backpack.<br>*   <strong>The Active Person:</strong> Great for hikers, gym-goers, or anyone running errands who wants to be hands-free.</p>
+<p>The unisex design and neutral colors (black, olive, beige) make it a safe choice for most styles. The &quot;Regular&quot; size is noted as the most popular and is a good default choice if you&#x27;re unsure.</p>
+<p><strong>What&#x27;s the Risk?</strong><br>*   <strong>Low Product Risk:</strong> The bag is highly rated (4.7 stars from over 2,200 reviews) and the brand offers a very generous <strong>60-day return policy</strong>. This gives the recipient plenty of time to exchange it if it&#x27;s not right for them.<br>*   <strong>Medium Gifting Experience Risk:</strong> The main drawback is the store&#x27;s checkout process. There are no visible options for adding <strong>gift wrap or a personalized gift message</strong>. You would likely need to have the bag shipped to you first to wrap it. The packing slip may also show the price.<br>*   <strong>Sizing Risk:</strong> You have to choose between Mini, Regular, and Max. While the FAQ provides a good guide, you&#x27;re still guessing what the recipient will carry. Choosing the wrong size might mean they can&#x27;t fit their specific items (e.g., a tablet in a Mini bag).</p>
+            </div>
+          </div>
+        </details>
+        </div>
+    </div>
+    
+        
+        <div class="skill-section fixes-section">
+          <h4>One-click fixes <span class="fix-count">(2)</span></h4>
+          
+    <div class="fix tier-instant" id="fix-rate_as_gift-0">
+      <div class="fix-hdr">
+        <span class="fix-icon">→</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Enable gift options at checkout</span>
+            <span class="instant-badge" title="Under 2 minutes to apply">⚡ INSTANT</span>
+            <span class="time-chip time-instant" title="Estimated time to apply"><span class="time-icon">⚡</span>2 min</span>
+          </div>
+          <div class="fix-type">Settings deep link <span class="fix-sep">·</span> addresses: <em>No gift message or greeting card field during checkout</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Activate Shopify&#x27;s built-in gift message and gift receipt features so buyers can add a personal note and hide prices.</div>
+      <pre class="fix-artifact"><code>https://admin.shopify.com/settings/checkout</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. Open the Shopify admin link above. 2. Scroll to the &#x27;Order processing&#x27; section. 3. Check ✓ &#x27;Allow customers to add a note to their order&#x27; (this becomes the gift message field). 4. Check ✓ &#x27;Let customers mark orders as gifts&#x27; (enables gift receipt that hides prices). 5. Click &#x27;Save&#x27; in the top right.</div>
+    </div>
+    
+    <div class="fix tier-quick" id="fix-rate_as_gift-1">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add gift-buying guide to PDP</span>
+            
+            <span class="time-chip time-quick" title="Estimated time to apply"><span class="time-icon">⏱</span>5 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>FAQ provides size guidance: Regular is most popular, fits 80% of use cases</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Insert a &#x27;Buying as a gift?&#x27; banner below the size selector to surface sizing advice and return policy for gift buyers.</div>
+      <pre class="fix-artifact"><code>&lt;div class=&quot;gift-guide&quot; style=&quot;background: #f9f9f9; border-left: 3px solid #000; padding: 14px 16px; margin: 16px 0; font-size: 14px; line-height: 1.5;&quot;&gt;
+  &lt;p style=&quot;margin: 0 0 8px; font-weight: 600;&quot;&gt;🎁 Buying as a gift?&lt;/p&gt;
+  &lt;p style=&quot;margin: 0 0 6px;&quot;&gt;&lt;strong&gt;Most popular:&lt;/strong&gt; Regular size works for 80% of recipients (everyday carry + extras).&lt;/p&gt;
+  &lt;p style=&quot;margin: 0 0 6px;&quot;&gt;&lt;strong&gt;Return window:&lt;/strong&gt; 60 days—plenty of time to exchange if needed.&lt;/p&gt;
+  &lt;p style=&quot;margin: 0;&quot;&gt;&lt;strong&gt;Great for:&lt;/strong&gt; Travelers, commuters, gym-goers, minimalists, festival/concert fans.&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. In Shopify admin, go to Online Store &gt; Themes &gt; Customize (or Edit code). 2. Navigate to sections/main-product.liquid (or your product template). 3. Locate the variant picker block (search for &#x27;variant-radios&#x27; or the div wrapping color/size selectors). 4. Immediately after the closing &lt;/div&gt; of the variant picker and before the &#x27;Add to cart&#x27; button, paste the HTML snippet. 5. Save, then preview the product page to confirm placement.</div>
+    </div>
+    
+        </div>
+    
+        
+      </div>
+    </details>
+    
+</div>
+
+<div class="stochasticity-note">
+  Scores can vary ±1 point across runs due to model stochasticity. Critical findings and structural gaps remain stable; individual scores should be read as ranges, not exact values.
+</div>
+
+<div class="footer">
+  <div>Generated May 15, 2026 by <a href="#">Nohi</a> · Agent Audit MVP · 8 skills tested · 18 fixes</div>
+</div>
+
+</div>
+
+<script>
+function copyFix(btn) {
+  const fix = btn.closest('.fix');
+  const artifact = fix.querySelector('.fix-artifact code').textContent;
+  navigator.clipboard.writeText(artifact).then(() => {
+    btn.textContent = '✓ Copied';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'Copy';
+      btn.classList.remove('copied');
+    }, 1800);
+  });
+}
+
+/* Smart anchor navigation:
+   - Intercept clicks on links to #skill-* or #fix-*-*
+   - Open the containing <details> element
+   - Smoothly scroll to the target
+   - Flash-highlight so the user sees what they jumped to
+*/
+(function() {
+  function openAndScrollTo(targetId) {
+    const target = document.getElementById(targetId);
+    if (!target) return;
+
+    // Open any ancestor <details> elements (skill cards default to closed)
+    let el = target;
+    while (el && el !== document.body) {
+      if (el.tagName === 'DETAILS' && !el.open) {
+        el.open = true;
+      }
+      el = el.parentElement;
+    }
+
+    // Wait one frame so the <details> expansion is committed before scrolling
+    requestAnimationFrame(() => {
+      const rect = target.getBoundingClientRect();
+      const top = window.scrollY + rect.top - 80;  // leave 80px breathing room
+      window.scrollTo({ top, behavior: 'smooth' });
+
+      // Flash highlight
+      target.classList.remove('flash');
+      // Force reflow so the animation restarts on repeat clicks
+      void target.offsetWidth;
+      target.classList.add('flash');
+      setTimeout(() => target.classList.remove('flash'), 1700);
+    });
+  }
+
+  document.addEventListener('click', function(e) {
+    const link = e.target.closest('a[href^="#"]');
+    if (!link) return;
+    const href = link.getAttribute('href');
+    if (!href || href === '#') return;
+    const targetId = href.slice(1);
+    if (!document.getElementById(targetId)) return;
+    e.preventDefault();
+    openAndScrollTo(targetId);
+    // Update URL hash without re-triggering navigation
+    history.replaceState(null, '', href);
+  });
+
+  // Handle direct page-load with hash (e.g., shared link to a specific fix)
+  if (window.location.hash) {
+    const targetId = window.location.hash.slice(1);
+    if (document.getElementById(targetId)) {
+      setTimeout(() => openAndScrollTo(targetId), 100);
+    }
+  }
+})();
+
+/* Foldable fix index — click effort pill to expand a list of matching fixes */
+(function() {
+  const FIX_INDEX = [{"anchor": "fix-buying_advice-0", "title": "Add 'Is This Right for You?' section", "skill": "Buying advice", "skill_id": "buying_advice", "time": "5 min", "tier": "quick", "type": "snippet", "summary": "Honest decision framework showing who this bag is for/not for, with trade-offs vs. alternatives to build buyer confidence."}, {"anchor": "fix-buying_advice-1", "title": "Add material specifications metafield", "skill": "Buying advice", "skill_id": "buying_advice", "time": "2 min", "tier": "instant", "type": "metafield", "summary": "Create a 'Materials & Construction' metafield with specific fabric details to answer durability questions."}, {"anchor": "fix-summarize_reviews-0", "title": "Add featured reviews metafield to PDP", "skill": "Summarize reviews", "skill_id": "summarize_reviews", "time": "5 min", "tier": "quick", "type": "metafield", "summary": "Create a metafield containing 3-5 top customer reviews with full text, making actual feedback visible to agents and shoppers above-the-fold."}, {"anchor": "fix-summarize_reviews-1", "title": "Add Review objects to Product schema", "skill": "Summarize reviews", "skill_id": "summarize_reviews", "time": "5 min", "tier": "quick", "type": "snippet", "summary": "Expand JSON-LD with 3-5 individual Review objects containing reviewBody text, making customer feedback discoverable by AI agents and search engines."}, {"anchor": "fix-identify_specs-0", "title": "Add technical specifications table", "skill": "Identify specs", "skill_id": "identify_specs", "time": "5 min", "tier": "quick", "type": "snippet", "summary": "Create a dedicated specifications section below the product description displaying materials, weight, and construction details in a scannable table format."}, {"anchor": "fix-identify_specs-1", "title": "Fix product weight in schema", "skill": "Identify specs", "skill_id": "identify_specs", "time": "2 min", "tier": "instant", "type": "metafield", "summary": "Update the product weight field to populate schema markup and enable accurate shipping calculations and product comparisons."}, {"anchor": "fix-price_per_unit-0", "title": "Add cost-per-use value badge", "skill": "Price per unit", "skill_id": "price_per_unit", "time": "5 min", "tier": "quick", "type": "snippet", "summary": "Display a dynamic badge showing cost per day over expected lifespan to reframe the \u20ac70-80 price as an investment."}, {"anchor": "fix-price_per_unit-1", "title": "Add competitor comparison table", "skill": "Price per unit", "skill_id": "price_per_unit", "time": "15 min", "tier": "medium", "type": "metafield", "summary": "Create a metafield showing how Travel Sling Bag 2.0 compares to 2-3 competitor sling bags on price, features, and reviews."}, {"anchor": "fix-price_per_unit-2", "title": "Enable shipping calculator on PDP", "skill": "Price per unit", "skill_id": "price_per_unit", "time": "2 min", "tier": "instant", "type": "settings_link", "summary": "Turn on the shipping estimate feature so buyers can see delivery cost and time before adding to cart."}, {"anchor": "fix-check_returns-0", "title": "Expand Returns FAQ with Complete Policy", "skill": "Check returns", "skill_id": "check_returns", "time": "5 min", "tier": "quick", "type": "metafield", "summary": "Replace the sparse Returns & Refunds FAQ answer with comprehensive details covering shipping costs, conditions, exclusions, and refund timing."}, {"anchor": "fix-check_returns-1", "title": "Add Return Shipping Badge Above CTA", "skill": "Check returns", "skill_id": "check_returns", "time": "2 min", "tier": "instant", "type": "snippet", "summary": "Surface the return shipping policy in a trust badge immediately visible near the Add to Cart button, reducing pre-purchase friction."}, {"anchor": "fix-sizing_help-0", "title": "Show dimensions near size selector", "skill": "Sizing help", "skill_id": "sizing_help", "time": "5 min", "tier": "quick", "type": "snippet", "summary": "Display the selected variant's dimensions dynamically below the capacity selector so buyers see size specs before adding to cart."}, {"anchor": "fix-sizing_help-1", "title": "Add body fit guidance FAQ", "skill": "Sizing help", "skill_id": "sizing_help", "time": "2 min", "tier": "instant", "type": "metafield", "summary": "Create a new FAQ entry explaining which size works best for different heights and how the strap adjusts for various body types."}, {"anchor": "fix-sizing_help-2", "title": "Create size comparison photo brief", "skill": "Sizing help", "skill_id": "sizing_help", "time": "30 min", "tier": "medium", "type": "prompt", "summary": "Photography brief for creating a single image showing all three sizes next to common objects (iPhone, water bottle, book) for instant scale recognition."}, {"anchor": "fix-check_warranty-0", "title": "Add warranty FAQ item", "skill": "Check warranty", "skill_id": "check_warranty", "time": "2 min", "tier": "instant", "type": "snippet", "summary": "Add a dedicated warranty question to the FAQ schema explaining coverage duration and what's included."}, {"anchor": "fix-check_warranty-1", "title": "Create warranty policy page", "skill": "Check warranty", "skill_id": "check_warranty", "time": "5 min", "tier": "quick", "type": "snippet", "summary": "Create a dedicated warranty policy page linked from the footer and FAQ, with clear coverage terms and claim steps."}, {"anchor": "fix-rate_as_gift-0", "title": "Enable gift options at checkout", "skill": "Rate as gift", "skill_id": "rate_as_gift", "time": "2 min", "tier": "instant", "type": "settings_link", "summary": "Activate Shopify's built-in gift message and gift receipt features so buyers can add a personal note and hide prices."}, {"anchor": "fix-rate_as_gift-1", "title": "Add gift-buying guide to PDP", "skill": "Rate as gift", "skill_id": "rate_as_gift", "time": "5 min", "tier": "quick", "type": "snippet", "summary": "Insert a 'Buying as a gift?' banner below the size selector to surface sizing advice and return policy for gift buyers."}, {"anchor": "", "title": "Populate product category in schema", "skill": "Cross-cutting issues", "skill_id": "", "time": "15 minutes per product + template update", "tier": "medium", "type": "inline", "summary": "Add product category value to Shopify product metadata and ensure it populates the schema.org category field in Product JSON-LD."}];
+  const panel = document.getElementById('fix-index-panel');
+  if (!panel) return;
+  const listEl = panel.querySelector('.fix-index-list');
+  const closeBtn = panel.querySelector('.fix-index-close');
+  const pills = document.querySelectorAll('button.effort-pill[data-filter]');
+
+  function tierOrder(t) {
+    return { instant: 0, quick: 1, medium: 2, slow: 3 }[t] ?? 4;
+  }
+
+  function filterFor(mode) {
+    if (mode === 'instant') return FIX_INDEX.filter(f => f.tier === 'instant');
+    if (mode === 'quick')   return FIX_INDEX.filter(f => f.tier === 'instant' || f.tier === 'quick');
+    return FIX_INDEX.slice();
+  }
+
+  function render(mode) {
+    const items = filterFor(mode);
+    items.sort((a, b) => tierOrder(a.tier) - tierOrder(b.tier));
+    listEl.innerHTML = items.length === 0
+      ? '<li class="fix-index-empty">No fixes match this filter.</li>'
+      : items.map(f => `
+          <li>
+            <a class="fix-index-item" href="${f.anchor ? '#' + f.anchor : '#'}" data-anchor="${f.anchor}">
+              <span class="fii-time tier-${f.tier}">${f.tier === 'instant' ? '⚡ ' : ''}${f.time}</span>
+              <span class="fii-title">${f.title.replace(/</g, '&lt;')}</span>
+              <span class="fii-skill">${f.skill.replace(/</g, '&lt;')}</span>
+            </a>
+          </li>`).join('');
+  }
+
+  function closePanel() {
+    panel.setAttribute('hidden', '');
+    pills.forEach(p => p.setAttribute('aria-expanded', 'false'));
+  }
+
+  pills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      const wasExpanded = pill.getAttribute('aria-expanded') === 'true';
+      pills.forEach(p => p.setAttribute('aria-expanded', 'false'));
+      if (wasExpanded) {
+        // Toggle off
+        panel.setAttribute('hidden', '');
+        return;
+      }
+      pill.setAttribute('aria-expanded', 'true');
+      render(pill.dataset.filter);
+      panel.removeAttribute('hidden');
+    });
+  });
+
+  closeBtn.addEventListener('click', closePanel);
+
+  // When an item is clicked: close panel FIRST (so its height doesn't bias the
+  // scroll calculation), then let the global anchor handler do the rest.
+  // Bubble order: this listener (on .fix-index-list) runs before the document-
+  // level anchor handler, so closing here means getBoundingClientRect() in the
+  // anchor handler measures with the panel already removed from layout.
+  listEl.addEventListener('click', e => {
+    const item = e.target.closest('.fix-index-item');
+    if (!item) return;
+    closePanel();  // synchronous — DOM updates before bubble continues
+  });
+
+  // ESC closes the panel
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && !panel.hasAttribute('hidden')) {
+      closePanel();
+    }
+  });
+})();
+
+(function() {
+  const ctx = document.getElementById('radarChart');
+  if (!ctx) return;
+
+  const rawDatasets = [{"label": "Claude Sonnet 4.5", "data": [7.0, 6, 6, 6, 5, 7, 6, 6], "color": "#c2410c"}, {"label": "GPT-4o", "data": [9, 9, 9, 7, 8, 8, 3, 6], "color": "#10a37f"}, {"label": "Gemini 2.5 Pro", "data": [7, 4, 6.5, 4, 5, 9.5, 4, 6], "color": "#4285f4"}];
+  const isMulti = rawDatasets.length > 1;
+
+  // Convert hex → rgba with given alpha
+  function hexToRgba(hex, alpha) {
+    const h = hex.replace('#', '');
+    const r = parseInt(h.substring(0, 2), 16);
+    const g = parseInt(h.substring(2, 4), 16);
+    const b = parseInt(h.substring(4, 6), 16);
+    return `rgba(${r},${g},${b},${alpha})`;
+  }
+
+  const datasets = rawDatasets.map((ds, i) => ({
+    label: ds.label,
+    data: ds.data,
+    fill: !isMulti,
+    backgroundColor: isMulti ? hexToRgba(ds.color, 0.08) : hexToRgba(ds.color, 0.18),
+    borderColor: ds.color,
+    borderWidth: isMulti ? 2 : 2.5,
+    pointBackgroundColor: isMulti ? ds.color : [],
+    pointBorderColor: '#fff',
+    pointBorderWidth: 1.5,
+    pointRadius: isMulti ? 4 : 5,
+    pointHoverRadius: 7
+  }));
+
+  new Chart(ctx, {
+    type: 'radar',
+    data: {
+      labels: ["Buying advice", "Summarize reviews", "Identify specs", "Price per unit", "Check returns", "Sizing help", "Check warranty", "Rate as gift"],
+      datasets: datasets
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: {
+          display: isMulti,
+          position: 'bottom',
+          labels: { font: { size: 11, family: 'Inter, sans-serif' }, color: '#54586a', boxWidth: 14, boxHeight: 14, padding: 14 }
+        },
+        tooltip: {
+          callbacks: {
+            label: function(c) {
+              const v = c.parsed.r;
+              return c.dataset.label + ': ' + (v === null ? 'no data' : v.toFixed(1) + ' / 10');
+            }
+          }
+        }
+      },
+      scales: {
+        r: {
+          min: 0, max: 10, beginAtZero: true,
+          ticks: { stepSize: 2, font: { size: 10, family: 'JetBrains Mono, monospace' }, color: '#8b8fa0', backdropColor: 'transparent' },
+          grid: { color: 'rgba(20,20,28,0.07)' },
+          angleLines: { color: 'rgba(20,20,28,0.07)' },
+          pointLabels: { color: '#54586a', font: { size: 11, family: 'Bricolage Grotesque, system-ui, sans-serif', weight: '600' } }
+        }
+      }
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
