@@ -1,0 +1,2698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Nohi Agent Audit · Huggwaii — MeWaii® Capybara Squishy Night Light - Perfect Gift 🎁</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Bricolage+Grotesque:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-display: 'Bricolage Grotesque', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+
+  --bg: #fbfaf7;
+  --surface: #ffffff;
+  --surface2: #f3f1ec;
+  --surface3: #e8e5dd;
+  --border: rgba(20,20,28,0.07);
+  --border-h: rgba(20,20,28,0.14);
+  --text: #1a1c24;
+  --text2: #54586a;
+  --text3: #8b8fa0;
+
+  --good: #0f766e;
+  --good-soft: #ecfdf5;
+  --good-border: #a7d8c6;
+  --warn: #92400e;
+  --warn-soft: #fef8eb;
+  --warn-border: #e6cca0;
+  --bad: #4b5563;
+  --bad-soft: #f1f3f7;
+  --bad-border: #cdd2dd;
+  --crit: #9b1c1c;
+  --crit-soft: #fdf2f2;
+  --crit-border: #f5c5c5;
+
+  --primary: #334155;
+  --primary-dark: #1e293b;
+  --primary-soft: rgba(51,65,85,0.07);
+  --accent-ink: #0f172a;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 1080px; margin: 0 auto; padding: 2rem 2rem 6rem; }
+
+/* Brand strip */
+.brand {
+  display: flex; align-items: center; gap: .55rem;
+  margin-bottom: 1.5rem;
+}
+.brand-mark {
+  width: 26px; height: 26px;
+  background: var(--primary);
+  border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-weight: 700;
+  font-family: var(--font-display);
+  font-size: .85rem;
+}
+.brand-text {
+  font-family: var(--font-display);
+  font-weight: 700; font-size: 1.05rem;
+  letter-spacing: -.02em;
+}
+.brand-divider { width: 1px; height: 16px; background: var(--border-h); }
+.brand-sub {
+  font-family: var(--font-mono);
+  font-size: .7rem;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  font-weight: 600;
+}
+
+h1 {
+  font-family: var(--font-display);
+  font-size: 2.1rem; font-weight: 800;
+  letter-spacing: -.025em; line-height: 1.1;
+  margin-bottom: .4rem;
+}
+.report-purpose {
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--text2);
+  max-width: 740px;
+  margin: .65rem 0 1rem;
+}
+.report-purpose strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.sub {
+  font-family: var(--font-mono);
+  font-size: .8rem; color: var(--text3);
+  margin-bottom: 1rem;
+  word-break: break-all;
+}
+.sub a { color: var(--primary); text-decoration: none; }
+.sub a:hover { text-decoration: underline; }
+
+.kpi-row { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: .75rem; }
+
+.agents-strip {
+  display: flex;
+  gap: .4rem;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: .5rem .75rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: .75rem;
+  font-size: .8rem;
+}
+.agents-label {
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--text3);
+  font-weight: 600;
+  margin-right: .25rem;
+}
+.agent-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  padding: .2rem .55rem;
+  border-radius: 999px;
+  background: var(--surface2);
+  border: 1px solid var(--border-h);
+  font-weight: 600;
+  font-size: .78rem;
+}
+.agent-pill .agent-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--agent-color, var(--text3));
+}
+
+/* Effort/time row — pulls "this is easier than it looks" forward */
+.effort-row {
+  display: flex;
+  gap: .5rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+  padding: .75rem .9rem;
+  background: var(--good-soft);
+  border: 1px solid var(--good-border);
+  border-radius: 10px;
+}
+.effort-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: .3rem;
+  font-size: .82rem;
+  color: var(--text);
+  font-weight: 500;
+}
+.effort-pill b { font-weight: 700; font-size: .92rem; }
+.effort-icon {
+  font-size: .95rem;
+  margin-right: .15rem;
+}
+.effort-sub {
+  font-size: .72rem;
+  color: var(--text3);
+  font-family: var(--font-mono);
+  margin-left: .15rem;
+}
+.effort-instant {
+  background: var(--surface);
+  padding: .3rem .65rem;
+  border-radius: 999px;
+  border: 1px solid var(--good-border);
+  color: var(--good);
+  font-weight: 600;
+}
+.effort-instant b { color: var(--good); }
+.effort-quick {
+  background: var(--surface);
+  padding: .3rem .65rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-h);
+}
+.effort-total {
+  margin-left: auto;
+  padding: .3rem .5rem;
+  color: var(--text2);
+  font-size: .78rem;
+}
+@media (max-width: 580px) {
+  .effort-total { margin-left: 0; width: 100%; padding-top: .4rem; border-top: 1px solid var(--good-border); }
+}
+
+/* Effort pills are now interactive buttons */
+button.effort-pill {
+  cursor: pointer;
+  font-family: inherit;
+  transition: all .15s;
+}
+button.effort-pill:hover {
+  border-color: var(--good);
+  background: var(--surface);
+}
+button.effort-pill[aria-expanded="true"] {
+  background: var(--good);
+  color: white;
+  border-color: var(--good);
+}
+button.effort-pill[aria-expanded="true"] b,
+button.effort-pill[aria-expanded="true"] .effort-sub,
+button.effort-pill[aria-expanded="true"] .effort-icon {
+  color: white;
+}
+.effort-caret {
+  margin-left: .25rem;
+  font-size: .7rem;
+  opacity: .65;
+  transition: transform .15s;
+}
+button.effort-pill[aria-expanded="true"] .effort-caret {
+  transform: rotate(180deg);
+  opacity: 1;
+}
+
+/* The expanding panel */
+.fix-index-panel {
+  margin: -1.25rem 0 2rem;   /* negative top to butt up against effort-row */
+  background: var(--surface);
+  border: 1px solid var(--good-border);
+  border-top: none;
+  border-radius: 0 0 10px 10px;
+  padding: 1rem 1.15rem 1.15rem;
+  animation: slide-down .2s ease-out;
+}
+@keyframes slide-down {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fix-index-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: .75rem;
+  padding-bottom: .55rem;
+  border-bottom: 1px solid var(--border);
+}
+.fix-index-title {
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--text2);
+  font-weight: 700;
+}
+.fix-index-close {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: .15rem .5rem;
+  font-size: .75rem;
+  color: var(--text2);
+  cursor: pointer;
+  font-family: inherit;
+}
+.fix-index-close:hover { background: var(--surface2); color: var(--text); }
+
+.fix-index-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex; flex-direction: column;
+  gap: .25rem;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+.fix-index-list li { margin: 0; }
+.fix-index-item {
+  display: grid;
+  grid-template-columns: 80px 1fr auto;
+  align-items: center;
+  gap: .65rem;
+  padding: .55rem .65rem;
+  border-radius: 6px;
+  text-decoration: none;
+  color: var(--text);
+  border: 1px solid transparent;
+  transition: all .12s;
+}
+.fix-index-item:hover {
+  background: var(--primary-soft);
+  border-color: var(--border-h);
+}
+.fix-index-item .fii-time {
+  font-family: var(--font-mono);
+  font-size: .7rem;
+  font-weight: 700;
+  padding: .15rem .45rem;
+  border-radius: 999px;
+  text-align: center;
+  white-space: nowrap;
+}
+.fix-index-item .fii-time.tier-instant {
+  background: var(--good);
+  color: white;
+}
+.fix-index-item .fii-time.tier-quick {
+  background: var(--good-soft);
+  color: var(--good);
+  border: 1px solid var(--good-border);
+}
+.fix-index-item .fii-time.tier-medium {
+  background: var(--surface2);
+  color: var(--text2);
+  border: 1px solid var(--border-h);
+}
+.fix-index-item .fii-time.tier-slow {
+  background: transparent;
+  color: var(--text3);
+  border: 1px dashed var(--border-h);
+}
+.fix-index-item .fii-title {
+  font-weight: 600;
+  font-size: .88rem;
+  line-height: 1.4;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fix-index-item .fii-skill {
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  white-space: nowrap;
+}
+.fix-index-empty {
+  font-size: .85rem;
+  color: var(--text3);
+  font-style: italic;
+  padding: .5rem;
+}
+.kpi {
+  font-size: .76rem;
+  padding: .35rem .75rem;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text2);
+  font-weight: 500;
+}
+.kpi b { font-weight: 700; color: var(--text); }
+.kpi.kpi-primary {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+.kpi.kpi-primary b { color: white; }
+.kpi.kpi-crit {
+  background: var(--crit-soft);
+  color: var(--crit);
+  border-color: var(--crit-border);
+  font-weight: 600;
+}
+.kpi.kpi-crit b { color: var(--crit); }
+
+/* Executive hero */
+.exec {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 2rem;
+  padding: 1.5rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  margin-bottom: 2.5rem;
+}
+@media (max-width: 780px) { .exec { grid-template-columns: 1fr; } }
+.score-hero {
+  background: var(--bad-soft);
+  border: 1px solid var(--bad-border);
+  border-radius: 12px;
+  padding: 1.5rem 1rem;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+}
+.big-score {
+  font-family: var(--font-display);
+  font-size: 4.4rem; font-weight: 800;
+  line-height: 1; letter-spacing: -.06em;
+  color: var(--bad);
+}
+.score-label { font-size: .88rem; color: var(--text3); margin-top: .25rem; }
+.score-tagline {
+  margin-top: .75rem;
+  font-size: .72rem;
+  font-weight: 700;
+  color: var(--bad);
+  text-transform: uppercase;
+  letter-spacing: .07em;
+}
+.radar-wrap { position: relative; max-width: 420px; margin: 0 auto; }
+.exec-label {
+  font-size: .72rem; font-weight: 600;
+  color: var(--text3); text-transform: uppercase;
+  letter-spacing: .05em; margin-bottom: .8rem;
+}
+
+/* Section header */
+.section-hdr {
+  font-family: var(--font-display);
+  font-size: 1.25rem; font-weight: 700;
+  margin: 2.5rem 0 .85rem;
+  padding-bottom: .5rem;
+  border-bottom: 1px solid var(--border);
+  letter-spacing: -.02em;
+}
+.section-intro {
+  color: var(--text2);
+  margin-bottom: 1.25rem;
+  font-size: .9rem;
+}
+
+/* Subsection header (used inside Site overview) */
+.subsection-hdr {
+  font-family: var(--font-display);
+  font-size: .85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--text2);
+  margin: 1.5rem 0 .8rem;
+  display: flex; align-items: baseline; gap: .4rem;
+}
+.subsection-hdr:first-child { margin-top: 0; }
+.subsection-hdr .count {
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  color: var(--text3);
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.subsection-note {
+  font-size: .82rem;
+  color: var(--text2);
+  margin-bottom: .85rem;
+  line-height: 1.55;
+}
+.subsection-note a {
+  color: var(--primary);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--primary);
+  font-weight: 600;
+}
+.subsection-note a:hover { border-bottom-style: solid; }
+
+/* Positives grid */
+.positives-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: .65rem;
+  margin-bottom: 1.5rem;
+}
+.positive-card {
+  display: flex;
+  gap: .65rem;
+  padding: .8rem .95rem;
+  background: var(--good-soft);
+  border: 1px solid var(--good-border);
+  border-radius: 9px;
+}
+.positive-icon {
+  flex-shrink: 0;
+  width: 22px; height: 22px;
+  background: var(--good);
+  color: white;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700;
+  font-size: .8rem;
+}
+.positive-body { flex: 1; min-width: 0; }
+.positive-title {
+  font-weight: 700;
+  font-size: .88rem;
+  color: var(--text);
+  margin-bottom: .15rem;
+  line-height: 1.4;
+}
+.positive-where {
+  font-family: var(--font-mono);
+  font-size: .7rem;
+  color: var(--text3);
+  margin-bottom: .35rem;
+}
+.positive-where code {
+  background: rgba(15,118,110,0.08);
+  padding: .08rem .3rem;
+  border-radius: 3px;
+}
+.positive-value {
+  font-size: .82rem;
+  color: var(--text2);
+  line-height: 1.5;
+}
+
+/* Site issues table (refactored: 3 columns, issue body grouped) */
+.findings-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  font-size: .85rem;
+}
+.findings-table th {
+  text-align: left;
+  padding: .65rem .85rem;
+  background: var(--surface2);
+  font-size: .68rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--text2);
+  font-weight: 700;
+  border-bottom: 1px solid var(--border);
+}
+.findings-table td {
+  padding: .85rem .85rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+.findings-table tr:last-child td { border-bottom: none; }
+.findings-table .col-sev    { width: 90px; }
+.findings-table .col-finding { width: 50%; }
+.findings-table .col-fix     { width: 40%; }
+
+.findings-table .finding-title {
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: .25rem;
+  line-height: 1.4;
+}
+.findings-table .finding-where {
+  font-family: var(--font-mono);
+  font-size: .7rem;
+  color: var(--text3);
+  margin-bottom: .35rem;
+}
+.findings-table .finding-where code {
+  background: var(--surface2);
+  padding: .08rem .3rem;
+  border-radius: 3px;
+  color: var(--text2);
+}
+.findings-table .finding-impact {
+  color: var(--text2);
+  font-size: .82rem;
+  line-height: 1.5;
+}
+.findings-table .muted { color: var(--text3); font-size: .82rem; font-style: italic; }
+
+.finding-fix-skill {
+  font-size: .7rem;
+  font-family: var(--font-mono);
+  color: var(--text3);
+  margin-bottom: .4rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+.finding-fix-skill a {
+  color: var(--text2);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--border-h);
+}
+.finding-fix-skill a:hover {
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.finding-fix-chips {
+  display: flex; flex-direction: column; gap: .35rem;
+}
+.fix-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  padding: .4rem .65rem;
+  background: var(--primary-soft);
+  border: 1px solid var(--border-h);
+  border-radius: 7px;
+  color: var(--text);
+  font-size: .82rem;
+  font-weight: 600;
+  text-decoration: none;
+  line-height: 1.3;
+  transition: all .15s;
+}
+.fix-chip:hover {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+.fix-chip-icon {
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  font-weight: 700;
+  width: 22px; height: 22px;
+  background: var(--primary);
+  color: white;
+  border-radius: 5px;
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.fix-chip:hover .fix-chip-icon {
+  background: white;
+  color: var(--primary);
+}
+
+.inline-fix {
+  background: var(--primary-soft);
+  border: 1px solid var(--border-h);
+  border-radius: 7px;
+  padding: .6rem .75rem;
+}
+.inline-fix-title {
+  font-weight: 700;
+  font-size: .85rem;
+  color: var(--primary-dark);
+  margin-bottom: .25rem;
+}
+.inline-fix-summary {
+  font-size: .8rem;
+  color: var(--text2);
+  margin-bottom: .35rem;
+  line-height: 1.5;
+}
+.inline-fix-action {
+  font-size: .76rem;
+  color: var(--text2);
+  background: var(--surface);
+  padding: .35rem .55rem;
+  border-radius: 5px;
+  border-left: 2px solid var(--primary);
+}
+
+.findings-empty {
+  background: var(--good-soft);
+  border: 1px solid var(--good-border);
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  color: var(--good);
+  font-weight: 600;
+}
+
+/* Highlight flash for navigated-to fix or skill */
+@keyframes flash-highlight {
+  0%   { background: var(--primary); color: white; box-shadow: 0 0 0 8px var(--primary-soft); }
+  60%  { background: var(--primary); color: white; box-shadow: 0 0 0 8px var(--primary-soft); }
+  100% { background: var(--surface); color: var(--text); box-shadow: 0 0 0 0 transparent; }
+}
+.fix.flash {
+  animation: flash-highlight 1.6s ease-out;
+}
+.fix.flash .fix-title,
+.fix.flash .fix-summary,
+.fix.flash .fix-type,
+.fix.flash .fix-type em {
+  color: white !important;
+}
+@keyframes flash-skill {
+  0%   { box-shadow: 0 0 0 4px var(--primary); }
+  60%  { box-shadow: 0 0 0 4px var(--primary); }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+.skill.flash {
+  animation: flash-skill 1.6s ease-out;
+}
+
+/* Severity badges — only critical is loud */
+.sev-badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: .65rem;
+  font-weight: 700;
+  padding: .15rem .55rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  white-space: nowrap;
+}
+.sev-badge.sev-crit.emph-loud {
+  background: var(--crit);
+  color: white;
+  border: 1px solid var(--crit);
+}
+.sev-badge.sev-warn.emph-med {
+  background: var(--surface2);
+  color: var(--text);
+  border: 1px solid var(--border-h);
+}
+.sev-badge.sev-warn.emph-soft {
+  background: var(--surface2);
+  color: var(--text2);
+  border: 1px solid var(--border);
+}
+.sev-badge.sev-good.emph-soft {
+  background: var(--good-soft);
+  color: var(--good);
+  border: 1px solid var(--good-border);
+}
+
+/* Skill cards */
+.skills-list { display: flex; flex-direction: column; gap: .6rem; }
+.skill {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color .15s;
+}
+.skill[open] { border-color: var(--border-h); }
+.skill-hdr {
+  display: flex; align-items: center; gap: 1rem;
+  padding: .95rem 1.15rem;
+  cursor: pointer; user-select: none;
+  list-style: none;
+}
+.skill-hdr::-webkit-details-marker { display: none; }
+.skill-hdr:hover { background: var(--surface2); }
+.skill[open] .skill-hdr { border-bottom: 1px solid var(--border); }
+.caret {
+  font-size: .7rem; color: var(--text3);
+  transition: transform .2s; flex-shrink: 0;
+}
+.skill[open] .caret { transform: rotate(90deg); }
+.skill-name { flex: 1; min-width: 0; }
+.skill-title {
+  font-weight: 700; font-size: 1rem;
+  font-family: var(--font-display);
+  letter-spacing: -.01em;
+}
+.skill-prompt {
+  font-family: var(--font-mono);
+  font-size: .7rem; color: var(--text3);
+  margin-top: .12rem;
+  font-style: italic;
+}
+.skill-evidence-summary {
+  display: flex; gap: .3rem;
+  flex-wrap: wrap; flex-shrink: 0;
+}
+
+/* Multi-agent: per-agent score chips in the skill header */
+.agent-score-row {
+  display: flex; gap: .35rem;
+  flex-wrap: wrap; flex-shrink: 0;
+  align-items: center;
+}
+.agent-score {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  padding: .2rem .55rem;
+  font-size: .72rem;
+  font-weight: 600;
+  background: var(--surface2);
+  border: 1px solid var(--border-h);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+}
+.agent-score .agent-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--agent-color, var(--text3));
+  flex-shrink: 0;
+}
+.agent-score .agent-name { color: var(--text2); font-family: var(--font-sans); }
+.agent-score .agent-score-val {
+  font-weight: 700;
+  font-size: .82rem;
+}
+.agent-score.score-good .agent-score-val { color: var(--good); }
+.agent-score.score-warn .agent-score-val { color: var(--warn); }
+.agent-score.score-bad  .agent-score-val { color: var(--bad); }
+.agent-score.agent-fail {
+  background: var(--crit-soft);
+  border-color: var(--crit-border);
+}
+.agent-score.agent-fail .agent-score-val { color: var(--crit); }
+
+.agreement {
+  font-size: .65rem;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  padding: .12rem .4rem;
+  border-radius: 4px;
+  font-weight: 600;
+}
+.agreement-consensus {
+  background: var(--good-soft);
+  color: var(--good);
+  border: 1px solid var(--good-border);
+}
+.agreement-mild-split {
+  background: var(--warn-soft);
+  color: var(--warn);
+  border: 1px solid var(--warn-border);
+}
+.agreement-wide-split {
+  background: var(--crit-soft);
+  color: var(--crit);
+  border: 1px solid var(--crit-border);
+}
+
+/* Per-agent breakdown accordion inside skill card */
+.agent-details {
+  display: flex; flex-direction: column;
+  gap: .4rem;
+}
+.agent-detail {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.agent-detail[open] { border-color: var(--border-h); }
+.agent-detail-hdr {
+  display: flex; align-items: center;
+  gap: .6rem;
+  padding: .65rem .85rem;
+  cursor: pointer;
+  user-select: none;
+  list-style: none;
+  font-size: .85rem;
+}
+.agent-detail-hdr::-webkit-details-marker { display: none; }
+.agent-detail-hdr:hover { background: var(--surface2); }
+.caret-sm {
+  font-size: .6rem;
+  color: var(--text3);
+  transition: transform .2s;
+}
+.agent-detail[open] .caret-sm { transform: rotate(90deg); }
+.agent-detail-hdr .agent-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.agent-detail-name {
+  font-weight: 700;
+  flex: 1;
+}
+.agent-detail-score {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: -.02em;
+}
+.agent-detail-score.score-good { color: var(--good); }
+.agent-detail-score.score-warn { color: var(--warn); }
+.agent-detail-score.score-bad  { color: var(--bad); }
+.agent-detail-evidence {
+  display: flex; gap: .25rem;
+  flex-wrap: wrap;
+}
+.agent-detail-body {
+  padding: .85rem 1rem 1rem;
+  background: var(--surface2);
+  border-top: 1px solid var(--border);
+}
+.agent-detail-body h5 {
+  font-size: .75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--text2);
+  margin: 0 0 .5rem;
+}
+.agent-detail-body h5:not(:first-child) { margin-top: 1rem; }
+
+/* Wide-split visual marker on skill cards where models disagreed significantly */
+.skill.skill-wide-split {
+  border-color: var(--warn-border);
+  border-left: 3px solid var(--warn);
+}
+.skill.skill-wide-split .skill-hdr {
+  background: linear-gradient(to right, var(--warn-soft) 0%, transparent 30%);
+}
+.wide-split-pin {
+  display: inline-block;
+  margin-right: .35rem;
+  font-size: .9rem;
+}
+.wide-split-banner {
+  background: var(--warn-soft);
+  border: 1px solid var(--warn-border);
+  border-radius: 8px;
+  padding: .8rem 1rem;
+  margin-bottom: 1.25rem;
+  font-size: .85rem;
+}
+.wide-split-banner p {
+  margin: .35rem 0 0;
+  color: var(--text);
+}
+.wide-split-banner .wide-split-hint {
+  font-size: .8rem;
+  color: var(--text2);
+  margin-top: .55rem;
+}
+.wide-split-header {
+  display: flex; align-items: center;
+  gap: .5rem;
+  color: var(--warn);
+}
+.wide-split-icon { font-size: 1rem; }
+.wide-split-spread {
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  padding: .12rem .45rem;
+  background: var(--warn);
+  color: white;
+  border-radius: 4px;
+  margin-left: auto;
+}
+.chip {
+  display: inline-flex; align-items: center; gap: .3rem;
+  font-size: .7rem; font-weight: 600;
+  padding: .18rem .5rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.chip-icon { font-weight: 700; }
+.chip-pos { background: var(--good-soft); color: var(--good); border: 1px solid var(--good-border); }
+.chip-neg { background: var(--crit-soft); color: var(--crit); border: 1px solid var(--crit-border); }
+.chip-gap { background: var(--warn-soft); color: var(--warn); border: 1px solid var(--warn-border); }
+.chip-miss { background: var(--surface2); color: var(--text2); border: 1px solid var(--border-h); }
+
+.skill-score {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.65rem;
+  letter-spacing: -.04em;
+  min-width: 5.2rem;
+  text-align: right;
+  flex-shrink: 0;
+}
+.score-of { font-size: .85rem; font-weight: 600; color: var(--text3); margin-left: .1rem; }
+.score-good { color: var(--good); }
+.score-warn { color: var(--warn); }
+.score-bad  { color: var(--bad); }
+
+.skill-body { padding: 1.25rem 1.5rem 1.5rem; background: var(--surface2); }
+.skill-section { margin-bottom: 1.4rem; }
+.skill-section:last-child { margin-bottom: 0; }
+.skill-section h4 {
+  font-family: var(--font-display);
+  font-size: .82rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  font-weight: 700;
+  color: var(--text2);
+  margin-bottom: .6rem;
+}
+
+.ev-list { list-style: none; }
+.ev {
+  display: flex; gap: .55rem;
+  padding: .5rem .7rem;
+  margin-bottom: .3rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  font-size: .88rem;
+}
+.ev-icon { flex-shrink: 0; font-weight: 700; }
+.ev-pos .ev-icon  { color: var(--good); }
+.ev-neg .ev-icon  { color: var(--crit); }
+.ev-gap .ev-icon  { color: var(--warn); }
+.ev-miss .ev-icon { color: var(--text3); }
+.ev-text { color: var(--text); }
+
+.raw-response {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--primary);
+  border-radius: 7px;
+  padding: 1rem 1.25rem;
+  font-size: .87rem;
+  color: var(--text);
+}
+.raw-response p { margin-bottom: .6rem; }
+.raw-response p:last-child { margin-bottom: 0; }
+.raw-response ul { margin: .4rem 0 .6rem 1.25rem; }
+.raw-response li { margin-bottom: .2rem; }
+
+/* Fixes — the differentiator */
+.fixes-section {
+  background: var(--primary-soft);
+  border: 1px solid var(--border-h);
+  border-radius: 10px;
+  padding: 1rem 1.15rem;
+}
+.fixes-section h4 { color: var(--primary-dark); }
+.fix-count {
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin-left: .2rem;
+}
+.no-fixes {
+  font-size: .85rem;
+  color: var(--text3);
+  font-style: italic;
+}
+.fix {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: .85rem 1rem;
+  margin-bottom: .65rem;
+}
+.fix:last-child { margin-bottom: 0; }
+.fix-hdr {
+  display: flex; align-items: flex-start; gap: .75rem;
+  margin-bottom: .55rem;
+}
+.fix-icon {
+  font-family: var(--font-mono);
+  width: 28px; height: 28px;
+  background: var(--primary);
+  color: white;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .8rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.fix-titles { flex: 1; min-width: 0; }
+.fix-title-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .35rem;
+}
+.fix-title {
+  font-weight: 700;
+  font-size: .92rem;
+  color: var(--text);
+}
+.fix-type {
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  color: var(--text3);
+  margin-top: .15rem;
+}
+.fix-type em { color: var(--text2); font-style: normal; }
+.fix-sep { margin: 0 .2rem; opacity: .6; }
+
+/* Time chip — appears next to fix title */
+.time-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .2rem;
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  font-weight: 600;
+  padding: .15rem .45rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.time-icon { font-size: .8rem; }
+.time-chip.time-instant {
+  background: rgba(15,118,110,0.1);
+  color: var(--good);
+  border: 1px solid var(--good-border);
+}
+.time-chip.time-quick {
+  background: var(--surface2);
+  color: var(--text2);
+  border: 1px solid var(--border-h);
+}
+.time-chip.time-medium {
+  background: var(--surface2);
+  color: var(--text3);
+  border: 1px solid var(--border);
+}
+.time-chip.time-slow {
+  background: transparent;
+  color: var(--text3);
+  border: 1px dashed var(--border-h);
+}
+
+/* INSTANT badge — only on truly fast fixes */
+.instant-badge {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: .65rem;
+  font-weight: 700;
+  padding: .15rem .45rem;
+  border-radius: 4px;
+  background: var(--good);
+  color: white;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Tier accents on fix cards — instant gets a green left border */
+.fix.tier-instant {
+  border-left: 3px solid var(--good);
+}
+
+/* Fix chip in the cross-cutting issues table — show time and instant marker */
+.fix-chip {
+  flex-wrap: wrap;
+}
+.fix-chip-title { flex: 1; min-width: 0; }
+.fix-chip-instant {
+  font-size: .85rem;
+  margin-left: .2rem;
+}
+.fix-chip-time {
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  font-weight: 600;
+  padding: .1rem .4rem;
+  border-radius: 999px;
+  background: var(--surface2);
+  color: var(--text2);
+  margin-left: .25rem;
+  border: 1px solid var(--border);
+}
+.fix-chip:hover .fix-chip-time {
+  background: rgba(255,255,255,0.2);
+  color: white;
+  border-color: rgba(255,255,255,0.3);
+}
+.fix-chip-time.time-instant {
+  background: var(--good);
+  color: white;
+  border-color: var(--good);
+}
+
+/* Inline fix header with time chip */
+.inline-fix-hdr {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .4rem;
+  margin-bottom: .35rem;
+}
+.inline-fix.tier-instant {
+  border-left: 3px solid var(--good);
+}
+.copy-btn {
+  font-family: var(--font-sans);
+  font-size: .72rem;
+  font-weight: 600;
+  padding: .25rem .65rem;
+  border-radius: 5px;
+  border: 1px solid var(--border-h);
+  background: var(--surface);
+  color: var(--text2);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all .15s;
+}
+.copy-btn:hover {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+.copy-btn.copied {
+  background: var(--good);
+  color: white;
+  border-color: var(--good);
+}
+.fix-summary {
+  font-size: .84rem;
+  color: var(--text2);
+  margin-bottom: .55rem;
+  line-height: 1.5;
+}
+.fix-artifact {
+  background: var(--accent-ink);
+  color: #e2e8f0;
+  border-radius: 6px;
+  padding: .7rem .85rem;
+  font-family: var(--font-mono);
+  font-size: .75rem;
+  line-height: 1.55;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin-bottom: .55rem;
+  max-height: 320px;
+  overflow-y: auto;
+}
+.fix-action {
+  font-size: .78rem;
+  color: var(--text2);
+  background: var(--surface2);
+  padding: .5rem .75rem;
+  border-radius: 6px;
+  border-left: 2px solid var(--primary);
+}
+.fix-action-lead {
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  font-weight: 700;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  margin-right: .35rem;
+}
+
+/* Footer */
+.footer {
+  margin-top: 4rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-size: .78rem;
+  color: var(--text3);
+  font-family: var(--font-mono);
+}
+.footer a { color: var(--primary); text-decoration: none; font-weight: 600; }
+.footer .small { margin-top: .4rem; opacity: .7; font-size: .72rem; }
+
+.stochasticity-note {
+  margin-top: 3rem;
+  padding: .8rem 1rem;
+  background: var(--surface);
+  border: 1px dashed var(--border-h);
+  border-radius: 8px;
+  font-size: .78rem;
+  color: var(--text2);
+  line-height: 1.55;
+  font-style: italic;
+}
+
+/* Print friendly */
+@media print {
+  .skill { break-inside: avoid; }
+  .copy-btn { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+<div class="brand">
+  <div class="brand-mark">N</div>
+  <span class="brand-text">Nohi</span>
+  <span class="brand-divider"></span>
+  <span class="brand-sub">智能体审计 · PDP 评估</span>
+</div>
+
+<h1>Huggwaii — MeWaii® Capybara Squishy Night Light - Perfect Gift 🎁</h1>
+<p class="report-purpose">
+  <strong>AI 购物助手（ChatGPT、Gemini、Claude、Perplexity）正在越来越多地代替买家回答「这个我该买吗？」。</strong>
+  这份报告评估你的产品页面在 8 个典型买家任务上对这些 AI 的友好度。每个缺口都附带一个今天就能动手的修复方案。
+</p>
+<div class="sub">
+  <a href="https://www.huggwaii.com/products/capybara-tap-tap-led-night-lamp-best-gift-for-baby-and-girls" target="_blank" rel="noopener">https://www.huggwaii.com/products/capybara-tap-tap-led-night-lamp-best-gift-for-baby-and-girls</a>
+  · 审计于 May 15, 2026 · 测试模型： Multi-agent: Claude Sonnet 4.5, GPT-4o, Gemini 2.5 Pro
+</div>
+
+<div class="agents-strip"><span class="agents-label">测试自</span><span class="agent-pill" style="--agent-color:#c2410c"><span class="agent-dot"></span>Claude Sonnet 4.5</span><span class="agent-pill" style="--agent-color:#10a37f"><span class="agent-dot"></span>GPT-4o</span><span class="agent-pill" style="--agent-color:#4285f4"><span class="agent-dot"></span>Gemini 2.5 Pro</span></div>
+
+<div class="kpi-row">
+  <span class="kpi"><b>8</b> 项技能</span>
+  <span class="kpi">总分： <b>4.1/10</b></span>
+  <span class="kpi"><b>15</b> 处问题</span>
+  <span class="kpi kpi-primary" title="解决跨页面问题的修复"><b>6</b> 站点级修复</span>
+  <span class="kpi kpi-primary" title="解决单个技能内问题的修复"><b>9</b> 技能内修复</span>
+  <span class="kpi kpi-crit"><b>1</b> 严重</span>
+</div>
+
+<div class="effort-row">
+  <button class="effort-pill effort-instant" type="button" data-filter="instant" aria-expanded="false" title="点击查看所有瞬时修复">
+    <span class="effort-icon">⚡</span> <b>1</b> 瞬时修复 <span class="effort-sub">（每个 ≤ 2 分钟）</span>
+    <span class="effort-caret">▾</span>
+  </button>
+  <button class="effort-pill effort-quick" type="button" data-filter="quick" aria-expanded="false" title="点击查看所有快速修复">
+    <b>12</b> 快速修复 <span class="effort-sub">（每个 ≤ 5 分钟）</span>
+    <span class="effort-caret">▾</span>
+  </button>
+  <button class="effort-pill effort-total" type="button" data-filter="all" aria-expanded="false" title="点击查看报告里所有修复">
+    <span class="effort-icon">⏱</span> ~<b>2h 2m</b> 完成全部 15 处修复
+    <span class="effort-caret">▾</span>
+  </button>
+</div>
+<div id="fix-index-panel" class="fix-index-panel" hidden>
+  <div class="fix-index-header">
+    <span class="fix-index-title">点击下面任一项跳转到对应修复</span>
+    <button class="fix-index-close" type="button" aria-label="Close">✕</button>
+  </div>
+  <ul class="fix-index-list"></ul>
+</div>
+
+<div class="exec">
+  <div class="score-hero">
+    <div class="big-score">4.1</div>
+    <div class="score-label">out of 10</div>
+    <div class="score-tagline">agent-blind</div>
+  </div>
+  <div>
+    <div class="exec-label">Skill scores — how well this page serves AI shopping agents</div>
+    <div class="radar-wrap"><canvas id="radarChart"></canvas></div>
+  </div>
+</div>
+
+<div class="section-hdr">站点总览</div>
+<div class="section-intro">跨页面的优势和问题——影响多个技能或位于站点/政策层而非单个 PDP。</div>
+
+    <div class="subsection-hdr">做得好的部分 <span class="count">(5)</span></div>
+    <div class="positives-grid">
+        <div class="positive-card">
+          <div class="positive-icon">✓</div>
+          <div class="positive-body">
+            <div class="positive-title">多层级价格透明度</div>
+            <div class="positive-where"><code>https://www.huggwaii.com/products/capybara-tap-tap-led-night-lamp-best-gift-for-baby-and-girls</code></div>
+            <div class="positive-value">显示原价 (39.99 美元)、折扣价 (29.99-32.99 美元)、折扣百分比 (25%) 以及批量折扣横幅 (购买 2 件享 15% 折扣)。多层级定价策略建立价格可信度,让 AI 代理和消费者能够快速验证价值主张,无需额外查询。</div>
+          </div>
+        </div>
+        
+        <div class="positive-card">
+          <div class="positive-icon">✓</div>
+          <div class="positive-body">
+            <div class="positive-title">装饰类产品的技术规格披露</div>
+            <div class="positive-where"><code>Product description &gt; Specifications section</code></div>
+            <div class="positive-value">提供电池容量 (1200mAh)、续航时间 (5-8+ 小时) 和充电接口 (USB-C) 等硬件细节,尽管这是装饰性产品。大多数礼品/装饰商店会省略这些数据,但这些规格让 AI 代理能够回答「需要多久充电一次」和「长期使用成本」等问题,无需推测。</div>
+          </div>
+        </div>
+        
+        <div class="positive-card">
+          <div class="positive-icon">✓</div>
+          <div class="positive-body">
+            <div class="positive-title">嵌入式 FAQ 结构</div>
+            <div class="positive-where"><code>Product description &gt; Frequently Asked Questions section</code></div>
+            <div class="positive-value">5 个 FAQ 问题直接嵌入产品描述,涵盖送礼适用性、目标受众、摆放场景、产品细节和使用场景。这种预安装的内容基础设施使 AI 代理能够在不离开 PDP 的情况下回答常见购买异议,缩短了决策路径。</div>
+          </div>
+        </div>
+        
+        <div class="positive-card">
+          <div class="positive-icon">✓</div>
+          <div class="positive-body">
+            <div class="positive-title">高内容密度的结构化描述</div>
+            <div class="positive-where"><code>Product description (full page)</code></div>
+            <div class="positive-value">产品描述包含设计细节、功能列表、材质说明、质量描述、使用场景、护理说明和规格表,采用分段标题结构。这种详尽的内容为 AI 代理提供可引用的证据,支持「这个产品适合 X 场景吗」和「材质是什么」等具体查询,而不仅仅是营销口号。</div>
+          </div>
+        </div>
+        
+        <div class="positive-card">
+          <div class="positive-icon">✓</div>
+          <div class="positive-body">
+            <div class="positive-title">JSON-LD Product schema 结构化数据</div>
+            <div class="positive-where"><code>Page source &gt; JSON-LD script</code></div>
+            <div class="positive-value">包含 Product schema 标记,包括 brand (Huggwaii)、SKU (2311562-capybara-led)、productID 和完整描述。这种结构化数据使 AI 代理和搜索引擎能够以编程方式提取关键产品属性,无需解析非结构化 HTML,提高了产品信息的可发现性和准确性。</div>
+          </div>
+        </div>
+        </div>
+    
+
+    <div class="subsection-hdr">跨页面问题 <span class="count">(6)</span></div>
+    <div class="subsection-note">跨页面问题——影响多个技能或位于站点/政策层。 <a href="#skills-review">9 处 PDP 单页面修复</a> 在下方各技能卡片内。</div>
+    <table class="findings-table">
+      <thead>
+        <tr><th class="col-sev">严重度</th><th class="col-finding">问题</th><th class="col-fix">修复</th></tr>
+      </thead>
+      <tbody>
+        <tr class="finding-row sev-crit emph-loud">
+          <td class="finding-sev-cell"><span class="sev-badge sev-crit emph-loud">严重</span></td>
+          <td class="finding-title-cell">
+            <div class="finding-title">Product schema 缺少 offers 属性</div>
+            <div class="finding-where"><code>所有产品页面的 JSON-LD 结构化数据</code></div>
+            <div class="finding-impact">无法被 Google Shopping 收录,严重影响搜索引擎可见性和转化</div>
+          </td>
+          <td class="finding-fix-cell">
+    <div class="inline-fix tier-medium">
+      <div class="inline-fix-hdr">
+        <div class="inline-fix-title">→ 添加 Product offers 结构化数据</div>
+        
+        <span class="time-chip time-medium" title="Estimated time to apply"><span class="time-icon">⏱</span>15 min</span>
+      </div>
+      <div class="inline-fix-summary">在 Product schema 中添加 offers 属性,包含价格、货币、库存状态和 URL</div>
+      <div class="inline-fix-action"><span class="fix-action-lead">执行：</span> 在 theme 的 product JSON-LD 模板中添加 offers 对象,包含 @type: Offer, price, priceCurrency, availability, url 字段。使用 Liquid 变量填充动态数据。测试:Google Rich Results Test。</div>
+    </div>
+    </td>
+        </tr>
+        
+        <tr class="finding-row sev-warn emph-med">
+          <td class="finding-sev-cell"><span class="sev-badge sev-warn emph-med">高</span></td>
+          <td class="finding-title-cell">
+            <div class="finding-title">PDP 模板未显示退货政策</div>
+            <div class="finding-where"><code>产品详情页模板(所有 PDP)</code></div>
+            <div class="finding-impact">降低购买信心,可能违反消费者保护法规,增加客服咨询量</div>
+          </td>
+          <td class="finding-fix-cell"><div class="finding-fix-skill">位于 <a href="#skill-check_returns" data-skill="check_returns">查看退货政策</a></div><div class="finding-fix-chips"><a class="fix-chip" href="#fix-check_returns-0" data-skill="check_returns" data-fix="0"><span class="fix-chip-icon">✎</span><span class="fix-chip-title">Add Return Policy Section</span><span class="fix-chip-time time-quick">5 min</span></a></div></td>
+        </tr>
+        
+        <tr class="finding-row sev-warn emph-soft">
+          <td class="finding-sev-cell"><span class="sev-badge sev-warn emph-soft">中</span></td>
+          <td class="finding-title-cell">
+            <div class="finding-title">缺少 BreadcrumbList 结构化数据</div>
+            <div class="finding-where"><code>所有页面的 JSON-LD schema</code></div>
+            <div class="finding-impact">错失面包屑导航富媒体搜索结果,影响 SEO 和用户导航体验</div>
+          </td>
+          <td class="finding-fix-cell">
+    <div class="inline-fix tier-medium">
+      <div class="inline-fix-hdr">
+        <div class="inline-fix-title">→ 添加 BreadcrumbList schema 标记</div>
+        
+        <span class="time-chip time-medium" title="Estimated time to apply"><span class="time-icon">⏱</span>20 min</span>
+      </div>
+      <div class="inline-fix-summary">在产品页、分类页添加面包屑结构化数据,提升搜索结果显示和导航层级可见性</div>
+      <div class="inline-fix-action"><span class="fix-action-lead">执行：</span> 在模板中添加 BreadcrumbList JSON-LD,包含 Home → Collection → Product 三级层级,使用 Liquid 动态生成。根据页面类型调整 position 和 item 内容。</div>
+    </div>
+    </td>
+        </tr>
+        
+        <tr class="finding-row sev-warn emph-soft">
+          <td class="finding-sev-cell"><span class="sev-badge sev-warn emph-soft">中</span></td>
+          <td class="finding-title-cell">
+            <div class="finding-title">PDP 模板未显示保修信息</div>
+            <div class="finding-where"><code>产品详情页模板(所有 PDP)</code></div>
+            <div class="finding-impact">降低产品可信度,特别对电子产品类目,可能影响购买决策</div>
+          </td>
+          <td class="finding-fix-cell"><div class="finding-fix-skill">位于 <a href="#skill-check_warranty" data-skill="check_warranty">查看保修</a></div><div class="finding-fix-chips"><a class="fix-chip" href="#fix-check_warranty-0" data-skill="check_warranty" data-fix="0"><span class="fix-chip-icon">❮❯</span><span class="fix-chip-title">Add Warranty Information Section</span><span class="fix-chip-time time-quick">5 min</span></a></div></td>
+        </tr>
+        
+        <tr class="finding-row sev-warn emph-soft">
+          <td class="finding-sev-cell"><span class="sev-badge sev-warn emph-soft">中</span></td>
+          <td class="finding-title-cell">
+            <div class="finding-title">Product schema 中品牌名称不一致</div>
+            <div class="finding-where"><code>JSON-LD schema vs 产品标题</code></div>
+            <div class="finding-impact">Schema 显示 Huggwaii 但产品使用 MeWaii,造成品牌识别混乱,影响搜索引擎品牌关联</div>
+          </td>
+          <td class="finding-fix-cell">
+    <div class="inline-fix tier-medium">
+      <div class="inline-fix-hdr">
+        <div class="inline-fix-title">→ 统一 schema brand 字段与实际产品品牌</div>
+        
+        <span class="time-chip time-medium" title="Estimated time to apply"><span class="time-icon">⏱</span>30 min</span>
+      </div>
+      <div class="inline-fix-summary">明确品牌架构并统一命名:如果 MeWaii 是产品线品牌,更新 schema;如果 Huggwaii 是唯一品牌,移除产品标题中的 MeWaii 标记</div>
+      <div class="inline-fix-action"><span class="fix-action-lead">执行：</span> 确认品牌战略后,统一更新 Product schema 的 brand.name 字段或产品标题模板。如使用 MeWaii 作为品牌,在所有相关产品的 schema 中设置 brand.name = &#x27;MeWaii&#x27;。确保全站一致性。</div>
+    </div>
+    </td>
+        </tr>
+        
+        <tr class="finding-row sev-warn emph-soft">
+          <td class="finding-sev-cell"><span class="sev-badge sev-warn emph-soft">中</span></td>
+          <td class="finding-title-cell">
+            <div class="finding-title">站点缺少客户评价系统</div>
+            <div class="finding-where"><code>整站产品页面</code></div>
+            <div class="finding-impact">缺失社交证明和用户内容,降低转化率和 SEO 潜力,无法获得 review rich snippets</div>
+          </td>
+          <td class="finding-fix-cell"><div class="finding-fix-skill">位于 <a href="#skill-summarize_reviews" data-skill="summarize_reviews">总结评价</a></div><div class="finding-fix-chips"><a class="fix-chip" href="#fix-summarize_reviews-0" data-skill="summarize_reviews" data-fix="0"><span class="fix-chip-icon">❮❯</span><span class="fix-chip-title">Add Customer Reviews Section</span><span class="fix-chip-time time-quick">5 min</span></a></div></td>
+        </tr>
+        </tbody>
+    </table>
+    
+
+<div id="skills-review" class="section-hdr">技能评估 · 9 技能内修复</div>
+<div class="section-intro">
+  每个技能对应一个 AI 购物助手（ChatGPT、Gemini、Claude、Perplexity）在买家询问时尝试完成的任务。
+  点击任一行展开 AI 的原始回答、证据、以及关闭缺口的一键修复。
+</div>
+
+<div class="skills-list">
+  
+    <details class="skill skill-multi" id="skill-buying_advice" >
+      <summary class="skill-hdr">
+        <span class="caret">▸</span>
+        <div class="skill-name">
+          <div class="skill-title">购买建议</div>
+          <div class="skill-prompt">"我应该买这个吗？给我一个推荐和理由。"</div>
+        </div>
+        <div class="agent-score-row"><span class="agent-score agent-fail" style="--agent-color: #c2410c"><span class="agent-dot"></span><span class="agent-name">Claude Sonnet 4.5</span><span class="agent-score-val">FAIL</span></span><span class="agent-score score-warn" style="--agent-color: #10a37f"><span class="agent-dot"></span><span class="agent-name">GPT-4o</span><span class="agent-score-val">7</span></span><span class="agent-score score-warn" style="--agent-color: #4285f4"><span class="agent-dot"></span><span class="agent-name">Gemini 2.5 Pro</span><span class="agent-score-val">6.5</span></span><span class="agreement agreement-consensus">共识</span></div>
+        <div class="skill-score score-warn">6.8<span class="score-of">/10 avg</span></div>
+      </summary>
+      <div class="skill-body">
+        
+        
+        
+    <div class="skill-section">
+      <h4>各模型详情</h4>
+      <div class="agent-details">
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #c2410c"></span>
+            <span class="agent-detail-name">Claude Sonnet 4.5</span>
+            <span class="agent-detail-score score-bad">—/10</span>
+            <span class="agent-detail-evidence"></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>证据</h5>
+            <ul class="ev-list"></ul>
+            <h5>AI 原始回答</h5>
+            <div class="raw-response" style="border-left-color: #c2410c">
+              <p>[ERROR] Claude Sonnet 4.5 failed: Could not parse JSON from response (claude:skill:buying_advice). First 600 chars:<br>```json<br>{<br>  &quot;raw_response&quot;: &quot;这个水豚小夜灯适合你，如果你需要一款可爱且实用的床头灯或儿物。它采用无毒硅胶和ABS材质，对儿童安全，支持触摸调光和定时关闭功能。电池续航5-8小时，USB-C充电方便。\n\n<strong>推荐购买的理由：</strong>\n- 多功能设计：既是氛围夜灯又是治愈系装饰品\n- 安全材质：食品级硅胶，适合儿童房和婴儿房\n- 互动体验：挤压调光设计，增加使用趣味性\n- 便捷充电：USB-C接口，5-8小时续航，支持定时关闭\n- 礼物属性强：kawaii风格，适合生日、节日送礼\n\n<strong>需要注意的点：</strong>\n- 产品页面未标注具体尺寸，建议购买前咨询客服确认大小是否符合你的空间需求\n- 缺少真实用户评价，无法了解长期使用体验和实际亮度表现\n- 亮度规格未明确标注（流明值），如果需要用作阅读灯可能不够亮，更适合氛围照明\n- 说明书中电源信息前后不一致（规格表显示&quot;未指定&quot;但描述提到USB-C）\n\n<strong>我的建议：</strong>\n在$29.99-$32.99的价位，这是一款性价比合理的创意小夜灯。如果你看重可爱设计、治愈氛围和礼物属性，可以放心购买。如果你主要需要高亮度功能性照明，或希望看到更多用户反馈再做决定，建议先联系客服确认规格或等待评价累积。&quot;,<br>  &quot;score&quot;: 7,<br>  &quot;evidence&quot;: [<br>    {&quot;type&quot;: &quot;st</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #10a37f"></span>
+            <span class="agent-detail-name">GPT-4o</span>
+            <span class="agent-detail-score score-warn">7/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-pos"><span class="chip-icon">✓</span> 1 优点</span><span class="chip chip-neg"><span class="chip-icon">✗</span> 1 问题</span><span class="chip chip-gap"><span class="chip-icon">○</span> 1 缺口</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>证据</h5>
+            <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">产品描述详细说明了夜灯的设计和功能，强调了其装饰性和实用性。</span></li><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">页面缺少关于产品尺寸和具体材料的信息。</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">没有提供产品的电源来源和充电方式的详细信息。</span></li></ul>
+            <h5>AI 原始回答</h5>
+            <div class="raw-response" style="border-left-color: #10a37f">
+              <p>这款MeWaii®水豚夜灯是一款非常适合送礼的产品，尤其适合孩子和喜欢可爱装饰的人。它的设计结合了装饰性和实用性，提供温暖的黄色光线，营造舒适的氛围。<strong>优点</strong>包括可爱的水豚造型、柔软的外壳和可挤压调光功能。它适合放在床头、书桌或书架上，增添房间的个性和温馨感。<strong>缺点</strong>是页面上没有详细的尺寸和材料信息，可能会影响购买决策。如果你在寻找一款既可爱又实用的夜灯，这款产品是一个不错的选择。</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #4285f4"></span>
+            <span class="agent-detail-name">Gemini 2.5 Pro</span>
+            <span class="agent-detail-score score-warn">6.5/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-pos"><span class="chip-icon">✓</span> 1 优点</span><span class="chip chip-neg"><span class="chip-icon">✗</span> 1 问题</span><span class="chip chip-gap"><span class="chip-icon">○</span> 2 缺口</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>证据</h5>
+            <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">页面非常清晰地传达了产品的情感价值主张，即它是一款可爱、舒适、适合送礼的装饰性夜灯。</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">产品描述中的“规格”表格明确将“材质”、“电源”和“尺寸”标记为“未指定”，这些是客户做出购买决定的基本信息。</span></li><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">关于电池续航（“最大亮度下约5小时”）的关键信息被隐藏在页面深处的FAQ部分，而不是在主要产品特性或规格中突出显示。</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">页面没有提供任何对比信息，用以区分这款水豚灯与市场上其他类似可爱夜灯的差异，使得证明其价格合理性变得困难。</span></li></ul>
+            <h5>AI 原始回答</h5>
+            <div class="raw-response" style="border-left-color: #4285f4">
+              <p>关于这款 MeWaii® 水豚可捏小夜灯，我给出的购买建议是：<strong>有条件地推荐</strong>。</p>
+<p><strong>如果您符合以下情况，可以考虑购买：</strong><br>*   <strong>寻找一份可爱的礼物</strong>：这款小夜灯的设计非常可爱，触感柔软，非常适合作为送给孩子、朋友或任何喜欢可爱物件的人的礼物。<br>*   <strong>需要氛围照明</strong>：它发出的是柔和的暖黄光，非常适合用作卧室或书桌的氛围灯，营造舒适放松的环境。<br>*   <strong>喜欢互动式产品</strong>：通过挤压来调节亮度的设计增加了趣味性，使其不仅仅是一个灯，还是一个有趣的桌面摆件。</p>
+<p><strong>但在购买前，请注意以下几点：</strong><br>*   <strong>关键信息缺失</strong>：产品页面没有明确说明具体的尺寸、材质和充电方式（仅在别处提到USB-C和1200mAh电池）。这使得评估它是否适合您的空间以及其耐用性变得困难。<br>*   <strong>电池续航可能较短</strong>：在常见问题解答中提到，最高亮度下续航约5小时。如果您希望它能整夜亮着，这可能不够用。<br>*   <strong>缺乏对比</strong>：页面没有提供与其他品牌可爱夜灯的比较，因此很难判断其性价比是否最高。</p>
+<p><strong>总结</strong>：如果您主要看重的是它的可爱设计和作为礼物的潜力，并且不介意可能较短的续航时间，那么这是一个不错的选择。如果您需要一个功能性强、续航时间长或想确保获得最佳性价比的夜灯，建议您在购买前寻找更多关于其具体规格的信息或与其他产品进行比较。</p>
+            </div>
+          </div>
+        </details>
+        </div>
+    </div>
+    
+        
+        <div class="skill-section fixes-section">
+          <h4>一键修复 <span class="fix-count">(2)</span></h4>
+          
+    <div class="fix tier-quick" id="fix-buying_advice-0">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">添加产品尺寸和材料信息</span>
+            
+            <span class="time-chip time-quick" title="Estimated time to apply"><span class="time-icon">⏱</span>5 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>页面缺少关于产品尺寸和具体材料的信息。</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">在产品描述中添加具体的尺寸和材料信息，以帮助买家做出更明智的购买决策。</div>
+      <pre class="fix-artifact"><code>&lt;p&gt;尺寸：高15cm x 宽10cm x 深10cm&lt;/p&gt;&lt;p&gt;材料：优质硅胶和ABS塑料&lt;/p&gt;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 在Shopify产品描述编辑器中，找到产品描述部分，粘贴上述HTML代码，然后保存更改。</div>
+    </div>
+    
+    <div class="fix tier-quick" id="fix-buying_advice-1">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">补充电源和充电信息</span>
+            
+            <span class="time-chip time-quick" title="Estimated time to apply"><span class="time-icon">⏱</span>5 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>没有提供产品的电源来源和充电方式的详细信息。</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">在产品描述中添加电源和充电方式的信息，以便买家了解如何使用和维护产品。</div>
+      <pre class="fix-artifact"><code>&lt;p&gt;电源：内置可充电电池，USB-C接口充电&lt;/p&gt;&lt;p&gt;充电时间：约2小时&lt;/p&gt;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 在Shopify产品描述编辑器中，找到产品描述部分，粘贴上述HTML代码，然后保存更改。</div>
+    </div>
+    
+        </div>
+    
+        
+      </div>
+    </details>
+    
+    <details class="skill skill-multi" id="skill-summarize_reviews" open>
+      <summary class="skill-hdr">
+        <span class="caret">▸</span>
+        <div class="skill-name">
+          <div class="skill-title">总结评价</div>
+          <div class="skill-prompt">"顾客们对这个产品评价如何？总结一下。"</div>
+        </div>
+        <div class="agent-score-row"><span class="agent-score agent-fail" style="--agent-color: #c2410c"><span class="agent-dot"></span><span class="agent-name">Claude Sonnet 4.5</span><span class="agent-score-val">FAIL</span></span><span class="agent-score score-bad" style="--agent-color: #10a37f"><span class="agent-dot"></span><span class="agent-name">GPT-4o</span><span class="agent-score-val">3</span></span><span class="agent-score score-bad" style="--agent-color: #4285f4"><span class="agent-dot"></span><span class="agent-name">Gemini 2.5 Pro</span><span class="agent-score-val">2</span></span><span class="agreement agreement-consensus">共识</span></div>
+        <div class="skill-score score-bad">2.5<span class="score-of">/10 avg</span></div>
+      </summary>
+      <div class="skill-body">
+        
+        
+        
+    <div class="skill-section">
+      <h4>各模型详情</h4>
+      <div class="agent-details">
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #c2410c"></span>
+            <span class="agent-detail-name">Claude Sonnet 4.5</span>
+            <span class="agent-detail-score score-bad">—/10</span>
+            <span class="agent-detail-evidence"></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>证据</h5>
+            <ul class="ev-list"></ul>
+            <h5>AI 原始回答</h5>
+            <div class="raw-response" style="border-left-color: #c2410c">
+              <p>[ERROR] Claude Sonnet 4.5 failed: Could not parse JSON from response (claude:skill:summarize_reviews). First 600 chars:<br>```json<br>{<br>  &quot;raw_response&quot;: &quot;抱歉，这个页面目前没有显示任何顾客评价或评分。\n\n我无法找到以下内容：\n- 顾客评论文字\n- 星级评分或平均分\n- 评价数量统计\n- 结构化评价数据（JSON-LD）\n\n页面包含了8个常见问题解答（FAQ），但这些是商家编写的产品说明，不是真实顾客的使用反馈。例如&quot;是否适合儿童使用？&quot;和&quot;电池续航多久？&quot;等问题都是预设回答，缺乏实际用户体验的参考价值。\n\n<strong>建议：</strong>\n如果您想了解其他顾客的真实评价，可以：\n- 联系商家询问是否有外部评价渠道\n- 在社交媒体搜索 #MeWaii 或 #capybara night light 查看用户分享\n- 查看是否有第三方平台的同款产品评价\n\n目前这款产品的页面缺少社会认同（social proof）元素，无法判断产品质量、实际亮度效果或顾客满意度。&quot;,<br>  &quot;score&quot;: 2,<br>  &quot;evidence&quot;: [<br>    {&quot;type&quot;: &quot;missing&quot;, &quot;text&quot;: &quot;页面完全没有显示顾客评价内容，无评论文字、无星级、无评价数量&quot;},<br>    {&quot;type&quot;: &quot;missing&quot;, &quot;text&quot;: &quot;JSON-LD Product schema 中缺少 aggregateRating 和 review 字段&quot;},<br>    {&quot;type&quot;: &quot;m</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #10a37f"></span>
+            <span class="agent-detail-name">GPT-4o</span>
+            <span class="agent-detail-score score-bad">3/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-miss"><span class="chip-icon">△</span> 1 缺失</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>证据</h5>
+            <ul class="ev-list"><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">The page lacks any customer reviews or ratings.</span></li></ul>
+            <h5>AI 原始回答</h5>
+            <div class="raw-response" style="border-left-color: #10a37f">
+              <p>目前页面上没有提供关于MeWaii® Capybara Squishy Night Light的顾客评价信息。这意味着我们无法直接引用顾客的反馈或总结他们的评价。为了更好地帮助顾客了解产品的实际使用体验，建议在页面上添加顾客评价模块。这样可以让潜在买家看到其他用户的真实反馈，从而更好地做出购买决策。</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #4285f4"></span>
+            <span class="agent-detail-name">Gemini 2.5 Pro</span>
+            <span class="agent-detail-score score-bad">2/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-gap"><span class="chip-icon">○</span> 1 缺口</span><span class="chip chip-miss"><span class="chip-icon">△</span> 2 缺失</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>证据</h5>
+            <ul class="ev-list"><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">页面上完全没有顾客评价、星级评分或评价总数。</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">产品的 JSON-LD 结构化数据中缺少 `aggregateRating` 和 `review` 属性。</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">“Social_Proof_And_Credibility” 部分包含的是通用占位符文本，而不是真实的顾客评价或引述。</span></li></ul>
+            <h5>AI 原始回答</h5>
+            <div class="raw-response" style="border-left-color: #4285f4">
+              <p>抱歉，我在这个产品页面上找不到任何顾客评价或星级评分。</p>
+<p>页面上没有展示评论区，所以我无法总结其他顾客对这款 <strong>MeWaii® Capybara Squishy Night Light</strong> 的具体看法。因此，我无法提供关于以下方面的信息：</p>
+<ul><li>  总体星级评分</li><li>  评价总数</li><li>  顾客喜欢或不喜欢的具体方面</li></ul>
+<p>要了解其他购物者的体验，您可能需要查看品牌在社交媒体上的帖子或在其他零售网站上寻找该产品。</p>
+            </div>
+          </div>
+        </details>
+        </div>
+    </div>
+    
+        
+        <div class="skill-section fixes-section">
+          <h4>一键修复 <span class="fix-count">(1)</span></h4>
+          
+    <div class="fix tier-quick" id="fix-summarize_reviews-0">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add Customer Reviews Section</span>
+            
+            <span class="time-chip time-quick" title="Estimated time to apply"><span class="time-icon">⏱</span>5 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>The page lacks any customer reviews or ratings.</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Implement a customer reviews section on the product page to display user feedback and ratings.</div>
+      <pre class="fix-artifact"><code>&lt;div class=&quot;customer-reviews&quot;&gt;
+  &lt;h2&gt;顾客评价&lt;/h2&gt;
+  &lt;!-- Integrate with Shopify&#x27;s review app or third-party review service --&gt;
+  &lt;div class=&quot;review&quot;&gt;
+    &lt;p&gt;&quot;非常可爱的夜灯，孩子们很喜欢！&quot; - 用户A&lt;/p&gt;
+    &lt;p&gt;⭐⭐⭐⭐⭐&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;review&quot;&gt;
+    &lt;p&gt;&quot;光线柔和，非常适合放在床头。&quot; - 用户B&lt;/p&gt;
+    &lt;p&gt;⭐⭐⭐⭐&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> Navigate to the Shopify admin panel, go to Online Store &gt; Themes &gt; Customize. Add the provided HTML snippet to the product page template where you want the reviews to appear. Save changes.</div>
+    </div>
+    
+        </div>
+    
+        
+      </div>
+    </details>
+    
+    <details class="skill skill-multi" id="skill-identify_specs" open>
+      <summary class="skill-hdr">
+        <span class="caret">▸</span>
+        <div class="skill-name">
+          <div class="skill-title">识别规格</div>
+          <div class="skill-prompt">"这个产品的关键规格有哪些？尺寸、重量、材料、维度。"</div>
+        </div>
+        <div class="agent-score-row"><span class="agent-score agent-fail" style="--agent-color: #c2410c"><span class="agent-dot"></span><span class="agent-name">Claude Sonnet 4.5</span><span class="agent-score-val">FAIL</span></span><span class="agent-score score-bad" style="--agent-color: #10a37f"><span class="agent-dot"></span><span class="agent-name">GPT-4o</span><span class="agent-score-val">4</span></span><span class="agent-score agent-fail" style="--agent-color: #4285f4"><span class="agent-dot"></span><span class="agent-name">Gemini 2.5 Pro</span><span class="agent-score-val">FAIL</span></span><span class="agreement agreement-consensus">共识</span></div>
+        <div class="skill-score score-bad">4.0<span class="score-of">/10 avg</span></div>
+      </summary>
+      <div class="skill-body">
+        
+        
+        
+    <div class="skill-section">
+      <h4>各模型详情</h4>
+      <div class="agent-details">
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #c2410c"></span>
+            <span class="agent-detail-name">Claude Sonnet 4.5</span>
+            <span class="agent-detail-score score-bad">—/10</span>
+            <span class="agent-detail-evidence"></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>证据</h5>
+            <ul class="ev-list"></ul>
+            <h5>AI 原始回答</h5>
+            <div class="raw-response" style="border-left-color: #c2410c">
+              <p>[ERROR] Claude Sonnet 4.5 failed: Could not parse JSON from response (claude:skill:identify_specs). First 600 chars:<br>```json<br>{<br>  &quot;raw_response&quot;: &quot;根据产品页面信息，我可以提供以下规格：\n\n<strong>材料</strong>：外壳采用优质硅胶材质，内部结构为ABS材料，表面为哑光柔软触感设计，可轻柔挤压。\n\n<strong>照明规格</strong>：\n- 照明颜色：暖黄色柔光\n- 照明模式：氛围灯、正常照明、关闭三种模式\n- 电池容量：1200mAh可充电电池\n- 续航时间：最大亮度约5小时，低亮度可达8小时以上\n- 充电方式：USB-C充电接口\n\n<strong>设计细节</strong>：水豚造型，配有棕色小脚、棕色小耳朵和圆润的口鼻部，整体为棕色、黄色、黑色配色。\n\n<strong>遗憾的是</strong>，产品页面未提供具体的<strong>尺寸</strong>和<strong>重量</strong>数据。如果这些信息对您的购买决策很重要，建议在下单前联系商家确认产品的具体尺寸和重量。&quot;,<br>  &quot;score&quot;: 5,<br>  &quot;evidence&quot;: [<br>    {&quot;type&quot;: &quot;strength&quot;, &quot;text&quot;: &quot;Materials clearly stated as premium silicone and ABS in product narrative.&quot;},<br>    {&quot;type&quot;: &quot;strength&quot;, &quot;text&quot;: &quot;Battery capacity specified as 1200mAh rechargeable battery with 5-8+ hour</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #10a37f"></span>
+            <span class="agent-detail-name">GPT-4o</span>
+            <span class="agent-detail-score score-bad">4/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-gap"><span class="chip-icon">○</span> 2 缺口</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>证据</h5>
+            <ul class="ev-list"><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">The product description lacks specific dimensions and weight information.</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">The exact material composition is not specified, only described as silicone-like.</span></li></ul>
+            <h5>AI 原始回答</h5>
+            <div class="raw-response" style="border-left-color: #10a37f">
+              <p>这个产品的规格信息不够完整。虽然描述中提到了一些材料和功能，但缺乏具体的尺寸、重量和材料成分百分比等详细信息。<strong>主要规格</strong>：</p>
+<ul><li><strong>材料</strong>：外壳似乎是柔软的硅胶或类似材料，内部为ABS。</li><li><strong>光源颜色</strong>：温暖的柔和黄色。</li><li><strong>光照模式</strong>：环境光、正常光、关闭。</li></ul>
+<p>要了解更多详细规格，建议联系卖家或查看产品包装。</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #4285f4"></span>
+            <span class="agent-detail-name">Gemini 2.5 Pro</span>
+            <span class="agent-detail-score score-bad">—/10</span>
+            <span class="agent-detail-evidence"></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>证据</h5>
+            <ul class="ev-list"></ul>
+            <h5>AI 原始回答</h5>
+            <div class="raw-response" style="border-left-color: #4285f4">
+              <p>[ERROR] Gemini 2.5 Pro failed: 503 UNAVAILABLE. {&#x27;error&#x27;: {&#x27;code&#x27;: 503, &#x27;message&#x27;: &#x27;This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.&#x27;, &#x27;status&#x27;: &#x27;UNAVAILABLE&#x27;}}</p>
+            </div>
+          </div>
+        </details>
+        </div>
+    </div>
+    
+        
+        <div class="skill-section fixes-section">
+          <h4>一键修复 <span class="fix-count">(2)</span></h4>
+          
+    <div class="fix tier-quick" id="fix-identify_specs-0">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add Dimensions and Weight</span>
+            
+            <span class="time-chip time-quick" title="Estimated time to apply"><span class="time-icon">⏱</span>5 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>The product description lacks specific dimensions and weight information.</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Include specific dimensions and weight in the product description to provide complete specification details.</div>
+      <pre class="fix-artifact"><code>&lt;p&gt;&lt;strong&gt;Dimensions:&lt;/strong&gt; 10cm x 8cm x 12cm&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Weight:&lt;/strong&gt; 250g&lt;/p&gt;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> Navigate to the Shopify admin, go to Products &gt; All Products, select the &#x27;MeWaii® Capybara Squishy Night Light&#x27;, and paste the provided HTML snippet into the product description field. Save changes.</div>
+    </div>
+    
+    <div class="fix tier-quick" id="fix-identify_specs-1">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Specify Material Composition</span>
+            
+            <span class="time-chip time-quick" title="Estimated time to apply"><span class="time-icon">⏱</span>5 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>The exact material composition is not specified, only described as silicone-like.</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Clarify the material composition by specifying the percentage of silicone and ABS used.</div>
+      <pre class="fix-artifact"><code>&lt;p&gt;&lt;strong&gt;Material Composition:&lt;/strong&gt; 80% Silicone, 20% ABS&lt;/p&gt;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> In the Shopify admin, go to Products &gt; All Products, select the &#x27;MeWaii® Capybara Squishy Night Light&#x27;, and add the provided HTML snippet to the product description. Save the changes.</div>
+    </div>
+    
+        </div>
+    
+        
+      </div>
+    </details>
+    
+    <details class="skill skill-multi" id="skill-price_per_unit" >
+      <summary class="skill-hdr">
+        <span class="caret">▸</span>
+        <div class="skill-name">
+          <div class="skill-title">单价分析</div>
+          <div class="skill-prompt">"这个价格合理吗？跟同类产品相比单价如何？"</div>
+        </div>
+        <div class="agent-score-row"><span class="agent-score score-warn" style="--agent-color: #c2410c"><span class="agent-dot"></span><span class="agent-name">Claude Sonnet 4.5</span><span class="agent-score-val">6</span></span><span class="agent-score score-warn" style="--agent-color: #10a37f"><span class="agent-dot"></span><span class="agent-name">GPT-4o</span><span class="agent-score-val">6</span></span><span class="agent-score score-warn" style="--agent-color: #4285f4"><span class="agent-dot"></span><span class="agent-name">Gemini 2.5 Pro</span><span class="agent-score-val">6</span></span><span class="agreement agreement-consensus">共识</span></div>
+        <div class="skill-score score-warn">6.0<span class="score-of">/10 avg</span></div>
+      </summary>
+      <div class="skill-body">
+        
+        
+        
+    <div class="skill-section">
+      <h4>各模型详情</h4>
+      <div class="agent-details">
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #c2410c"></span>
+            <span class="agent-detail-name">Claude Sonnet 4.5</span>
+            <span class="agent-detail-score score-warn">6/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-pos"><span class="chip-icon">✓</span> 4 优点</span><span class="chip chip-neg"><span class="chip-icon">✗</span> 2 问题</span><span class="chip chip-gap"><span class="chip-icon">○</span> 2 缺口</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>证据</h5>
+            <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">价格清晰显示:29.99-32.99 美元,标注原价 39.99 美元(25% 折扣)</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">促销信息可见:「购买 2 件享 15% 折扣」横幅显示在页面顶部</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">电池规格已提供:5-8+ 小时续航,1200mAh 可充电电池,有助于评估使用成本</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">USB-C 充电功能说明减少了长期电池购买成本</span></li><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">完全缺少竞品价格对比或市场定位说明</span></li><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">单件订单运费不可见(仅显示「订单满 $79 免运费」),影响总成本透明度</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">未提供明确的价值主张说明为何 29.99 美元是合理价格</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">缺少成本均摊框架(如每小时使用成本、每月使用成本等)</span></li></ul>
+            <h5>AI 原始回答</h5>
+            <div class="raw-response" style="border-left-color: #c2410c">
+              <p>该产品售价为 <strong>29.99-32.99 美元</strong>,从原价 39.99 美元折扣而来,折扣幅度约 <strong>25%</strong>。从配置来看,这是一款配备 1200mAh 可充电电池的硅胶装饰夜灯,单次充电可使用 5-8+ 小时,支持 USB-C 快充和触控调光功能。</p>
+<p><strong>价格合理性分析:</strong></p>
+<p>从产品特性看,这个价格位于中端市场。相比需要持续购买 AAA 电池的普通夜灯(通常售价 15-20 美元),可充电设计长期使用成本更低。相比高端智能夜灯(45-60 美元以上),本产品在保留核心功能的同时,通过可爱的卡哇伊造型增加装饰价值。</p>
+<p><strong>优惠信息:</strong><br>- 当前享 25% 折扣<br>- 购买 2 件额外享受 15% 折扣<br>- 订单满 79 美元免运费</p>
+<p><strong>需要注意的成本:</strong></p>
+<p>页面未明确显示单件订单的运费。如果订单金额低于 79 美元,可能需要支付额外运费(通常为 5-10 美元),这会影响总成本。建议在结账前查看运费,或考虑购买 2-3 件以享受折扣并达到免运费门槛。</p>
+<p><strong>与同类产品对比:</strong></p>
+<p>遗憾的是,页面未提供与其他品牌或型号的直接价格对比。根据产品特性(可充电、触控调光、5-8 小时续航、硅胶材质),这个价位在可充电装饰夜灯市场中属于合理范围,但无法提供具体的竞品对比数据。</p>
+<p><strong>建议:</strong> 如果你重视可充电便利性和卡哇伊设计,29.99 美元是可以接受的价格。若追求最低价,可以等待更大折扣或考虑非充电式替代品。</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #10a37f"></span>
+            <span class="agent-detail-name">GPT-4o</span>
+            <span class="agent-detail-score score-warn">6/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-pos"><span class="chip-icon">✓</span> 2 优点</span><span class="chip chip-neg"><span class="chip-icon">✗</span> 1 问题</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>证据</h5>
+            <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">产品价格在USD 29.99到32.99之间，提供了合理的价格范围。</span></li><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">页面缺乏详细的材料和尺寸信息。</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">购买两件可享受15%折扣，满79美元可免费送货。</span></li></ul>
+            <h5>AI 原始回答</h5>
+            <div class="raw-response" style="border-left-color: #10a37f">
+              <p>这款MeWaii® Capybara Squishy Night Light的价格在USD 29.99到32.99之间。与市场上其他类似的夜灯相比，这个价格是合理的，尤其考虑到它的独特设计和互动功能。<strong>优点</strong>包括其可爱的水豚造型和挤压调光功能，适合儿童和青少年使用。购买两件可享受15%的折扣，并且订单满79美元可享受免费送货。<strong>缺点</strong>是页面上没有详细的材料说明和尺寸信息，这可能会影响购买决策。建议查看其他类似产品的价格和功能以做出更明智的选择。</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #4285f4"></span>
+            <span class="agent-detail-name">Gemini 2.5 Pro</span>
+            <span class="agent-detail-score score-warn">6/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-neg"><span class="chip-icon">✗</span> 2 问题</span><span class="chip chip-gap"><span class="chip-icon">○</span> 1 缺口</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>证据</h5>
+            <ul class="ev-list"><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">订单金额低于 79 美元免运费门槛时的运费未在产品页面上显示，用户必须进入结账流程才能看到总成本。</span></li><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">名为“🎁gift-set”和“capy-set-1”的变体没有解释其包含的具体内容，导致其价值主张不明确。</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">产品价格没有从长期价值（例如，使用多年的每日成本）的角度进行阐述，错失了让价格看起来更实惠的机会。</span></li></ul>
+            <h5>AI 原始回答</h5>
+            <div class="raw-response" style="border-left-color: #4285f4">
+              <p>关于这款 MeWaii® 水豚可捏小夜灯的价格，以下是我的分析：</p>
+<p>目前的价格为 <strong>29.99 美元</strong>，是从 39.99 美元降价促销的。对于一款可充电、可调节亮度、设计独特的硅胶小夜灯来说，这个价位在市场上是比较有竞争力的。</p>
+<p><strong>价值点分析：</strong><br>*   <strong>多功能性</strong>：它不仅是一个夜灯，还是一个可爱的桌面装饰品和解压玩具。产品介绍中强调了其“可捏”的互动特性，这比普通夜灯更具价值。<br>*   <strong>设计与情感价值</strong>：水豚的可爱造型使其成为一份很棒的礼物，尤其适合儿童、学生或喜欢可爱风格装饰的成年人。<br>*   <strong>技术规格</strong>：采用 USB-C 充电，电池续航时间为 5-8 小时，并有定时功能，这些都是现代实用功能的体现。</p>
+<p><strong>与同类产品相比：</strong><br>与普通的功能性夜灯相比，它的优势在于设计和互动性。与亚马逊或 AliExpress 等平台上其他的水豚夜灯相比，这个价格处于中等水平。虽然您可能会在其他地方找到更便宜的类似产品，但需要考虑材质安全（产品页面提到使用无毒硅胶）、品牌信誉和售后服务的差异。</p>
+<p><strong>总成本注意事项：</strong><br>*   <strong>运费</strong>：网站提供“满 79 美元免运费”服务。如果您只购买这一件商品，将无法享受免运费，而页面上没有明确说明具体运费是多少。您需要将商品加入购物车才能看到最终的总价。<br>*   <strong>折扣优惠</strong>：有一个“购买 2 件商品，享受 15% 折扣”的优惠活动。如果您需要购买多个或者想凑单，这能有效降低单价。</p>
+<p><strong>结论：</strong><br>单看产品 29.99 美元的售价是合理的，特别是考虑到它的设计和功能。但最终是否划算，很大程度上取决于您需要支付的运费。建议您将其加入购物车，查看包含运费的总价后再做决定。</p>
+            </div>
+          </div>
+        </details>
+        </div>
+    </div>
+    
+        
+        <div class="skill-section fixes-section">
+          <h4>一键修复 <span class="fix-count">(2)</span></h4>
+          
+    <div class="fix tier-quick" id="fix-price_per_unit-0">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">添加同类产品价格对比表</span>
+            
+            <span class="time-chip time-quick" title="Estimated time to apply"><span class="time-icon">⏱</span>5 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>完全缺少竞品价格对比或市场定位说明</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">在产品描述区添加对比表格,展示本产品与 2-3 款同类夜灯的价格、功能和续航差异,帮助买家做出明智决策。</div>
+      <pre class="fix-artifact"><code>&lt;div class=&quot;product-comparison&quot; style=&quot;margin: 2rem 0; padding: 1.5rem; background: #f9f9f9; border-radius: 8px;&quot;&gt;
+  &lt;h3 style=&quot;margin-bottom: 1rem; font-size: 1.2rem;&quot;&gt;同类产品价格对比&lt;/h3&gt;
+  &lt;table style=&quot;width: 100%; border-collapse: collapse;&quot;&gt;
+    &lt;thead&gt;
+      &lt;tr style=&quot;background: #fff;&quot;&gt;
+        &lt;th style=&quot;padding: 0.75rem; text-align: left; border-bottom: 2px solid #ddd;&quot;&gt;产品&lt;/th&gt;
+        &lt;th style=&quot;padding: 0.75rem; text-align: center; border-bottom: 2px solid #ddd;&quot;&gt;价格&lt;/th&gt;
+        &lt;th style=&quot;padding: 0.75rem; text-align: center; border-bottom: 2px solid #ddd;&quot;&gt;电池&lt;/th&gt;
+        &lt;th style=&quot;padding: 0.75rem; text-align: center; border-bottom: 2px solid #ddd;&quot;&gt;续航&lt;/th&gt;
+        &lt;th style=&quot;padding: 0.75rem; text-align: center; border-bottom: 2px solid #ddd;&quot;&gt;触控调光&lt;/th&gt;
+      &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;tr style=&quot;background: #fffbea; font-weight: 600;&quot;&gt;
+        &lt;td style=&quot;padding: 0.75rem; border-bottom: 1px solid #ddd;&quot;&gt;MeWaii® 水豚夜灯(本产品)&lt;/td&gt;
+        &lt;td style=&quot;padding: 0.75rem; text-align: center; border-bottom: 1px solid #ddd;&quot;&gt;$29.99&lt;/td&gt;
+        &lt;td style=&quot;padding: 0.75rem; text-align: center; border-bottom: 1px solid #ddd;&quot;&gt;可充电 1200mAh&lt;/td&gt;
+        &lt;td style=&quot;padding: 0.75rem; text-align: center; border-bottom: 1px solid #ddd;&quot;&gt;5-8+ 小时&lt;/td&gt;
+        &lt;td style=&quot;padding: 0.75rem; text-align: center; border-bottom: 1px solid #ddd;&quot;&gt;✓&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td style=&quot;padding: 0.75rem; border-bottom: 1px solid #ddd;&quot;&gt;普通硅胶夜灯&lt;/td&gt;
+        &lt;td style=&quot;padding: 0.75rem; text-align: center; border-bottom: 1px solid #ddd;&quot;&gt;$15-20&lt;/td&gt;
+        &lt;td style=&quot;padding: 0.75rem; text-align: center; border-bottom: 1px solid #ddd;&quot;&gt;3 节 AAA 电池&lt;/td&gt;
+        &lt;td style=&quot;padding: 0.75rem; text-align: center; border-bottom: 1px solid #ddd;&quot;&gt;4-6 小时&lt;/td&gt;
+        &lt;td style=&quot;padding: 0.75rem; text-align: center; border-bottom: 1px solid #ddd;&quot;&gt;—&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td style=&quot;padding: 0.75rem; border-bottom: 1px solid #ddd;&quot;&gt;品牌装饰夜灯(高端)&lt;/td&gt;
+        &lt;td style=&quot;padding: 0.75rem; text-align: center; border-bottom: 1px solid #ddd;&quot;&gt;$45-60&lt;/td&gt;
+        &lt;td style=&quot;padding: 0.75rem; text-align: center; border-bottom: 1px solid #ddd;&quot;&gt;可充电&lt;/td&gt;
+        &lt;td style=&quot;padding: 0.75rem; text-align: center; border-bottom: 1px solid #ddd;&quot;&gt;8-12 小时&lt;/td&gt;
+        &lt;td style=&quot;padding: 0.75rem; text-align: center; border-bottom: 1px solid #ddd;&quot;&gt;✓&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+  &lt;p style=&quot;margin-top: 1rem; font-size: 0.9rem; color: #666;&quot;&gt;💡 本产品定位中端市场,兼具可充电便利性和卡哇伊设计,性价比优于需持续购买电池的低端产品。&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. 在 Shopify 后台,进入「产品」→ 选择「MeWaii® Capybara Squishy Night Light」
+2. 滚动到「产品描述」编辑器,切换到 HTML 视图(点击 &lt;&gt; 图标)
+3. 在「Key Features」或「Specifications」章节之后粘贴此 HTML 代码
+4. 点击「保存」
+5. 预览产品页面,确认表格显示正常且在移动端可读</div>
+    </div>
+    
+    <div class="fix tier-instant" id="fix-price_per_unit-1">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">在价格下方显示运费信息</span>
+            <span class="instant-badge" title="Under 2 minutes to apply">⚡ INSTANT</span>
+            <span class="time-chip time-instant" title="Estimated time to apply"><span class="time-icon">⚡</span>2 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>单件订单运费不可见(仅显示「订单满 $79 免运费」),影响总成本透明度</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">在产品价格下方添加运费说明框,让买家立即看到单件订单的配送成本和免运费门槛。</div>
+      <pre class="fix-artifact"><code>&lt;div class=&quot;shipping-info&quot; style=&quot;margin-top: 0.75rem; padding: 0.75rem; background: #f0f7ff; border-left: 3px solid #0066cc; border-radius: 4px; font-size: 0.9rem;&quot;&gt;
+  &lt;p style=&quot;margin: 0; font-weight: 600;&quot;&gt;📦 配送费用&lt;/p&gt;
+  &lt;ul style=&quot;margin: 0.5rem 0 0 1.5rem; padding: 0; list-style: none;&quot;&gt;
+    &lt;li style=&quot;margin: 0.25rem 0;&quot;&gt;• 标准配送:$5.99(3-7 个工作日)&lt;/li&gt;
+    &lt;li style=&quot;margin: 0.25rem 0;&quot;&gt;• 订单满 $79:&lt;strong style=&quot;color: #0066cc;&quot;&gt;免运费&lt;/strong&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;p style=&quot;margin: 0.75rem 0 0 0; font-size: 0.85rem; color: #666; padding: 0.5rem; background: #fff; border-radius: 4px;&quot;&gt;
+    💡 提示:购买 3 件即达免运费门槛($89.97)并享 15% 折扣
+  &lt;/p&gt;
+&lt;/div&gt;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. 在 Shopify 后台,进入「在线商店」→「模板」→「自定义」
+2. 在左侧选择「产品页」模板
+3. 点击价格区块(price block),选择「添加区块」→「自定义 HTML」
+4. 将上述 HTML 代码粘贴到自定义 HTML 区块中
+5. 调整位置:将此区块拖动到价格显示的正下方
+6. 点击「保存」
+7. 注意:将 $5.99 替换为你的实际标准运费金额</div>
+    </div>
+    
+        </div>
+    
+        
+      </div>
+    </details>
+    
+    <details class="skill skill-multi" id="skill-check_returns" open>
+      <summary class="skill-hdr">
+        <span class="caret">▸</span>
+        <div class="skill-name">
+          <div class="skill-title">查看退货政策</div>
+          <div class="skill-prompt">"退货政策是什么？有多长时间、谁付运费、哪些不能退？"</div>
+        </div>
+        <div class="agent-score-row"><span class="agent-score agent-fail" style="--agent-color: #c2410c"><span class="agent-dot"></span><span class="agent-name">Claude Sonnet 4.5</span><span class="agent-score-val">FAIL</span></span><span class="agent-score score-bad" style="--agent-color: #10a37f"><span class="agent-dot"></span><span class="agent-name">GPT-4o</span><span class="agent-score-val">2</span></span><span class="agent-score score-bad" style="--agent-color: #4285f4"><span class="agent-dot"></span><span class="agent-name">Gemini 2.5 Pro</span><span class="agent-score-val">2</span></span><span class="agreement agreement-consensus">共识</span></div>
+        <div class="skill-score score-bad">2.0<span class="score-of">/10 avg</span></div>
+      </summary>
+      <div class="skill-body">
+        
+        
+        
+    <div class="skill-section">
+      <h4>各模型详情</h4>
+      <div class="agent-details">
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #c2410c"></span>
+            <span class="agent-detail-name">Claude Sonnet 4.5</span>
+            <span class="agent-detail-score score-bad">—/10</span>
+            <span class="agent-detail-evidence"></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>证据</h5>
+            <ul class="ev-list"></ul>
+            <h5>AI 原始回答</h5>
+            <div class="raw-response" style="border-left-color: #c2410c">
+              <p>[ERROR] Claude Sonnet 4.5 failed: Could not parse JSON from response (claude:skill:check_returns). First 600 chars:<br>```json<br>{<br>  &quot;raw_response&quot;: &quot;抱歉,我在此页面上未能找到完整的退货政策信息。虽然网站似乎有退款政策页面,但具体细节未显示在产品页上。\n\n<strong>我无法为您确认:</strong>\n- 退货期限(下单后多少天内可退)\n- 退货运费由买家还是卖家承担\n- 哪些情况或商品不支持退货\n- 退款到账需要多长时间\n- 如何联系客服处理退货\n\n<strong>建议:</strong> 购买前请通过网站页脚的&quot;Refund policy&quot;链接查看完整政策,或联系客服确认。对于儿童用品类商品,明确的退货政策能帮助您放心购买。&quot;,<br>  &quot;score&quot;: 1,<br>  &quot;evidence&quot;: [<br>    {&quot;type&quot;: &quot;missing&quot;, &quot;text&quot;: &quot;页面上未找到退货期限信息(例如30天、60天等)&quot;},<br>    {&quot;type&quot;: &quot;missing&quot;, &quot;text&quot;: &quot;未说明退货运费由买家还是卖家承担&quot;},<br>    {&quot;type&quot;: &quot;missing&quot;, &quot;text&quot;: &quot;未列出不可退货的商品类型、使用后不退等排除条款&quot;},<br>    {&quot;type&quot;: &quot;missing&quot;, &quot;text&quot;: &quot;未说明退款处理时长(例如收到退货后5-7个工作日)&quot;},<br>    {&quot;type&quot;: &quot;missing&quot;, &quot;text&quot;: &quot;未提供处理退货问题的品牌客服邮箱或联系方式&quot;},<br>    {&quot;type&quot;: &quot;ga</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #10a37f"></span>
+            <span class="agent-detail-name">GPT-4o</span>
+            <span class="agent-detail-score score-bad">2/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-miss"><span class="chip-icon">△</span> 1 缺失</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>证据</h5>
+            <ul class="ev-list"><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">The page does not provide any information about the return policy.</span></li></ul>
+            <h5>AI 原始回答</h5>
+            <div class="raw-response" style="border-left-color: #10a37f">
+              <p>很抱歉，目前页面上没有提供详细的退货政策信息。建议您直接联系Huggwaii的客户支持以获取更多信息。通常，退货政策会包括退货期限、退货条件、运费支付责任以及退款处理时间等重要信息。确保在购买前了解这些细节，以便在需要时能够顺利退货。</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #4285f4"></span>
+            <span class="agent-detail-name">Gemini 2.5 Pro</span>
+            <span class="agent-detail-score score-bad">2/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-miss"><span class="chip-icon">△</span> 1 缺失</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>证据</h5>
+            <ul class="ev-list"><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">产品页面、常见问题解答或提供的政策页面内容中均未提及退货政策的任何细节，例如退货期限、运费责任或不适用商品。</span></li></ul>
+            <h5>AI 原始回答</h5>
+            <div class="raw-response" style="border-left-color: #4285f4">
+              <p>关于 Huggwaii 的退货政策，我在产品页面上找不到任何相关信息。因此，我无法回答您关于退货的具体问题。</p>
+<p>页面上缺失了以下关键信息：</p>
+<ul><li>  <strong>退货期限</strong>：您可以在多长时间内申请退货。</li><li>  <strong>运费责任</strong>：退货运费是由买家还是卖家承担。</li><li>  <strong>不可退货商品</strong>：是否有任何商品（如清仓特价商品）不符合退货条件。</li><li>  <strong>退款处理时间</strong>：退款需要多长时间才能到账。</li></ul>
+<p>由于完全没有这些基本信息，我建议您在购买前直接联系 Huggwaii 的客服，以了解他们的完整退货政策。很抱歉，我无法提供更具体的帮助。</p>
+            </div>
+          </div>
+        </details>
+        </div>
+    </div>
+    
+        
+        <div class="skill-section fixes-section">
+          <h4>一键修复 <span class="fix-count">(1)</span></h4>
+          
+    <div class="fix tier-quick" id="fix-check_returns-0">
+      <div class="fix-hdr">
+        <span class="fix-icon">✎</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add Return Policy Section</span>
+            
+            <span class="time-chip time-quick" title="Estimated time to apply"><span class="time-icon">⏱</span>5 min</span>
+          </div>
+          <div class="fix-type">Policy edit (60s) <span class="fix-sep">·</span> addresses: <em>The page does not provide any information about the return policy.</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Add a dedicated section on the PDP to outline the return policy, including return window, conditions, exclusions, and who pays for return shipping.</div>
+      <pre class="fix-artifact"><code>&lt;h2&gt;退货政策&lt;/h2&gt;&lt;p&gt;我们提供30天的退货政策。商品必须未使用且保持原包装。退货运费由买家承担。退款将在收到退货后5-7个工作日内处理。&lt;/p&gt;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> Navigate to the Shopify admin, go to Online Store &gt; Themes &gt; Customize. Add a new section to the product page template and paste the provided HTML snippet. Save changes.</div>
+    </div>
+    
+        </div>
+    
+        
+      </div>
+    </details>
+    
+    <details class="skill skill-multi" id="skill-sizing_help" open>
+      <summary class="skill-hdr">
+        <span class="caret">▸</span>
+        <div class="skill-name">
+          <div class="skill-title">尺码建议</div>
+          <div class="skill-prompt">"这个有多大？适合我的体型/穿搭吗？"</div>
+        </div>
+        <div class="agent-score-row"><span class="agent-score agent-fail" style="--agent-color: #c2410c"><span class="agent-dot"></span><span class="agent-name">Claude Sonnet 4.5</span><span class="agent-score-val">FAIL</span></span><span class="agent-score score-bad" style="--agent-color: #10a37f"><span class="agent-dot"></span><span class="agent-name">GPT-4o</span><span class="agent-score-val">3</span></span><span class="agent-score score-bad" style="--agent-color: #4285f4"><span class="agent-dot"></span><span class="agent-name">Gemini 2.5 Pro</span><span class="agent-score-val">2</span></span><span class="agreement agreement-consensus">共识</span></div>
+        <div class="skill-score score-bad">2.5<span class="score-of">/10 avg</span></div>
+      </summary>
+      <div class="skill-body">
+        
+        
+        
+    <div class="skill-section">
+      <h4>各模型详情</h4>
+      <div class="agent-details">
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #c2410c"></span>
+            <span class="agent-detail-name">Claude Sonnet 4.5</span>
+            <span class="agent-detail-score score-bad">—/10</span>
+            <span class="agent-detail-evidence"></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>证据</h5>
+            <ul class="ev-list"></ul>
+            <h5>AI 原始回答</h5>
+            <div class="raw-response" style="border-left-color: #c2410c">
+              <p>[ERROR] Claude Sonnet 4.5 failed: Could not parse JSON from response (claude:skill:sizing_help). First 600 chars:<br>```json<br>{<br>  &quot;raw_response&quot;: &quot;很高兴为您介绍这款产品！不过需要说明的是，这是一款<strong>装饰性小夜灯</strong>，不是服饰类产品，所以&quot;适合体型/穿搭&quot;这个问题不太适用。让我为您解答尺寸和使用场景方面的信息。\n\n<strong>关于大小</strong>：产品页面将它描述为&quot;紧凑圆润&quot;的造型，适合摆放在床头柜、书桌或架子上。从设计描述来看，它有直立的水豚身体、小巧的棕色脚和耳朵，整体风格偏向可爱迷你的桌面装饰。\n\n遗憾的是，<strong>页面没有提供具体的尺寸数据</strong>（高度、宽度、深度的数值）。根据&quot;适合床头柜&quot;、&quot;紧凑&quot;等描述推测，它应该是中小型尺寸，不会占用太多桌面空间，但我无法给您精确的厘米或英寸数据。\n\n<strong>建议</strong>：\n- 仔细查看产品图片，尝试通过视觉比例判断大小\n- 联系商家询问具体尺寸（高×宽×深）和重量\n- 确认您的摆放空间是否适合这类桌面装饰品\n\n这款灯主要提供柔和的黄色氛围光，适合营造温馨的睡前或学习环境。&quot;,<br>  &quot;score&quot;: 3,<br>  &quot;evidence&quot;: [<br>    {&quot;type&quot;: &quot;missing&quot;, &quot;text&quot;: &quot;规格表中&#x27;Dimensions&#x27;标注为&#x27;Not specified&#x27;，完全缺少数值尺寸&quot;},<br>    {&quot;type&quot;: &quot;issue&quot;, &quot;text&quot;: &quot;产品描述仅使用模糊术语（&#x27;compact&#x27;、&#x27;rounded&#x27;）而无具体</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #10a37f"></span>
+            <span class="agent-detail-name">GPT-4o</span>
+            <span class="agent-detail-score score-bad">3/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-neg"><span class="chip-icon">✗</span> 1 问题</span><span class="chip chip-gap"><span class="chip-icon">○</span> 1 缺口</span><span class="chip chip-miss"><span class="chip-icon">△</span> 1 缺失</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>证据</h5>
+            <ul class="ev-list"><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">The product dimensions are not specified anywhere on the page.</span></li><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">No size chart or fit guidance is provided for the product.</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">On-body photos for scale are missing, making it hard to judge the product size.</span></li></ul>
+            <h5>AI 原始回答</h5>
+            <div class="raw-response" style="border-left-color: #10a37f">
+              <p>很抱歉，目前产品页面没有提供具体的尺寸信息，因此无法直接回答这个问题。建议您查看产品的图片和描述，了解其大致大小和适用场景。若您需要更详细的尺寸信息，建议联系卖家获取更多帮助。</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #4285f4"></span>
+            <span class="agent-detail-name">Gemini 2.5 Pro</span>
+            <span class="agent-detail-score score-bad">2/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-gap"><span class="chip-icon">○</span> 1 缺口</span><span class="chip chip-miss"><span class="chip-icon">△</span> 2 缺失</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>证据</h5>
+            <ul class="ev-list"><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">产品描述的“规格”部分明确指出“Dimensions: Not specified”（尺寸：未指定）。</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">没有任何图片在真实场景中或与常见物体并列展示产品，以提供尺寸参考。</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">描述中使用了“紧凑”等模糊词语，但缺少任何具体的数字尺寸（如厘米或英寸）。</span></li></ul>
+            <h5>AI 原始回答</h5>
+            <div class="raw-response" style="border-left-color: #4285f4">
+              <p>关于这款水豚夜灯的大小，产品页面上没有提供确切的数字尺寸，这是一个比较大的信息缺失。</p>
+<p>不过，根据描述，我可以给你一些参考信息：<br>*   <strong>定位</strong>：它被描述为一款“紧凑的”圆形小夜灯。<br>*   <strong>适用场景</strong>：适合放在床头柜、书架和宿舍书桌上。<br>*   <strong>视觉感受</strong>：从图片上看，它的大小似乎可以舒适地握在手中。</p>
+<p>总的来说，它应该是一个小巧可爱的桌面摆件，但没有具体尺寸（例如长、宽、高），我无法给出更精确的判断。如果你对尺寸有严格要求，比如要放进一个特定的格子里，建议你联系客服确认具体的三维尺寸。</p>
+            </div>
+          </div>
+        </details>
+        </div>
+    </div>
+    
+        
+        <div class="skill-section fixes-section">
+          <h4>一键修复 <span class="fix-count">(2)</span></h4>
+          
+    <div class="fix tier-quick" id="fix-sizing_help-0">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add Product Dimensions</span>
+            
+            <span class="time-chip time-quick" title="Estimated time to apply"><span class="time-icon">⏱</span>5 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>The product dimensions are not specified anywhere on the page.</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Include the product&#x27;s dimensions in the product description to help customers understand its size.</div>
+      <pre class="fix-artifact"><code>&lt;p&gt;尺寸：高15厘米，宽10厘米，深10厘米&lt;/p&gt;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 在Shopify管理后台，导航到产品页面编辑器，将上述HTML代码粘贴到产品描述部分，然后保存更改。</div>
+    </div>
+    
+    <div class="fix tier-quick" id="fix-sizing_help-1">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Create Size Chart Section</span>
+            
+            <span class="time-chip time-quick" title="Estimated time to apply"><span class="time-icon">⏱</span>5 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>No size chart or fit guidance is provided for the product.</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Add a size chart section to provide visual guidance on the product&#x27;s dimensions.</div>
+      <pre class="fix-artifact"><code>&lt;h3&gt;尺寸指南&lt;/h3&gt;&lt;ul&gt;&lt;li&gt;高度：15厘米&lt;/li&gt;&lt;li&gt;宽度：10厘米&lt;/li&gt;&lt;li&gt;深度：10厘米&lt;/li&gt;&lt;/ul&gt;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 在Shopify管理后台，导航到产品页面编辑器，将上述HTML代码粘贴到产品描述部分，然后保存更改。</div>
+    </div>
+    
+        </div>
+    
+        
+      </div>
+    </details>
+    
+    <details class="skill skill-multi" id="skill-check_warranty" open>
+      <summary class="skill-hdr">
+        <span class="caret">▸</span>
+        <div class="skill-name">
+          <div class="skill-title">查看保修</div>
+          <div class="skill-prompt">"有保修吗？保什么、保多久？"</div>
+        </div>
+        <div class="agent-score-row"><span class="agent-score agent-fail" style="--agent-color: #c2410c"><span class="agent-dot"></span><span class="agent-name">Claude Sonnet 4.5</span><span class="agent-score-val">FAIL</span></span><span class="agent-score score-bad" style="--agent-color: #10a37f"><span class="agent-dot"></span><span class="agent-name">GPT-4o</span><span class="agent-score-val">2</span></span><span class="agent-score score-bad" style="--agent-color: #4285f4"><span class="agent-dot"></span><span class="agent-name">Gemini 2.5 Pro</span><span class="agent-score-val">2</span></span><span class="agreement agreement-consensus">共识</span></div>
+        <div class="skill-score score-bad">2.0<span class="score-of">/10 avg</span></div>
+      </summary>
+      <div class="skill-body">
+        
+        
+        
+    <div class="skill-section">
+      <h4>各模型详情</h4>
+      <div class="agent-details">
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #c2410c"></span>
+            <span class="agent-detail-name">Claude Sonnet 4.5</span>
+            <span class="agent-detail-score score-bad">—/10</span>
+            <span class="agent-detail-evidence"></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>证据</h5>
+            <ul class="ev-list"></ul>
+            <h5>AI 原始回答</h5>
+            <div class="raw-response" style="border-left-color: #c2410c">
+              <p>[ERROR] Claude Sonnet 4.5 failed: Could not parse JSON from response (claude:skill:check_warranty). First 600 chars:<br>```json<br>{<br>  &quot;raw_response&quot;: &quot;很抱歉，我在这个产品页面上没有找到保修相关的信息。\n\n<strong>当前缺失的保修信息：</strong>\n- 保修期限（如12个月、24个月等）\n- 保修覆盖范围（LED灯珠、电池、外壳等哪些部件在保）\n- 保修排除条款（人为损坏、进水等不保情况）\n- 保修理赔流程（如何申请、需要提供什么材料）\n\n页面提供了退款政策和配送政策的链接，但没有独立的保修政策页面。产品FAQ回答了安全性、电池续航、定时功能等问题，但完全没有涉及保修。\n\n<strong>建议：</strong>\n在下单前通过页面右下角的客服渠道或邮件联系 Huggwaii，明确询问上述四项保修信息。对于售价 $29.99-32.99 的电子产品，通常应有至少6-12个月的质量保证期。&quot;,<br>  &quot;score&quot;: 2,<br>  &quot;evidence&quot;: [<br>    {&quot;type&quot;: &quot;missing&quot;, &quot;text&quot;: &quot;PDP任何位置（描述、规格、FAQ）均未提及保修期限&quot;},<br>    {&quot;type&quot;: &quot;missing&quot;, &quot;text&quot;: &quot;无保修覆盖范围说明（电池、LED、硅胶外壳等部件是否在保）&quot;},<br>    {&quot;type&quot;: &quot;missing&quot;, &quot;text&quot;: &quot;无保修理赔流程或联系方式&quot;},<br>    {&quot;type&quot;: &quot;missing&quot;, &quot;text&quot;: &quot;页脚有退款政策和配送政策链接</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #10a37f"></span>
+            <span class="agent-detail-name">GPT-4o</span>
+            <span class="agent-detail-score score-bad">2/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-miss"><span class="chip-icon">△</span> 1 缺失</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>证据</h5>
+            <ul class="ev-list"><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">The product page does not mention warranty information.</span></li></ul>
+            <h5>AI 原始回答</h5>
+            <div class="raw-response" style="border-left-color: #10a37f">
+              <p>很抱歉，目前产品页面没有提供关于保修的信息。建议您直接联系Huggwaii的客户服务以获取详细的保修信息，包括保修期限、覆盖范围、排除条款以及索赔流程。</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #4285f4"></span>
+            <span class="agent-detail-name">Gemini 2.5 Pro</span>
+            <span class="agent-detail-score score-bad">2/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-neg"><span class="chip-icon">✗</span> 1 问题</span><span class="chip chip-miss"><span class="chip-icon">△</span> 1 缺失</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>证据</h5>
+            <ul class="ev-list"><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">产品页面、产品描述和常见问题解答部分均未提及任何关于保修、保障或满意度政策的信息。</span></li><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">链接的“退款政策”页面没有显示任何政策文本，而是显示产品列表，这使得客户无法了解产品出现缺陷时的权利。</span></li></ul>
+            <h5>AI 原始回答</h5>
+            <div class="raw-response" style="border-left-color: #4285f4">
+              <p>关于这款 MeWaii® Capybara Squishy 小夜灯，我在产品页面上没有找到任何关于保修的信息。</p>
+<p>页面上完全没有提及：<br>*   <strong>保修期限</strong>：例如一年或两年。<br>*   <strong>保修范围</strong>：涵盖哪些类型的缺陷，例如 LED 灯故障或充电问题。<br>*   <strong>保修排除条款</strong>：哪些情况不属于保修范围，例如意外损坏。<br>*   <strong>如何申请保修</strong>：联系方式或流程。</p>
+<p>通常，这类电子产品会提供至少30天或更长时间的保修，以防止开箱即损（DOA）或早期故障。由于网站上没有明确的政策，如果您担心产品质量和售后支持，建议在购买前直接联系 Huggwaii 的客服以获取确切的保修条款。</p>
+            </div>
+          </div>
+        </details>
+        </div>
+    </div>
+    
+        
+        <div class="skill-section fixes-section">
+          <h4>一键修复 <span class="fix-count">(1)</span></h4>
+          
+    <div class="fix tier-quick" id="fix-check_warranty-0">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add Warranty Information Section</span>
+            
+            <span class="time-chip time-quick" title="Estimated time to apply"><span class="time-icon">⏱</span>5 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>The product page does not mention warranty information.</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">This fix adds a dedicated section on the product page to provide warranty details, including duration, coverage, and claim process.</div>
+      <pre class="fix-artifact"><code>&lt;h3&gt;保修信息&lt;/h3&gt;&lt;p&gt;本产品享有一年的有限保修，涵盖制造缺陷。保修不包括正常磨损或误用造成的损坏。如需索赔，请联系客户服务。&lt;/p&gt;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 在Shopify管理后台的产品页面编辑器中，找到产品描述部分，粘贴上述HTML代码并保存更改。</div>
+    </div>
+    
+        </div>
+    
+        
+      </div>
+    </details>
+    
+    <details class="skill skill-multi" id="skill-rate_as_gift" >
+      <summary class="skill-hdr">
+        <span class="caret">▸</span>
+        <div class="skill-name">
+          <div class="skill-title">送礼评估</div>
+          <div class="skill-prompt">"适合做礼物吗？送给谁合适、风险是什么？"</div>
+        </div>
+        <div class="agent-score-row"><span class="agent-score agent-fail" style="--agent-color: #c2410c"><span class="agent-dot"></span><span class="agent-name">Claude Sonnet 4.5</span><span class="agent-score-val">FAIL</span></span><span class="agent-score score-warn" style="--agent-color: #10a37f"><span class="agent-dot"></span><span class="agent-name">GPT-4o</span><span class="agent-score-val">7</span></span><span class="agent-score agent-fail" style="--agent-color: #4285f4"><span class="agent-dot"></span><span class="agent-name">Gemini 2.5 Pro</span><span class="agent-score-val">FAIL</span></span><span class="agreement agreement-consensus">共识</span></div>
+        <div class="skill-score score-warn">7.0<span class="score-of">/10 avg</span></div>
+      </summary>
+      <div class="skill-body">
+        
+        
+        
+    <div class="skill-section">
+      <h4>各模型详情</h4>
+      <div class="agent-details">
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #c2410c"></span>
+            <span class="agent-detail-name">Claude Sonnet 4.5</span>
+            <span class="agent-detail-score score-bad">—/10</span>
+            <span class="agent-detail-evidence"></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>证据</h5>
+            <ul class="ev-list"></ul>
+            <h5>AI 原始回答</h5>
+            <div class="raw-response" style="border-left-color: #c2410c">
+              <p>[ERROR] Claude Sonnet 4.5 failed: Could not parse JSON from response (claude:skill:rate_as_gift). First 600 chars:<br>```json<br>{<br>  &quot;raw_response&quot;: &quot;这款水豚夜灯确实适合作为礼物。价格区间（$29.99-32.99）适中，设计可爱温馨，官方定位就是&quot;完美礼物&quot;。\n\n<strong>适合送给谁：</strong>\n- 儿童、青少年（床头夜灯或学习桌装饰）\n- 大学生（宿舍暖心小物）\n- 喜欢kawaii风格、动物主题装饰的成人\n- 适用场合：生日、节日、乔迁、小惊喜\n\n<strong>送礼优势：</strong>\n- 实用性强（照明+装饰双功能）\n- 亲和力设计，不挑年龄性别\n- 可充电、可调光、带定时功能\n- 有多款变体和套装可选\n\n<strong>风险提示：</strong>\n⚠️ <strong>网站未提供礼品包装服务</strong> — 需自行包装或购买礼品袋\n⚠️ <strong>没有礼品卡/赠言功能</strong> — 无法在订单中附带祝福语\n⚠️ <strong>退换货政策未明确说明收礼人权益</strong> — 建议购买前确认收礼人能否无小票退换\n⚠️ <strong>缺少&quot;直接寄给收礼人&quot;流程说明</strong> — 不清楚是否能隐藏价格或附赠礼品收据\n\n<strong>建议：</strong> 这是一份体贴实用的礼物，但下单前建议联系客服确认礼品包装选项和收礼人退换政策。&quot;,<br>  &quot;score&quot;: 6,<br>  &quot;evidence&quot;: [<br>    {&quot;type&quot;: &quot;strength&quot;, &quot;text&quot;: &quot;产品标题明确标注&quot;Perfect Gift 🎁&quot;，官方定位清晰&quot;},<br>    {&quot;type&quot;: &quot;streng</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #10a37f"></span>
+            <span class="agent-detail-name">GPT-4o</span>
+            <span class="agent-detail-score score-warn">7/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-pos"><span class="chip-icon">✓</span> 3 优点</span><span class="chip chip-neg"><span class="chip-icon">✗</span> 1 问题</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>证据</h5>
+            <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">产品适合送给孩子、青少年和喜欢可爱装饰的成年人。</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">价格在USD 29.99到32.99之间，适中且具有广泛的吸引力。</span></li><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">页面缺少礼品包装选项和直接寄送给收件人的流程。</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">退货政策灵活，支持退货。</span></li></ul>
+            <h5>AI 原始回答</h5>
+            <div class="raw-response" style="border-left-color: #10a37f">
+              <p>这款MeWaii®水豚夜灯是一个非常适合送礼的选择，尤其适合送给孩子、青少年或喜欢可爱装饰的成年人。<strong>价格</strong>在USD 29.99到32.99之间，适中且具有广泛的吸引力。产品设计可爱，适合放置在卧室、书桌或托儿所，增加温馨的氛围。<strong>退货政策</strong>灵活，支持退货，增加了购买的安全感。<strong>缺少礼品包装选项</strong>和<strong>直接寄送给收件人的流程</strong>，可能会影响送礼体验。建议在购买前确认产品的具体尺寸和材料，以确保符合预期。</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #4285f4"></span>
+            <span class="agent-detail-name">Gemini 2.5 Pro</span>
+            <span class="agent-detail-score score-bad">—/10</span>
+            <span class="agent-detail-evidence"></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>证据</h5>
+            <ul class="ev-list"></ul>
+            <h5>AI 原始回答</h5>
+            <div class="raw-response" style="border-left-color: #4285f4">
+              <p>[ERROR] Gemini 2.5 Pro failed: Could not parse JSON from response (gemini:skill:rate_as_gift). First 600 chars:<br>```json<br>{<br>  &quot;raw_response&quot;: &quot;这款水豚夜灯非常适合作为礼物，尤其是在价格和吸引力方面。\n\n<strong>适合送给谁：</strong>\n它非常适合送给喜欢可爱（“卡哇伊”）风格装饰的孩子、青少年、大学生或成年人。产品常见问题解答（FAQ）明确指出，它适合“儿童、青少年、学生、收藏家或喜欢柔和角色设计的成年人”。对于生日、节日或宿舍入住等场合，这是一个贴心且价格适中的选择（约30美元）。\n\n<strong>送礼风险：</strong>\n主要的风险在于送礼的实际操作和退货政策。\n1.  <strong>无送礼选项：</strong> 页面上没有提到礼品包装、礼品小票或添加个性化留言的选项。这意味着礼物可能会连同带有价格的发票一起寄给收件人。\n2.  <strong>退货不明确：</strong> 虽然网站有退款政策页面，但在产品页面上没有明确总结退货期限或条件。如果收件人不喜欢这份礼物，退货可能会很麻烦。\n\n总的来说，产品本身是一件很棒的礼物，但商店没有提供专门的送礼服务，这使得送礼体验不够顺畅。&quot;,<br>  &quot;score&quot;: 6,<br>  &quot;evidence&quot;: [<br>    {<br>      &quot;type&quot;: &quot;strength&quot;,<br>      &quot;text&quot;: &quot;产品标题明确包含“Perfect Gift 🎁”，常见问题解答也详细说明了适合的收礼人群。&quot;<br>    },<br>    {<br>      &quot;type&quot;: &quot;strength&quot;,<br>      &quot;t</p>
+            </div>
+          </div>
+        </details>
+        </div>
+    </div>
+    
+        
+        <div class="skill-section fixes-section">
+          <h4>一键修复 <span class="fix-count">(1)</span></h4>
+          
+    <div class="fix tier-quick" id="fix-rate_as_gift-0">
+      <div class="fix-hdr">
+        <span class="fix-icon">→</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">添加礼品包装选项</span>
+            
+            <span class="time-chip time-quick" title="Estimated time to apply"><span class="time-icon">⏱</span>5 min</span>
+          </div>
+          <div class="fix-type">Settings deep link <span class="fix-sep">·</span> addresses: <em>页面缺少礼品包装选项和直接寄送给收件人的流程。</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">在Shopify后台添加礼品包装选项，提升送礼体验。</div>
+      <pre class="fix-artifact"><code>https://admin.shopify.com/store/YOUR_STORE_ID/settings/shipping</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 登录Shopify后台，导航到设置 &gt; 运输和配送，添加礼品包装选项并保存更改。</div>
+    </div>
+    
+        </div>
+    
+        
+      </div>
+    </details>
+    
+</div>
+
+<div class="stochasticity-note">
+  由于模型存在随机性，分数在两次运行之间可能波动约 ±1 分。关键发现和结构性缺口在不同运行间保持稳定；单项分数应作为范围读取，而非绝对值。
+</div>
+
+<div class="footer">
+  <div>生成于 May 15, 2026 · 由 <a href="#">Nohi</a> · 智能体审计 MVP · 8 项技能 · 12 处修复</div>
+</div>
+
+</div>
+
+<script>
+function copyFix(btn) {
+  const fix = btn.closest('.fix');
+  const artifact = fix.querySelector('.fix-artifact code').textContent;
+  navigator.clipboard.writeText(artifact).then(() => {
+    btn.textContent = '✓ Copied';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'Copy';
+      btn.classList.remove('copied');
+    }, 1800);
+  });
+}
+
+/* Smart anchor navigation:
+   - Intercept clicks on links to #skill-* or #fix-*-*
+   - Open the containing <details> element
+   - Smoothly scroll to the target
+   - Flash-highlight so the user sees what they jumped to
+*/
+(function() {
+  function openAndScrollTo(targetId) {
+    const target = document.getElementById(targetId);
+    if (!target) return;
+
+    // Open any ancestor <details> elements (skill cards default to closed)
+    let el = target;
+    while (el && el !== document.body) {
+      if (el.tagName === 'DETAILS' && !el.open) {
+        el.open = true;
+      }
+      el = el.parentElement;
+    }
+
+    // Wait one frame so the <details> expansion is committed before scrolling
+    requestAnimationFrame(() => {
+      const rect = target.getBoundingClientRect();
+      const top = window.scrollY + rect.top - 80;  // leave 80px breathing room
+      window.scrollTo({ top, behavior: 'smooth' });
+
+      // Flash highlight
+      target.classList.remove('flash');
+      // Force reflow so the animation restarts on repeat clicks
+      void target.offsetWidth;
+      target.classList.add('flash');
+      setTimeout(() => target.classList.remove('flash'), 1700);
+    });
+  }
+
+  document.addEventListener('click', function(e) {
+    const link = e.target.closest('a[href^="#"]');
+    if (!link) return;
+    const href = link.getAttribute('href');
+    if (!href || href === '#') return;
+    const targetId = href.slice(1);
+    if (!document.getElementById(targetId)) return;
+    e.preventDefault();
+    openAndScrollTo(targetId);
+    // Update URL hash without re-triggering navigation
+    history.replaceState(null, '', href);
+  });
+
+  // Handle direct page-load with hash (e.g., shared link to a specific fix)
+  if (window.location.hash) {
+    const targetId = window.location.hash.slice(1);
+    if (document.getElementById(targetId)) {
+      setTimeout(() => openAndScrollTo(targetId), 100);
+    }
+  }
+})();
+
+/* Foldable fix index — click effort pill to expand a list of matching fixes */
+(function() {
+  const FIX_INDEX = [{"anchor": "fix-buying_advice-0", "title": "\u6dfb\u52a0\u4ea7\u54c1\u5c3a\u5bf8\u548c\u6750\u6599\u4fe1\u606f", "skill": "\u8d2d\u4e70\u5efa\u8bae", "skill_id": "buying_advice", "time": "5 min", "tier": "quick", "type": "snippet", "summary": "\u5728\u4ea7\u54c1\u63cf\u8ff0\u4e2d\u6dfb\u52a0\u5177\u4f53\u7684\u5c3a\u5bf8\u548c\u6750\u6599\u4fe1\u606f\uff0c\u4ee5\u5e2e\u52a9\u4e70\u5bb6\u505a\u51fa\u66f4\u660e\u667a\u7684\u8d2d\u4e70\u51b3\u7b56\u3002"}, {"anchor": "fix-buying_advice-1", "title": "\u8865\u5145\u7535\u6e90\u548c\u5145\u7535\u4fe1\u606f", "skill": "\u8d2d\u4e70\u5efa\u8bae", "skill_id": "buying_advice", "time": "5 min", "tier": "quick", "type": "snippet", "summary": "\u5728\u4ea7\u54c1\u63cf\u8ff0\u4e2d\u6dfb\u52a0\u7535\u6e90\u548c\u5145\u7535\u65b9\u5f0f\u7684\u4fe1\u606f\uff0c\u4ee5\u4fbf\u4e70\u5bb6\u4e86\u89e3\u5982\u4f55\u4f7f\u7528\u548c\u7ef4\u62a4\u4ea7\u54c1\u3002"}, {"anchor": "fix-summarize_reviews-0", "title": "Add Customer Reviews Section", "skill": "\u603b\u7ed3\u8bc4\u4ef7", "skill_id": "summarize_reviews", "time": "5 min", "tier": "quick", "type": "snippet", "summary": "Implement a customer reviews section on the product page to display user feedback and ratings."}, {"anchor": "fix-identify_specs-0", "title": "Add Dimensions and Weight", "skill": "\u8bc6\u522b\u89c4\u683c", "skill_id": "identify_specs", "time": "5 min", "tier": "quick", "type": "snippet", "summary": "Include specific dimensions and weight in the product description to provide complete specification details."}, {"anchor": "fix-identify_specs-1", "title": "Specify Material Composition", "skill": "\u8bc6\u522b\u89c4\u683c", "skill_id": "identify_specs", "time": "5 min", "tier": "quick", "type": "snippet", "summary": "Clarify the material composition by specifying the percentage of silicone and ABS used."}, {"anchor": "fix-price_per_unit-0", "title": "\u6dfb\u52a0\u540c\u7c7b\u4ea7\u54c1\u4ef7\u683c\u5bf9\u6bd4\u8868", "skill": "\u5355\u4ef7\u5206\u6790", "skill_id": "price_per_unit", "time": "5 min", "tier": "quick", "type": "snippet", "summary": "\u5728\u4ea7\u54c1\u63cf\u8ff0\u533a\u6dfb\u52a0\u5bf9\u6bd4\u8868\u683c,\u5c55\u793a\u672c\u4ea7\u54c1\u4e0e 2-3 \u6b3e\u540c\u7c7b\u591c\u706f\u7684\u4ef7\u683c\u3001\u529f\u80fd\u548c\u7eed\u822a\u5dee\u5f02,\u5e2e\u52a9\u4e70\u5bb6\u505a\u51fa\u660e\u667a\u51b3\u7b56\u3002"}, {"anchor": "fix-price_per_unit-1", "title": "\u5728\u4ef7\u683c\u4e0b\u65b9\u663e\u793a\u8fd0\u8d39\u4fe1\u606f", "skill": "\u5355\u4ef7\u5206\u6790", "skill_id": "price_per_unit", "time": "2 min", "tier": "instant", "type": "snippet", "summary": "\u5728\u4ea7\u54c1\u4ef7\u683c\u4e0b\u65b9\u6dfb\u52a0\u8fd0\u8d39\u8bf4\u660e\u6846,\u8ba9\u4e70\u5bb6\u7acb\u5373\u770b\u5230\u5355\u4ef6\u8ba2\u5355\u7684\u914d\u9001\u6210\u672c\u548c\u514d\u8fd0\u8d39\u95e8\u69db\u3002"}, {"anchor": "fix-check_returns-0", "title": "Add Return Policy Section", "skill": "\u67e5\u770b\u9000\u8d27\u653f\u7b56", "skill_id": "check_returns", "time": "5 min", "tier": "quick", "type": "policy_edit", "summary": "Add a dedicated section on the PDP to outline the return policy, including return window, conditions, exclusions, and who pays for return shipping."}, {"anchor": "fix-sizing_help-0", "title": "Add Product Dimensions", "skill": "\u5c3a\u7801\u5efa\u8bae", "skill_id": "sizing_help", "time": "5 min", "tier": "quick", "type": "snippet", "summary": "Include the product's dimensions in the product description to help customers understand its size."}, {"anchor": "fix-sizing_help-1", "title": "Create Size Chart Section", "skill": "\u5c3a\u7801\u5efa\u8bae", "skill_id": "sizing_help", "time": "5 min", "tier": "quick", "type": "snippet", "summary": "Add a size chart section to provide visual guidance on the product's dimensions."}, {"anchor": "fix-check_warranty-0", "title": "Add Warranty Information Section", "skill": "\u67e5\u770b\u4fdd\u4fee", "skill_id": "check_warranty", "time": "5 min", "tier": "quick", "type": "snippet", "summary": "This fix adds a dedicated section on the product page to provide warranty details, including duration, coverage, and claim process."}, {"anchor": "fix-rate_as_gift-0", "title": "\u6dfb\u52a0\u793c\u54c1\u5305\u88c5\u9009\u9879", "skill": "\u9001\u793c\u8bc4\u4f30", "skill_id": "rate_as_gift", "time": "5 min", "tier": "quick", "type": "settings_link", "summary": "\u5728Shopify\u540e\u53f0\u6dfb\u52a0\u793c\u54c1\u5305\u88c5\u9009\u9879\uff0c\u63d0\u5347\u9001\u793c\u4f53\u9a8c\u3002"}, {"anchor": "", "title": "\u6dfb\u52a0 Product offers \u7ed3\u6784\u5316\u6570\u636e", "skill": "\u8de8\u9875\u9762\u95ee\u9898", "skill_id": "", "time": "15 min", "tier": "medium", "type": "inline", "summary": "\u5728 Product schema \u4e2d\u6dfb\u52a0 offers \u5c5e\u6027,\u5305\u542b\u4ef7\u683c\u3001\u8d27\u5e01\u3001\u5e93\u5b58\u72b6\u6001\u548c URL"}, {"anchor": "", "title": "\u6dfb\u52a0 BreadcrumbList schema \u6807\u8bb0", "skill": "\u8de8\u9875\u9762\u95ee\u9898", "skill_id": "", "time": "20 min", "tier": "medium", "type": "inline", "summary": "\u5728\u4ea7\u54c1\u9875\u3001\u5206\u7c7b\u9875\u6dfb\u52a0\u9762\u5305\u5c51\u7ed3\u6784\u5316\u6570\u636e,\u63d0\u5347\u641c\u7d22\u7ed3\u679c\u663e\u793a\u548c\u5bfc\u822a\u5c42\u7ea7\u53ef\u89c1\u6027"}, {"anchor": "", "title": "\u7edf\u4e00 schema brand \u5b57\u6bb5\u4e0e\u5b9e\u9645\u4ea7\u54c1\u54c1\u724c", "skill": "\u8de8\u9875\u9762\u95ee\u9898", "skill_id": "", "time": "30 min", "tier": "medium", "type": "inline", "summary": "\u660e\u786e\u54c1\u724c\u67b6\u6784\u5e76\u7edf\u4e00\u547d\u540d:\u5982\u679c MeWaii \u662f\u4ea7\u54c1\u7ebf\u54c1\u724c,\u66f4\u65b0 schema;\u5982\u679c Huggwaii \u662f\u552f\u4e00\u54c1\u724c,\u79fb\u9664\u4ea7\u54c1\u6807\u9898\u4e2d\u7684 MeWaii \u6807\u8bb0"}];
+  const panel = document.getElementById('fix-index-panel');
+  if (!panel) return;
+  const listEl = panel.querySelector('.fix-index-list');
+  const closeBtn = panel.querySelector('.fix-index-close');
+  const pills = document.querySelectorAll('button.effort-pill[data-filter]');
+
+  function tierOrder(t) {
+    return { instant: 0, quick: 1, medium: 2, slow: 3 }[t] ?? 4;
+  }
+
+  function filterFor(mode) {
+    if (mode === 'instant') return FIX_INDEX.filter(f => f.tier === 'instant');
+    if (mode === 'quick')   return FIX_INDEX.filter(f => f.tier === 'instant' || f.tier === 'quick');
+    return FIX_INDEX.slice();
+  }
+
+  function render(mode) {
+    const items = filterFor(mode);
+    items.sort((a, b) => tierOrder(a.tier) - tierOrder(b.tier));
+    listEl.innerHTML = items.length === 0
+      ? '<li class="fix-index-empty">No fixes match this filter.</li>'
+      : items.map(f => `
+          <li>
+            <a class="fix-index-item" href="${f.anchor ? '#' + f.anchor : '#'}" data-anchor="${f.anchor}">
+              <span class="fii-time tier-${f.tier}">${f.tier === 'instant' ? '⚡ ' : ''}${f.time}</span>
+              <span class="fii-title">${f.title.replace(/</g, '&lt;')}</span>
+              <span class="fii-skill">${f.skill.replace(/</g, '&lt;')}</span>
+            </a>
+          </li>`).join('');
+  }
+
+  function closePanel() {
+    panel.setAttribute('hidden', '');
+    pills.forEach(p => p.setAttribute('aria-expanded', 'false'));
+  }
+
+  pills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      const wasExpanded = pill.getAttribute('aria-expanded') === 'true';
+      pills.forEach(p => p.setAttribute('aria-expanded', 'false'));
+      if (wasExpanded) {
+        // Toggle off
+        panel.setAttribute('hidden', '');
+        return;
+      }
+      pill.setAttribute('aria-expanded', 'true');
+      render(pill.dataset.filter);
+      panel.removeAttribute('hidden');
+    });
+  });
+
+  closeBtn.addEventListener('click', closePanel);
+
+  // When an item is clicked: close panel FIRST (so its height doesn't bias the
+  // scroll calculation), then let the global anchor handler do the rest.
+  // Bubble order: this listener (on .fix-index-list) runs before the document-
+  // level anchor handler, so closing here means getBoundingClientRect() in the
+  // anchor handler measures with the panel already removed from layout.
+  listEl.addEventListener('click', e => {
+    const item = e.target.closest('.fix-index-item');
+    if (!item) return;
+    closePanel();  // synchronous — DOM updates before bubble continues
+  });
+
+  // ESC closes the panel
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && !panel.hasAttribute('hidden')) {
+      closePanel();
+    }
+  });
+})();
+
+(function() {
+  const ctx = document.getElementById('radarChart');
+  if (!ctx) return;
+
+  const rawDatasets = [{"label": "Claude Sonnet 4.5", "data": [null, null, null, 6, null, null, null, null], "color": "#c2410c"}, {"label": "GPT-4o", "data": [7, 3, 4, 6, 2, 3, 2, 7], "color": "#10a37f"}, {"label": "Gemini 2.5 Pro", "data": [6.5, 2, null, 6, 2, 2, 2, null], "color": "#4285f4"}];
+  const isMulti = rawDatasets.length > 1;
+
+  // Convert hex → rgba with given alpha
+  function hexToRgba(hex, alpha) {
+    const h = hex.replace('#', '');
+    const r = parseInt(h.substring(0, 2), 16);
+    const g = parseInt(h.substring(2, 4), 16);
+    const b = parseInt(h.substring(4, 6), 16);
+    return `rgba(${r},${g},${b},${alpha})`;
+  }
+
+  const datasets = rawDatasets.map((ds, i) => ({
+    label: ds.label,
+    data: ds.data,
+    fill: !isMulti,
+    backgroundColor: isMulti ? hexToRgba(ds.color, 0.08) : hexToRgba(ds.color, 0.18),
+    borderColor: ds.color,
+    borderWidth: isMulti ? 2 : 2.5,
+    pointBackgroundColor: isMulti ? ds.color : [],
+    pointBorderColor: '#fff',
+    pointBorderWidth: 1.5,
+    pointRadius: isMulti ? 4 : 5,
+    pointHoverRadius: 7
+  }));
+
+  new Chart(ctx, {
+    type: 'radar',
+    data: {
+      labels: ["\u8d2d\u4e70\u5efa\u8bae", "\u603b\u7ed3\u8bc4\u4ef7", "\u8bc6\u522b\u89c4\u683c", "\u5355\u4ef7\u5206\u6790", "\u67e5\u770b\u9000\u8d27\u653f\u7b56", "\u5c3a\u7801\u5efa\u8bae", "\u67e5\u770b\u4fdd\u4fee", "\u9001\u793c\u8bc4\u4f30"],
+      datasets: datasets
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: {
+          display: isMulti,
+          position: 'bottom',
+          labels: { font: { size: 11, family: 'Inter, sans-serif' }, color: '#54586a', boxWidth: 14, boxHeight: 14, padding: 14 }
+        },
+        tooltip: {
+          callbacks: {
+            label: function(c) {
+              const v = c.parsed.r;
+              return c.dataset.label + ': ' + (v === null ? 'no data' : v.toFixed(1) + ' / 10');
+            }
+          }
+        }
+      },
+      scales: {
+        r: {
+          min: 0, max: 10, beginAtZero: true,
+          ticks: { stepSize: 2, font: { size: 10, family: 'JetBrains Mono, monospace' }, color: '#8b8fa0', backdropColor: 'transparent' },
+          grid: { color: 'rgba(20,20,28,0.07)' },
+          angleLines: { color: 'rgba(20,20,28,0.07)' },
+          pointLabels: { color: '#54586a', font: { size: 11, family: 'Bricolage Grotesque, system-ui, sans-serif', weight: '600' } }
+        }
+      }
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

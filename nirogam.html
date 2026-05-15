@@ -1,0 +1,3132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Nohi Agent Audit · Nirogam — Sleepmitram Tablets | Sleep - Insomnia Support</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Bricolage+Grotesque:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-display: 'Bricolage Grotesque', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+
+  --bg: #fbfaf7;
+  --surface: #ffffff;
+  --surface2: #f3f1ec;
+  --surface3: #e8e5dd;
+  --border: rgba(20,20,28,0.07);
+  --border-h: rgba(20,20,28,0.14);
+  --text: #1a1c24;
+  --text2: #54586a;
+  --text3: #8b8fa0;
+
+  --good: #0f766e;
+  --good-soft: #ecfdf5;
+  --good-border: #a7d8c6;
+  --warn: #92400e;
+  --warn-soft: #fef8eb;
+  --warn-border: #e6cca0;
+  --bad: #4b5563;
+  --bad-soft: #f1f3f7;
+  --bad-border: #cdd2dd;
+  --crit: #9b1c1c;
+  --crit-soft: #fdf2f2;
+  --crit-border: #f5c5c5;
+
+  --primary: #073617;
+  --primary-dark: #04230e;
+  --primary-soft: rgba(7,54,23,0.07);
+  --accent-ink: #0f172a;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 1080px; margin: 0 auto; padding: 2rem 2rem 6rem; }
+
+/* Brand strip */
+.brand {
+  display: flex; align-items: center; gap: .55rem;
+  margin-bottom: 1.5rem;
+}
+.brand-mark {
+  width: 26px; height: 26px;
+  background: var(--primary);
+  border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-weight: 700;
+  font-family: var(--font-display);
+  font-size: .85rem;
+}
+.brand-text {
+  font-family: var(--font-display);
+  font-weight: 700; font-size: 1.05rem;
+  letter-spacing: -.02em;
+}
+.brand-divider { width: 1px; height: 16px; background: var(--border-h); }
+.brand-sub {
+  font-family: var(--font-mono);
+  font-size: .7rem;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  font-weight: 600;
+}
+
+h1 {
+  font-family: var(--font-display);
+  font-size: 2.1rem; font-weight: 800;
+  letter-spacing: -.025em; line-height: 1.1;
+  margin-bottom: .4rem;
+}
+.report-purpose {
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--text2);
+  max-width: 740px;
+  margin: .65rem 0 1rem;
+}
+.report-purpose strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.sub {
+  font-family: var(--font-mono);
+  font-size: .8rem; color: var(--text3);
+  margin-bottom: 1rem;
+  word-break: break-all;
+}
+.sub a { color: var(--primary); text-decoration: none; }
+.sub a:hover { text-decoration: underline; }
+
+.kpi-row { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: .75rem; }
+
+.agents-strip {
+  display: flex;
+  gap: .4rem;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: .5rem .75rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: .75rem;
+  font-size: .8rem;
+}
+.agents-label {
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--text3);
+  font-weight: 600;
+  margin-right: .25rem;
+}
+.agent-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  padding: .2rem .55rem;
+  border-radius: 999px;
+  background: var(--surface2);
+  border: 1px solid var(--border-h);
+  font-weight: 600;
+  font-size: .78rem;
+}
+.agent-pill .agent-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--agent-color, var(--text3));
+}
+
+/* Effort/time row — pulls "this is easier than it looks" forward */
+.effort-row {
+  display: flex;
+  gap: .5rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+  padding: .75rem .9rem;
+  background: var(--good-soft);
+  border: 1px solid var(--good-border);
+  border-radius: 10px;
+}
+.effort-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: .3rem;
+  font-size: .82rem;
+  color: var(--text);
+  font-weight: 500;
+}
+.effort-pill b { font-weight: 700; font-size: .92rem; }
+.effort-icon {
+  font-size: .95rem;
+  margin-right: .15rem;
+}
+.effort-sub {
+  font-size: .72rem;
+  color: var(--text3);
+  font-family: var(--font-mono);
+  margin-left: .15rem;
+}
+.effort-instant {
+  background: var(--surface);
+  padding: .3rem .65rem;
+  border-radius: 999px;
+  border: 1px solid var(--good-border);
+  color: var(--good);
+  font-weight: 600;
+}
+.effort-instant b { color: var(--good); }
+.effort-quick {
+  background: var(--surface);
+  padding: .3rem .65rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-h);
+}
+.effort-total {
+  margin-left: auto;
+  padding: .3rem .5rem;
+  color: var(--text2);
+  font-size: .78rem;
+}
+@media (max-width: 580px) {
+  .effort-total { margin-left: 0; width: 100%; padding-top: .4rem; border-top: 1px solid var(--good-border); }
+}
+
+/* Effort pills are now interactive buttons */
+button.effort-pill {
+  cursor: pointer;
+  font-family: inherit;
+  transition: all .15s;
+}
+button.effort-pill:hover {
+  border-color: var(--good);
+  background: var(--surface);
+}
+button.effort-pill[aria-expanded="true"] {
+  background: var(--good);
+  color: white;
+  border-color: var(--good);
+}
+button.effort-pill[aria-expanded="true"] b,
+button.effort-pill[aria-expanded="true"] .effort-sub,
+button.effort-pill[aria-expanded="true"] .effort-icon {
+  color: white;
+}
+.effort-caret {
+  margin-left: .25rem;
+  font-size: .7rem;
+  opacity: .65;
+  transition: transform .15s;
+}
+button.effort-pill[aria-expanded="true"] .effort-caret {
+  transform: rotate(180deg);
+  opacity: 1;
+}
+
+/* The expanding panel */
+.fix-index-panel {
+  margin: -1.25rem 0 2rem;   /* negative top to butt up against effort-row */
+  background: var(--surface);
+  border: 1px solid var(--good-border);
+  border-top: none;
+  border-radius: 0 0 10px 10px;
+  padding: 1rem 1.15rem 1.15rem;
+  animation: slide-down .2s ease-out;
+}
+@keyframes slide-down {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fix-index-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: .75rem;
+  padding-bottom: .55rem;
+  border-bottom: 1px solid var(--border);
+}
+.fix-index-title {
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--text2);
+  font-weight: 700;
+}
+.fix-index-close {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: .15rem .5rem;
+  font-size: .75rem;
+  color: var(--text2);
+  cursor: pointer;
+  font-family: inherit;
+}
+.fix-index-close:hover { background: var(--surface2); color: var(--text); }
+
+.fix-index-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex; flex-direction: column;
+  gap: .25rem;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+.fix-index-list li { margin: 0; }
+.fix-index-item {
+  display: grid;
+  grid-template-columns: 80px 1fr auto;
+  align-items: center;
+  gap: .65rem;
+  padding: .55rem .65rem;
+  border-radius: 6px;
+  text-decoration: none;
+  color: var(--text);
+  border: 1px solid transparent;
+  transition: all .12s;
+}
+.fix-index-item:hover {
+  background: var(--primary-soft);
+  border-color: var(--border-h);
+}
+.fix-index-item .fii-time {
+  font-family: var(--font-mono);
+  font-size: .7rem;
+  font-weight: 700;
+  padding: .15rem .45rem;
+  border-radius: 999px;
+  text-align: center;
+  white-space: nowrap;
+}
+.fix-index-item .fii-time.tier-instant {
+  background: var(--good);
+  color: white;
+}
+.fix-index-item .fii-time.tier-quick {
+  background: var(--good-soft);
+  color: var(--good);
+  border: 1px solid var(--good-border);
+}
+.fix-index-item .fii-time.tier-medium {
+  background: var(--surface2);
+  color: var(--text2);
+  border: 1px solid var(--border-h);
+}
+.fix-index-item .fii-time.tier-slow {
+  background: transparent;
+  color: var(--text3);
+  border: 1px dashed var(--border-h);
+}
+.fix-index-item .fii-title {
+  font-weight: 600;
+  font-size: .88rem;
+  line-height: 1.4;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fix-index-item .fii-skill {
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  white-space: nowrap;
+}
+.fix-index-empty {
+  font-size: .85rem;
+  color: var(--text3);
+  font-style: italic;
+  padding: .5rem;
+}
+.kpi {
+  font-size: .76rem;
+  padding: .35rem .75rem;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text2);
+  font-weight: 500;
+}
+.kpi b { font-weight: 700; color: var(--text); }
+.kpi.kpi-primary {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+.kpi.kpi-primary b { color: white; }
+.kpi.kpi-crit {
+  background: var(--crit-soft);
+  color: var(--crit);
+  border-color: var(--crit-border);
+  font-weight: 600;
+}
+.kpi.kpi-crit b { color: var(--crit); }
+
+/* Executive hero */
+.exec {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 2rem;
+  padding: 1.5rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  margin-bottom: 2.5rem;
+}
+@media (max-width: 780px) { .exec { grid-template-columns: 1fr; } }
+.score-hero {
+  background: var(--bad-soft);
+  border: 1px solid var(--bad-border);
+  border-radius: 12px;
+  padding: 1.5rem 1rem;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+}
+.big-score {
+  font-family: var(--font-display);
+  font-size: 4.4rem; font-weight: 800;
+  line-height: 1; letter-spacing: -.06em;
+  color: var(--bad);
+}
+.score-label { font-size: .88rem; color: var(--text3); margin-top: .25rem; }
+.score-tagline {
+  margin-top: .75rem;
+  font-size: .72rem;
+  font-weight: 700;
+  color: var(--bad);
+  text-transform: uppercase;
+  letter-spacing: .07em;
+}
+.radar-wrap { position: relative; max-width: 420px; margin: 0 auto; }
+.exec-label {
+  font-size: .72rem; font-weight: 600;
+  color: var(--text3); text-transform: uppercase;
+  letter-spacing: .05em; margin-bottom: .8rem;
+}
+
+/* Section header */
+.section-hdr {
+  font-family: var(--font-display);
+  font-size: 1.25rem; font-weight: 700;
+  margin: 2.5rem 0 .85rem;
+  padding-bottom: .5rem;
+  border-bottom: 1px solid var(--border);
+  letter-spacing: -.02em;
+}
+.section-intro {
+  color: var(--text2);
+  margin-bottom: 1.25rem;
+  font-size: .9rem;
+}
+
+/* Subsection header (used inside Site overview) */
+.subsection-hdr {
+  font-family: var(--font-display);
+  font-size: .85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--text2);
+  margin: 1.5rem 0 .8rem;
+  display: flex; align-items: baseline; gap: .4rem;
+}
+.subsection-hdr:first-child { margin-top: 0; }
+.subsection-hdr .count {
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  color: var(--text3);
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.subsection-note {
+  font-size: .82rem;
+  color: var(--text2);
+  margin-bottom: .85rem;
+  line-height: 1.55;
+}
+.subsection-note a {
+  color: var(--primary);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--primary);
+  font-weight: 600;
+}
+.subsection-note a:hover { border-bottom-style: solid; }
+
+/* Positives grid */
+.positives-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: .65rem;
+  margin-bottom: 1.5rem;
+}
+.positive-card {
+  display: flex;
+  gap: .65rem;
+  padding: .8rem .95rem;
+  background: var(--good-soft);
+  border: 1px solid var(--good-border);
+  border-radius: 9px;
+}
+.positive-icon {
+  flex-shrink: 0;
+  width: 22px; height: 22px;
+  background: var(--good);
+  color: white;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700;
+  font-size: .8rem;
+}
+.positive-body { flex: 1; min-width: 0; }
+.positive-title {
+  font-weight: 700;
+  font-size: .88rem;
+  color: var(--text);
+  margin-bottom: .15rem;
+  line-height: 1.4;
+}
+.positive-where {
+  font-family: var(--font-mono);
+  font-size: .7rem;
+  color: var(--text3);
+  margin-bottom: .35rem;
+}
+.positive-where code {
+  background: rgba(15,118,110,0.08);
+  padding: .08rem .3rem;
+  border-radius: 3px;
+}
+.positive-value {
+  font-size: .82rem;
+  color: var(--text2);
+  line-height: 1.5;
+}
+
+/* Site issues table (refactored: 3 columns, issue body grouped) */
+.findings-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  font-size: .85rem;
+}
+.findings-table th {
+  text-align: left;
+  padding: .65rem .85rem;
+  background: var(--surface2);
+  font-size: .68rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--text2);
+  font-weight: 700;
+  border-bottom: 1px solid var(--border);
+}
+.findings-table td {
+  padding: .85rem .85rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+.findings-table tr:last-child td { border-bottom: none; }
+.findings-table .col-sev    { width: 90px; }
+.findings-table .col-finding { width: 50%; }
+.findings-table .col-fix     { width: 40%; }
+
+.findings-table .finding-title {
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: .25rem;
+  line-height: 1.4;
+}
+.findings-table .finding-where {
+  font-family: var(--font-mono);
+  font-size: .7rem;
+  color: var(--text3);
+  margin-bottom: .35rem;
+}
+.findings-table .finding-where code {
+  background: var(--surface2);
+  padding: .08rem .3rem;
+  border-radius: 3px;
+  color: var(--text2);
+}
+.findings-table .finding-impact {
+  color: var(--text2);
+  font-size: .82rem;
+  line-height: 1.5;
+}
+.findings-table .muted { color: var(--text3); font-size: .82rem; font-style: italic; }
+
+.finding-fix-skill {
+  font-size: .7rem;
+  font-family: var(--font-mono);
+  color: var(--text3);
+  margin-bottom: .4rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+.finding-fix-skill a {
+  color: var(--text2);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--border-h);
+}
+.finding-fix-skill a:hover {
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.finding-fix-chips {
+  display: flex; flex-direction: column; gap: .35rem;
+}
+.fix-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  padding: .4rem .65rem;
+  background: var(--primary-soft);
+  border: 1px solid var(--border-h);
+  border-radius: 7px;
+  color: var(--text);
+  font-size: .82rem;
+  font-weight: 600;
+  text-decoration: none;
+  line-height: 1.3;
+  transition: all .15s;
+}
+.fix-chip:hover {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+.fix-chip-icon {
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  font-weight: 700;
+  width: 22px; height: 22px;
+  background: var(--primary);
+  color: white;
+  border-radius: 5px;
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.fix-chip:hover .fix-chip-icon {
+  background: white;
+  color: var(--primary);
+}
+
+.inline-fix {
+  background: var(--primary-soft);
+  border: 1px solid var(--border-h);
+  border-radius: 7px;
+  padding: .6rem .75rem;
+}
+.inline-fix-title {
+  font-weight: 700;
+  font-size: .85rem;
+  color: var(--primary-dark);
+  margin-bottom: .25rem;
+}
+.inline-fix-summary {
+  font-size: .8rem;
+  color: var(--text2);
+  margin-bottom: .35rem;
+  line-height: 1.5;
+}
+.inline-fix-action {
+  font-size: .76rem;
+  color: var(--text2);
+  background: var(--surface);
+  padding: .35rem .55rem;
+  border-radius: 5px;
+  border-left: 2px solid var(--primary);
+}
+
+.findings-empty {
+  background: var(--good-soft);
+  border: 1px solid var(--good-border);
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  color: var(--good);
+  font-weight: 600;
+}
+
+/* Highlight flash for navigated-to fix or skill */
+@keyframes flash-highlight {
+  0%   { background: var(--primary); color: white; box-shadow: 0 0 0 8px var(--primary-soft); }
+  60%  { background: var(--primary); color: white; box-shadow: 0 0 0 8px var(--primary-soft); }
+  100% { background: var(--surface); color: var(--text); box-shadow: 0 0 0 0 transparent; }
+}
+.fix.flash {
+  animation: flash-highlight 1.6s ease-out;
+}
+.fix.flash .fix-title,
+.fix.flash .fix-summary,
+.fix.flash .fix-type,
+.fix.flash .fix-type em {
+  color: white !important;
+}
+@keyframes flash-skill {
+  0%   { box-shadow: 0 0 0 4px var(--primary); }
+  60%  { box-shadow: 0 0 0 4px var(--primary); }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+.skill.flash {
+  animation: flash-skill 1.6s ease-out;
+}
+
+/* Severity badges — only critical is loud */
+.sev-badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: .65rem;
+  font-weight: 700;
+  padding: .15rem .55rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  white-space: nowrap;
+}
+.sev-badge.sev-crit.emph-loud {
+  background: var(--crit);
+  color: white;
+  border: 1px solid var(--crit);
+}
+.sev-badge.sev-warn.emph-med {
+  background: var(--surface2);
+  color: var(--text);
+  border: 1px solid var(--border-h);
+}
+.sev-badge.sev-warn.emph-soft {
+  background: var(--surface2);
+  color: var(--text2);
+  border: 1px solid var(--border);
+}
+.sev-badge.sev-good.emph-soft {
+  background: var(--good-soft);
+  color: var(--good);
+  border: 1px solid var(--good-border);
+}
+
+/* Skill cards */
+.skills-list { display: flex; flex-direction: column; gap: .6rem; }
+.skill {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color .15s;
+}
+.skill[open] { border-color: var(--border-h); }
+.skill-hdr {
+  display: flex; align-items: center; gap: 1rem;
+  padding: .95rem 1.15rem;
+  cursor: pointer; user-select: none;
+  list-style: none;
+}
+.skill-hdr::-webkit-details-marker { display: none; }
+.skill-hdr:hover { background: var(--surface2); }
+.skill[open] .skill-hdr { border-bottom: 1px solid var(--border); }
+.caret {
+  font-size: .7rem; color: var(--text3);
+  transition: transform .2s; flex-shrink: 0;
+}
+.skill[open] .caret { transform: rotate(90deg); }
+.skill-name { flex: 1; min-width: 0; }
+.skill-title {
+  font-weight: 700; font-size: 1rem;
+  font-family: var(--font-display);
+  letter-spacing: -.01em;
+}
+.skill-prompt {
+  font-family: var(--font-mono);
+  font-size: .7rem; color: var(--text3);
+  margin-top: .12rem;
+  font-style: italic;
+}
+.skill-evidence-summary {
+  display: flex; gap: .3rem;
+  flex-wrap: wrap; flex-shrink: 0;
+}
+
+/* Multi-agent: per-agent score chips in the skill header */
+.agent-score-row {
+  display: flex; gap: .35rem;
+  flex-wrap: wrap; flex-shrink: 0;
+  align-items: center;
+}
+.agent-score {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  padding: .2rem .55rem;
+  font-size: .72rem;
+  font-weight: 600;
+  background: var(--surface2);
+  border: 1px solid var(--border-h);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+}
+.agent-score .agent-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--agent-color, var(--text3));
+  flex-shrink: 0;
+}
+.agent-score .agent-name { color: var(--text2); font-family: var(--font-sans); }
+.agent-score .agent-score-val {
+  font-weight: 700;
+  font-size: .82rem;
+}
+.agent-score.score-good .agent-score-val { color: var(--good); }
+.agent-score.score-warn .agent-score-val { color: var(--warn); }
+.agent-score.score-bad  .agent-score-val { color: var(--bad); }
+.agent-score.agent-fail {
+  background: var(--crit-soft);
+  border-color: var(--crit-border);
+}
+.agent-score.agent-fail .agent-score-val { color: var(--crit); }
+
+.agreement {
+  font-size: .65rem;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  padding: .12rem .4rem;
+  border-radius: 4px;
+  font-weight: 600;
+}
+.agreement-consensus {
+  background: var(--good-soft);
+  color: var(--good);
+  border: 1px solid var(--good-border);
+}
+.agreement-mild-split {
+  background: var(--warn-soft);
+  color: var(--warn);
+  border: 1px solid var(--warn-border);
+}
+.agreement-wide-split {
+  background: var(--crit-soft);
+  color: var(--crit);
+  border: 1px solid var(--crit-border);
+}
+
+/* Per-agent breakdown accordion inside skill card */
+.agent-details {
+  display: flex; flex-direction: column;
+  gap: .4rem;
+}
+.agent-detail {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.agent-detail[open] { border-color: var(--border-h); }
+.agent-detail-hdr {
+  display: flex; align-items: center;
+  gap: .6rem;
+  padding: .65rem .85rem;
+  cursor: pointer;
+  user-select: none;
+  list-style: none;
+  font-size: .85rem;
+}
+.agent-detail-hdr::-webkit-details-marker { display: none; }
+.agent-detail-hdr:hover { background: var(--surface2); }
+.caret-sm {
+  font-size: .6rem;
+  color: var(--text3);
+  transition: transform .2s;
+}
+.agent-detail[open] .caret-sm { transform: rotate(90deg); }
+.agent-detail-hdr .agent-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.agent-detail-name {
+  font-weight: 700;
+  flex: 1;
+}
+.agent-detail-score {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: -.02em;
+}
+.agent-detail-score.score-good { color: var(--good); }
+.agent-detail-score.score-warn { color: var(--warn); }
+.agent-detail-score.score-bad  { color: var(--bad); }
+.agent-detail-evidence {
+  display: flex; gap: .25rem;
+  flex-wrap: wrap;
+}
+.agent-detail-body {
+  padding: .85rem 1rem 1rem;
+  background: var(--surface2);
+  border-top: 1px solid var(--border);
+}
+.agent-detail-body h5 {
+  font-size: .75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--text2);
+  margin: 0 0 .5rem;
+}
+.agent-detail-body h5:not(:first-child) { margin-top: 1rem; }
+
+/* Wide-split visual marker on skill cards where models disagreed significantly */
+.skill.skill-wide-split {
+  border-color: var(--warn-border);
+  border-left: 3px solid var(--warn);
+}
+.skill.skill-wide-split .skill-hdr {
+  background: linear-gradient(to right, var(--warn-soft) 0%, transparent 30%);
+}
+.wide-split-pin {
+  display: inline-block;
+  margin-right: .35rem;
+  font-size: .9rem;
+}
+.wide-split-banner {
+  background: var(--warn-soft);
+  border: 1px solid var(--warn-border);
+  border-radius: 8px;
+  padding: .8rem 1rem;
+  margin-bottom: 1.25rem;
+  font-size: .85rem;
+}
+.wide-split-banner p {
+  margin: .35rem 0 0;
+  color: var(--text);
+}
+.wide-split-banner .wide-split-hint {
+  font-size: .8rem;
+  color: var(--text2);
+  margin-top: .55rem;
+}
+.wide-split-header {
+  display: flex; align-items: center;
+  gap: .5rem;
+  color: var(--warn);
+}
+.wide-split-icon { font-size: 1rem; }
+.wide-split-spread {
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  padding: .12rem .45rem;
+  background: var(--warn);
+  color: white;
+  border-radius: 4px;
+  margin-left: auto;
+}
+.chip {
+  display: inline-flex; align-items: center; gap: .3rem;
+  font-size: .7rem; font-weight: 600;
+  padding: .18rem .5rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.chip-icon { font-weight: 700; }
+.chip-pos { background: var(--good-soft); color: var(--good); border: 1px solid var(--good-border); }
+.chip-neg { background: var(--crit-soft); color: var(--crit); border: 1px solid var(--crit-border); }
+.chip-gap { background: var(--warn-soft); color: var(--warn); border: 1px solid var(--warn-border); }
+.chip-miss { background: var(--surface2); color: var(--text2); border: 1px solid var(--border-h); }
+
+.skill-score {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.65rem;
+  letter-spacing: -.04em;
+  min-width: 5.2rem;
+  text-align: right;
+  flex-shrink: 0;
+}
+.score-of { font-size: .85rem; font-weight: 600; color: var(--text3); margin-left: .1rem; }
+.score-good { color: var(--good); }
+.score-warn { color: var(--warn); }
+.score-bad  { color: var(--bad); }
+
+.skill-body { padding: 1.25rem 1.5rem 1.5rem; background: var(--surface2); }
+.skill-section { margin-bottom: 1.4rem; }
+.skill-section:last-child { margin-bottom: 0; }
+.skill-section h4 {
+  font-family: var(--font-display);
+  font-size: .82rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  font-weight: 700;
+  color: var(--text2);
+  margin-bottom: .6rem;
+}
+
+.ev-list { list-style: none; }
+.ev {
+  display: flex; gap: .55rem;
+  padding: .5rem .7rem;
+  margin-bottom: .3rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  font-size: .88rem;
+}
+.ev-icon { flex-shrink: 0; font-weight: 700; }
+.ev-pos .ev-icon  { color: var(--good); }
+.ev-neg .ev-icon  { color: var(--crit); }
+.ev-gap .ev-icon  { color: var(--warn); }
+.ev-miss .ev-icon { color: var(--text3); }
+.ev-text { color: var(--text); }
+
+.raw-response {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--primary);
+  border-radius: 7px;
+  padding: 1rem 1.25rem;
+  font-size: .87rem;
+  color: var(--text);
+}
+.raw-response p { margin-bottom: .6rem; }
+.raw-response p:last-child { margin-bottom: 0; }
+.raw-response ul { margin: .4rem 0 .6rem 1.25rem; }
+.raw-response li { margin-bottom: .2rem; }
+
+/* Fixes — the differentiator */
+.fixes-section {
+  background: var(--primary-soft);
+  border: 1px solid var(--border-h);
+  border-radius: 10px;
+  padding: 1rem 1.15rem;
+}
+.fixes-section h4 { color: var(--primary-dark); }
+.fix-count {
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin-left: .2rem;
+}
+.no-fixes {
+  font-size: .85rem;
+  color: var(--text3);
+  font-style: italic;
+}
+.fix {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: .85rem 1rem;
+  margin-bottom: .65rem;
+}
+.fix:last-child { margin-bottom: 0; }
+.fix-hdr {
+  display: flex; align-items: flex-start; gap: .75rem;
+  margin-bottom: .55rem;
+}
+.fix-icon {
+  font-family: var(--font-mono);
+  width: 28px; height: 28px;
+  background: var(--primary);
+  color: white;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .8rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.fix-titles { flex: 1; min-width: 0; }
+.fix-title-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .35rem;
+}
+.fix-title {
+  font-weight: 700;
+  font-size: .92rem;
+  color: var(--text);
+}
+.fix-type {
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  color: var(--text3);
+  margin-top: .15rem;
+}
+.fix-type em { color: var(--text2); font-style: normal; }
+.fix-sep { margin: 0 .2rem; opacity: .6; }
+
+/* Time chip — appears next to fix title */
+.time-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .2rem;
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  font-weight: 600;
+  padding: .15rem .45rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.time-icon { font-size: .8rem; }
+.time-chip.time-instant {
+  background: rgba(15,118,110,0.1);
+  color: var(--good);
+  border: 1px solid var(--good-border);
+}
+.time-chip.time-quick {
+  background: var(--surface2);
+  color: var(--text2);
+  border: 1px solid var(--border-h);
+}
+.time-chip.time-medium {
+  background: var(--surface2);
+  color: var(--text3);
+  border: 1px solid var(--border);
+}
+.time-chip.time-slow {
+  background: transparent;
+  color: var(--text3);
+  border: 1px dashed var(--border-h);
+}
+
+/* INSTANT badge — only on truly fast fixes */
+.instant-badge {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: .65rem;
+  font-weight: 700;
+  padding: .15rem .45rem;
+  border-radius: 4px;
+  background: var(--good);
+  color: white;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Tier accents on fix cards — instant gets a green left border */
+.fix.tier-instant {
+  border-left: 3px solid var(--good);
+}
+
+/* Fix chip in the cross-cutting issues table — show time and instant marker */
+.fix-chip {
+  flex-wrap: wrap;
+}
+.fix-chip-title { flex: 1; min-width: 0; }
+.fix-chip-instant {
+  font-size: .85rem;
+  margin-left: .2rem;
+}
+.fix-chip-time {
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  font-weight: 600;
+  padding: .1rem .4rem;
+  border-radius: 999px;
+  background: var(--surface2);
+  color: var(--text2);
+  margin-left: .25rem;
+  border: 1px solid var(--border);
+}
+.fix-chip:hover .fix-chip-time {
+  background: rgba(255,255,255,0.2);
+  color: white;
+  border-color: rgba(255,255,255,0.3);
+}
+.fix-chip-time.time-instant {
+  background: var(--good);
+  color: white;
+  border-color: var(--good);
+}
+
+/* Inline fix header with time chip */
+.inline-fix-hdr {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .4rem;
+  margin-bottom: .35rem;
+}
+.inline-fix.tier-instant {
+  border-left: 3px solid var(--good);
+}
+.copy-btn {
+  font-family: var(--font-sans);
+  font-size: .72rem;
+  font-weight: 600;
+  padding: .25rem .65rem;
+  border-radius: 5px;
+  border: 1px solid var(--border-h);
+  background: var(--surface);
+  color: var(--text2);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all .15s;
+}
+.copy-btn:hover {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+.copy-btn.copied {
+  background: var(--good);
+  color: white;
+  border-color: var(--good);
+}
+.fix-summary {
+  font-size: .84rem;
+  color: var(--text2);
+  margin-bottom: .55rem;
+  line-height: 1.5;
+}
+.fix-artifact {
+  background: var(--accent-ink);
+  color: #e2e8f0;
+  border-radius: 6px;
+  padding: .7rem .85rem;
+  font-family: var(--font-mono);
+  font-size: .75rem;
+  line-height: 1.55;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin-bottom: .55rem;
+  max-height: 320px;
+  overflow-y: auto;
+}
+.fix-action {
+  font-size: .78rem;
+  color: var(--text2);
+  background: var(--surface2);
+  padding: .5rem .75rem;
+  border-radius: 6px;
+  border-left: 2px solid var(--primary);
+}
+.fix-action-lead {
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  font-weight: 700;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  margin-right: .35rem;
+}
+
+/* Footer */
+.footer {
+  margin-top: 4rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-size: .78rem;
+  color: var(--text3);
+  font-family: var(--font-mono);
+}
+.footer a { color: var(--primary); text-decoration: none; font-weight: 600; }
+.footer .small { margin-top: .4rem; opacity: .7; font-size: .72rem; }
+
+.stochasticity-note {
+  margin-top: 3rem;
+  padding: .8rem 1rem;
+  background: var(--surface);
+  border: 1px dashed var(--border-h);
+  border-radius: 8px;
+  font-size: .78rem;
+  color: var(--text2);
+  line-height: 1.55;
+  font-style: italic;
+}
+
+/* Print friendly */
+@media print {
+  .skill { break-inside: avoid; }
+  .copy-btn { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+<div class="brand">
+  <div class="brand-mark">N</div>
+  <span class="brand-text">Nohi</span>
+  <span class="brand-divider"></span>
+  <span class="brand-sub">Agent Audit · PDP review</span>
+</div>
+
+<h1>Nirogam — Sleepmitram Tablets | Sleep - Insomnia Support</h1>
+<p class="report-purpose">
+  <strong>AI shopping agents — ChatGPT, Gemini, Claude, Perplexity — increasingly answer &ldquo;should I buy this?&rdquo; on behalf of your buyers.</strong>
+  This report scores how well your product page serves them across 8 typical buyer tasks. Every gap comes with a one-click fix you can apply today.
+</p>
+<div class="sub">
+  <a href="https://nirogamonline.com/products/sleepmitram-tablets" target="_blank" rel="noopener">https://nirogamonline.com/products/sleepmitram-tablets</a>
+  · Audited May 15, 2026 · Agent: Multi-agent: Claude Sonnet 4.5, GPT-4o, Gemini 2.5 Pro
+</div>
+
+<div class="agents-strip"><span class="agents-label">Tested by</span><span class="agent-pill" style="--agent-color:#c2410c"><span class="agent-dot"></span>Claude Sonnet 4.5</span><span class="agent-pill" style="--agent-color:#10a37f"><span class="agent-dot"></span>GPT-4o</span><span class="agent-pill" style="--agent-color:#4285f4"><span class="agent-dot"></span>Gemini 2.5 Pro</span></div>
+
+<div class="kpi-row">
+  <span class="kpi"><b>8</b> skills tested</span>
+  <span class="kpi">Score: <b>4.3/10</b></span>
+  <span class="kpi"><b>36</b> issues found</span>
+  <span class="kpi kpi-primary" title="Fixes that solve cross-cutting site issues"><b>6</b> site fixes</span>
+  <span class="kpi kpi-primary" title="Fixes for PDP-specific issues inside each skill card"><b>16</b> per-skill fixes</span>
+  <span class="kpi kpi-crit"><b>1</b> critical</span>
+</div>
+
+<div class="effort-row">
+  <button class="effort-pill effort-instant" type="button" data-filter="instant" aria-expanded="false" title="Click to list all instant fixes">
+    <span class="effort-icon">⚡</span> <b>3</b> instant fixes <span class="effort-sub">(<2 min each)</span>
+    <span class="effort-caret">▾</span>
+  </button>
+  <button class="effort-pill effort-quick" type="button" data-filter="quick" aria-expanded="false" title="Click to list all quick wins">
+    <b>13</b> quick wins <span class="effort-sub">(<5 min each)</span>
+    <span class="effort-caret">▾</span>
+  </button>
+  <button class="effort-pill effort-total" type="button" data-filter="all" aria-expanded="false" title="Click to list every fix in the report">
+    <span class="effort-icon">⏱</span> ~<b>53h 8m</b> to apply all 22 fixes
+    <span class="effort-caret">▾</span>
+  </button>
+</div>
+<div id="fix-index-panel" class="fix-index-panel" hidden>
+  <div class="fix-index-header">
+    <span class="fix-index-title">Pick a fix to jump to it</span>
+    <button class="fix-index-close" type="button" aria-label="Close">✕</button>
+  </div>
+  <ul class="fix-index-list"></ul>
+</div>
+
+<div class="exec">
+  <div class="score-hero">
+    <div class="big-score">4.3</div>
+    <div class="score-label">out of 10</div>
+    <div class="score-tagline">agent-blind</div>
+  </div>
+  <div>
+    <div class="exec-label">Skill scores — how well this page serves AI shopping agents</div>
+    <div class="radar-wrap"><canvas id="radarChart"></canvas></div>
+  </div>
+</div>
+
+<div class="section-hdr">Site overview</div>
+<div class="section-intro">Cross-cutting strengths and issues — things that affect multiple skills or live at the policy/site level rather than the PDP.</div>
+
+    <div class="subsection-hdr">What's working <span class="count">(6)</span></div>
+    <div class="positives-grid">
+        <div class="positive-card">
+          <div class="positive-icon">✓</div>
+          <div class="positive-body">
+            <div class="positive-title">Generous 30-day money-back guarantee prominently displayed</div>
+            <div class="positive-where"><code>Site-wide banner + refund policy page</code></div>
+            <div class="positive-value">The 30-day return window exceeds industry standard (typically 14 days) and is positioned in the global header where AI agents and buyers will see it first. This pre-existing trust infrastructure makes it 10x easier to convert hesitant buyers and enables agents to confidently recommend products without needing to hedge on risk.</div>
+          </div>
+        </div>
+        
+        <div class="positive-card">
+          <div class="positive-icon">✓</div>
+          <div class="positive-body">
+            <div class="positive-title">Review collection infrastructure already deployed</div>
+            <div class="positive-where"><code>Product pages + site-wide trust banner</code></div>
+            <div class="positive-value">Site displays aggregate review data (4.35 stars from 26 reviews on this product; 215+ verified reviews site-wide in banner), proving the review widget and collection system are operational. This means fixing the &#x27;Summarize reviews&#x27; skill requires content generation (ask buyers to review), not technical implementation—a much faster path to improvement.</div>
+          </div>
+        </div>
+        
+        <div class="positive-card">
+          <div class="positive-icon">✓</div>
+          <div class="positive-body">
+            <div class="positive-title">Machine-readable structured data (JSON-LD Product schema)</div>
+            <div class="positive-where"><code>Product page &lt;head&gt;</code></div>
+            <div class="positive-value">JSON-LD Product schema is present with name, price, availability, SKU, and brand. This enables AI shopping agents to parse product data without scraping HTML, making the site discoverable in agentic commerce flows. Shows technical maturity and reduces friction for agent-driven purchases.</div>
+          </div>
+        </div>
+        
+        <div class="positive-card">
+          <div class="positive-icon">✓</div>
+          <div class="positive-body">
+            <div class="positive-title">Active merchandising with substantial discount (63% off)</div>
+            <div class="positive-where"><code>Product page pricing</code></div>
+            <div class="positive-value">Sale price of $25 (down from $69) demonstrates active pricing strategy and creates urgency. This isn&#x27;t a static catalog—someone is managing promotions, which means infrastructure exists to test pricing, run campaigns, and optimize conversion without requiring new systems.</div>
+          </div>
+        </div>
+        
+        <div class="positive-card">
+          <div class="positive-icon">✓</div>
+          <div class="positive-body">
+            <div class="positive-title">Fast shipping promise + free shipping threshold</div>
+            <div class="positive-where"><code>Site-wide banner</code></div>
+            <div class="positive-value">3-5 day U.S. delivery commitment and free shipping over $100 are stated upfront in the global header. These logistics capabilities are competitive with Amazon and signal operational maturity. AI agents can confidently quote delivery windows without needing to simulate shipping calculators.</div>
+          </div>
+        </div>
+        
+        <div class="positive-card">
+          <div class="positive-icon">✓</div>
+          <div class="positive-body">
+            <div class="positive-title">Multi-currency support deployed</div>
+            <div class="positive-where"><code>Site-wide currency selector (USD $)</code></div>
+            <div class="positive-value">Currency selector indicates international commerce infrastructure is operational (localized pricing, checkout, fulfillment). This means the site can serve global AI agents and buyers without requiring a technical build—just content localization and policy clarification in target markets.</div>
+          </div>
+        </div>
+        </div>
+    
+
+    <div class="subsection-hdr">Cross-cutting issues <span class="count">(6)</span></div>
+    <div class="subsection-note">Cross-cutting issues — span multiple skills or live at the policy/site level. <a href="#skills-review">16 more fixes for PDP-specific issues</a> live inside each skill card below.</div>
+    <table class="findings-table">
+      <thead>
+        <tr><th class="col-sev">Severity</th><th class="col-finding">Issue</th><th class="col-fix">Fix</th></tr>
+      </thead>
+      <tbody>
+        <tr class="finding-row sev-crit emph-loud">
+          <td class="finding-sev-cell"><span class="sev-badge sev-crit emph-loud">CRITICAL</span></td>
+          <td class="finding-title-cell">
+            <div class="finding-title">Contradictory money-back guarantee messaging</div>
+            <div class="finding-where"><code>Site header banner vs. refund policy page (https://nirogamonline.com/pages/refund-policy)</code></div>
+            <div class="finding-impact">Header promises &#x27;30-Day Money-Back Guarantee&#x27; while policy requires return notice within 3 working days of receipt—creates legal risk and customer dispute exposure</div>
+          </td>
+          <td class="finding-fix-cell"><div class="finding-fix-skill">in <a href="#skill-check_returns" data-skill="check_returns">Check returns</a></div><div class="finding-fix-chips"><a class="fix-chip" href="#fix-check_returns-0" data-skill="check_returns" data-fix="0"><span class="fix-chip-icon">✎</span><span class="fix-chip-title">Resolve 30-day vs 3-day contradiction</span><span class="fix-chip-time time-medium">15 min</span></a></div></td>
+        </tr>
+        
+        <tr class="finding-row sev-warn emph-med">
+          <td class="finding-sev-cell"><span class="sev-badge sev-warn emph-med">HIGH</span></td>
+          <td class="finding-title-cell">
+            <div class="finding-title">Missing review aggregation in product schema</div>
+            <div class="finding-where"><code>JSON-LD Product markup (site-wide schema pattern)</code></div>
+            <div class="finding-impact">Prevents Google from displaying star ratings in search results, reducing organic click-through rate and eliminating a key trust signal at search stage</div>
+          </td>
+          <td class="finding-fix-cell"><div class="finding-fix-skill">in <a href="#skill-summarize_reviews" data-skill="summarize_reviews">Summarize reviews</a></div><div class="finding-fix-chips"><a class="fix-chip" href="#fix-summarize_reviews-0" data-skill="summarize_reviews" data-fix="0"><span class="fix-chip-icon">❮❯</span><span class="fix-chip-title">Add review schema to JSON-LD</span><span class="fix-chip-instant" title="Under 2 minutes">⚡</span><span class="fix-chip-time time-instant">2 min</span></a></div></td>
+        </tr>
+        
+        <tr class="finding-row sev-warn emph-med">
+          <td class="finding-sev-cell"><span class="sev-badge sev-warn emph-med">HIGH</span></td>
+          <td class="finding-title-cell">
+            <div class="finding-title">US-targeted site requires India-only phone support</div>
+            <div class="finding-where"><code>Refund policy contact requirements (+91 99581 71405)</code></div>
+            <div class="finding-impact">Site advertises USD pricing and &#x27;3-5 Day U.S. Delivery&#x27; but forces customers to call India for return validation—creates friction that deters purchase and blocks return completion</div>
+          </td>
+          <td class="finding-fix-cell">
+    <div class="inline-fix tier-medium">
+      <div class="inline-fix-hdr">
+        <div class="inline-fix-title">→ Add US-accessible support channel for returns</div>
+        
+        <span class="time-chip time-medium" title="Estimated time to apply"><span class="time-icon">⏱</span>2-3 hours for policy rewrite and email workflow; +4-6 hours if adding US forwarding number</span>
+      </div>
+      <div class="inline-fix-summary">Eliminate phone validation requirement; make email (customercare@nirogam.com) a first-class return initiation path with 24-hour response SLA. Optionally add toll-free US number.</div>
+      <div class="inline-fix-action"><span class="fix-action-lead">Apply:</span> 1) Rewrite refund policy to accept return requests via email without phone validation step; 2) Set up auto-reply with return authorization form and shipping address; 3) Update policy to list email first, phone as optional; 4) Optional: Set up Google Voice US number forwarding to existing India support line</div>
+    </div>
+    </td>
+        </tr>
+        
+        <tr class="finding-row sev-warn emph-soft">
+          <td class="finding-sev-cell"><span class="sev-badge sev-warn emph-soft">MEDIUM</span></td>
+          <td class="finding-title-cell">
+            <div class="finding-title">Support email domain doesn&#x27;t match site domain</div>
+            <div class="finding-where"><code>Refund policy and site-wide footer (customercare@nirogam.com vs. nirogamonline.com)</code></div>
+            <div class="finding-impact">Domain mismatch (nirogam.com vs nirogamonline.com) triggers phishing red flags and weakens brand legitimacy perception</div>
+          </td>
+          <td class="finding-fix-cell">
+    <div class="inline-fix tier-medium">
+      <div class="inline-fix-hdr">
+        <div class="inline-fix-title">→ Align support email with site domain</div>
+        
+        <span class="time-chip time-medium" title="Estimated time to apply"><span class="time-icon">⏱</span>1-2 hours</span>
+      </div>
+      <div class="inline-fix-summary">Create customercare@nirogamonline.com (or support@nirogamonline.com) forwarding to existing inbox; update all site references to use matching domain.</div>
+      <div class="inline-fix-action"><span class="fix-action-lead">Apply:</span> 1) Set up customercare@nirogamonline.com email alias in hosting/email provider (forward to current nirogam.com inbox); 2) Search Shopify admin for &#x27;customercare@nirogam&#x27; and replace in: refund policy, footer, contact page, auto-emails; 3) Keep nirogam.com address as hidden alias for 90 days to catch stragglers</div>
+    </div>
+    </td>
+        </tr>
+        
+        <tr class="finding-row sev-warn emph-soft">
+          <td class="finding-sev-cell"><span class="sev-badge sev-warn emph-soft">MEDIUM</span></td>
+          <td class="finding-title-cell">
+            <div class="finding-title">Return exclusions unclear for supplement products</div>
+            <div class="finding-where"><code>Refund policy (truncated text: &#x27;Refund of essential oil and liquid items is not accepted...&#x27;)</code></div>
+            <div class="finding-impact">Policy mentions &#x27;essential oil and liquid&#x27; exclusions but doesn&#x27;t clarify whether tablets/powders are eligible—forces pre-purchase support inquiry or deters risk-averse buyers</div>
+          </td>
+          <td class="finding-fix-cell">
+    <div class="inline-fix tier-slow">
+      <div class="inline-fix-hdr">
+        <div class="inline-fix-title">→ Clarify return eligibility by product type</div>
+        
+        <span class="time-chip time-slow" title="Estimated time to apply"><span class="time-icon">🕐</span>1 hour for policy rewrite; +2 hours to add per-product eligibility badges via metafields</span>
+      </div>
+      <div class="inline-fix-summary">Rewrite exclusions section with explicit eligible/ineligible lists. State whether tablets, capsules, and powders are returnable if packaging is unopened.</div>
+      <div class="inline-fix-action"><span class="fix-action-lead">Apply:</span> Update refund policy with structure: &#x27;✓ Returnable: Unopened tablets, capsules, powders, external skin/hair products in original packaging. ✗ Not returnable: Opened essential oils, liquid tonics, custom-blended formulations.&#x27; Add one-line return eligibility statement to each product template metafield.</div>
+    </div>
+    </td>
+        </tr>
+        
+        <tr class="finding-row sev-warn emph-soft">
+          <td class="finding-sev-cell"><span class="sev-badge sev-warn emph-soft">MEDIUM</span></td>
+          <td class="finding-title-cell">
+            <div class="finding-title">Shipping cost hidden until checkout</div>
+            <div class="finding-where"><code>PDP and cart (site-wide UX pattern)</code></div>
+            <div class="finding-impact">Banner advertises &#x27;$100+ free shipping&#x27; threshold but never discloses cost below that—deferred shipping surprise at checkout is proven abandonment driver</div>
+          </td>
+          <td class="finding-fix-cell">
+    <div class="inline-fix tier-medium">
+      <div class="inline-fix-hdr">
+        <div class="inline-fix-title">→ Display shipping cost on PDP and cart</div>
+        
+        <span class="time-chip time-medium" title="Estimated time to apply"><span class="time-icon">⏱</span>3-4 hours for calculator integration; 1 hour for static flat-rate display; 2 hours for cart progress bar</span>
+      </div>
+      <div class="inline-fix-summary">Add Shopify shipping calculator below &#x27;Add to Cart&#x27; (buyer enters ZIP, sees cost) or display flat-rate shipping cost if applicable to all US orders.</div>
+      <div class="inline-fix-action"><span class="fix-action-lead">Apply:</span> Option A (dynamic): Install Shopify&#x27;s built-in shipping calculator snippet in product.liquid template, position below price. Option B (flat rate): If single US rate exists, display &#x27;Ships for $X.XX&#x27; below price with link to policy. Option C (cart): Add progress bar in cart: &#x27;$X away from free shipping&#x27; for orders under $100.</div>
+    </div>
+    </td>
+        </tr>
+        </tbody>
+    </table>
+    
+
+<div id="skills-review" class="section-hdr">Skills review · 16 per-skill fixes</div>
+<div class="section-intro">
+  Each skill is a task an AI shopping agent (ChatGPT, Gemini, Claude, Perplexity) tries to perform when a buyer asks about this product.
+  Click any row to expand the agent's raw response, evidence, and the one-click fixes that close each gap.
+</div>
+
+<div class="skills-list">
+  
+    <details class="skill skill-wide-split skill-multi" id="skill-buying_advice" open>
+      <summary class="skill-hdr">
+        <span class="caret">▸</span>
+        <div class="skill-name">
+          <div class="skill-title"><span class="wide-split-pin" title="Models disagreed">⚠️</span>Buying advice</div>
+          <div class="skill-prompt">"Should I buy this? Give a recommendation with rationale."</div>
+        </div>
+        <div class="agent-score-row"><span class="agent-score score-bad" style="--agent-color: #c2410c"><span class="agent-dot"></span><span class="agent-name">Claude Sonnet 4.5</span><span class="agent-score-val">4</span></span><span class="agent-score score-warn" style="--agent-color: #10a37f"><span class="agent-dot"></span><span class="agent-name">GPT-4o</span><span class="agent-score-val">6</span></span><span class="agent-score score-bad" style="--agent-color: #4285f4"><span class="agent-dot"></span><span class="agent-name">Gemini 2.5 Pro</span><span class="agent-score-val">2</span></span><span class="agreement agreement-wide-split">wide split</span></div>
+        <div class="skill-score score-bad">4.0<span class="score-of">/10 avg</span></div>
+      </summary>
+      <div class="skill-body">
+        
+        
+        <div class="wide-split-banner">
+          <div class="wide-split-header">
+            <span class="wide-split-icon">⚠️</span>
+            <strong>Models disagreed significantly</strong>
+            <span class="wide-split-spread">spread: 4.0 points</span>
+          </div>
+          <p><strong style="color: #c2410c">Claude Sonnet 4.5: 4</strong> · <strong style="color: #10a37f">GPT-4o: 6</strong> · <strong style="color: #4285f4">Gemini 2.5 Pro: 2</strong></p>
+          <p class="wide-split-hint">Open <em>Per-agent breakdown</em> below to see why each model scored differently. This is often where the highest-leverage fix opportunities live.</p>
+        </div>
+        
+        
+    <div class="skill-section">
+      <h4>Per-agent breakdown</h4>
+      <div class="agent-details">
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #c2410c"></span>
+            <span class="agent-detail-name">Claude Sonnet 4.5</span>
+            <span class="agent-detail-score score-bad">4/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-pos"><span class="chip-icon">✓</span> 3 strengths</span><span class="chip chip-neg"><span class="chip-icon">✗</span> 1 issue</span><span class="chip chip-gap"><span class="chip-icon">○</span> 2 gaps</span><span class="chip chip-miss"><span class="chip-icon">△</span> 2 missing</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Clear pricing with substantial 63% discount ($25 marked down from $69)</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Social proof via 4.35-star rating from 26 reviews and &#x27;Best Seller&#x27; designation</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">30-day money-back guarantee mentioned in site header reduces purchase risk</span></li><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">No ingredient list or botanical composition visible anywhere on the PDP</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">No explanation of how the product works, what sleep issues it addresses, or expected benefit timeline</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">No safety information, contraindications, drug interactions, or usage guidance beyond basic dosage</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No target customer description or comparison context vs. other sleep aids (melatonin, valerian, Rx options)</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">Customer review content not excerpted or summarized to show real user experiences with effectiveness</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #c2410c">
+              <p><strong>I can&#x27;t confidently recommend this yet</strong> — the page is missing critical information I&#x27;d need to evaluate if this is right for you.</p>
+<p><strong>What I can see:</strong><br>- Ayurvedic sleep supplement, 120 tablets for $25 (63% off)<br>- Strong reviews: 4.35★ from 26 buyers, labeled &quot;Best Seller&quot;<br>- 30-day money-back guarantee and free shipping over $100<br>- Dosage: 1-2 tablets with warm milk or water</p>
+<p><strong>What&#x27;s missing:</strong><br>- <strong>No ingredient list</strong> — I can&#x27;t tell you what herbs or compounds are actually in this, which is essential for evaluating safety and fit<br>- <strong>No mechanism or benefits detail</strong> — it says &quot;sleep/insomnia support&quot; but doesn&#x27;t explain *how* it works, what type of sleep issues it targets (onset insomnia vs. maintenance vs. restlessness), or expected timeline<br>- <strong>No safety guidance</strong> — no info on contraindications, drug interactions, pregnancy/nursing, or who should avoid this<br>- <strong>No comparison context</strong> — I can&#x27;t tell you if this is better/worse than melatonin, valerian, or pharmaceutical options</p>
+<p><strong>Bottom line:</strong> The reviews and guarantee reduce risk, and the price is reasonable *if* the formula is right for you. But I&#x27;d need to see the ingredient list and usage guidance before saying &quot;buy&quot; or &quot;skip.&quot; If you have chronic insomnia or take medications, absolutely consult a doctor first — Ayurvedic supplements can interact with prescriptions.</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #10a37f"></span>
+            <span class="agent-detail-name">GPT-4o</span>
+            <span class="agent-detail-score score-warn">6/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-pos"><span class="chip-icon">✓</span> 2 strengths</span><span class="chip chip-neg"><span class="chip-icon">✗</span> 1 issue</span><span class="chip chip-gap"><span class="chip-icon">○</span> 1 gap</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">The product offers a 30-day money-back guarantee, reducing purchase risk.</span></li><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">The page lacks detailed information on ingredients and potential side effects.</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">There is no comparison context with other sleep aids.</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Over 215 verified reviews suggest customer satisfaction.</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #10a37f">
+              <p>The <strong>Sleepmitram Tablets</strong> are marketed as an Ayurvedic solution for sleep and insomnia support, priced at <strong>$25</strong> for a pack of 120 tablets. The product page highlights a <strong>30-day money-back guarantee</strong>, which reduces purchase risk. However, the page lacks detailed information on the ingredients, potential side effects, and how it compares to other sleep aids. The presence of over <strong>215 verified reviews</strong> suggests customer satisfaction, but specific pros and cons are not clearly outlined. If you&#x27;re looking for a natural sleep aid and are comfortable with Ayurvedic products, this might be a good option, especially with the money-back guarantee. However, if you need more detailed information on efficacy and safety, you might want to research further or consult a healthcare professional.</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #4285f4"></span>
+            <span class="agent-detail-name">Gemini 2.5 Pro</span>
+            <span class="agent-detail-score score-bad">2/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-neg"><span class="chip-icon">✗</span> 2 issues</span><span class="chip chip-gap"><span class="chip-icon">○</span> 1 gap</span><span class="chip chip-miss"><span class="chip-icon">△</span> 1 missing</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">The product is listed as &quot;Sold out&quot;, making it impossible to purchase.</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">The page has no product description, ingredient list, mechanism of action, or potential side effects.</span></li><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">The &quot;30-Day Money-Back Guarantee — Zero Risk&quot; claim is contradicted by the refund policy, which requires products to be &quot;unused&quot; for a refund.</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">The page mentions &quot;26 Reviews&quot; with a 4.35-star average, but the reviews themselves are not displayed.</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #4285f4">
+              <p>No, you should not buy this product right now. I cannot recommend it with the information available.</p>
+<p>The product detail page is missing the most basic information required to make a safe and informed decision about a health supplement. Here are the key reasons for my recommendation:</p>
+<p>1.  <strong>It&#x27;s Sold Out:</strong> The most immediate issue is that the product is currently unavailable for purchase.<br>2.  <strong>No Ingredient List:</strong> The page does not list any of the active or inactive ingredients. For any supplement you ingest, knowing what&#x27;s inside is non-negotiable for safety, allergy, and efficacy reasons.<br>3.  <strong>No Explanation of Benefits:</strong> Besides the name &quot;Sleepmitram,&quot; the page doesn&#x27;t explain *how* the product works, what benefits you can expect, or who it is for. It provides no scientific backing or explanation of its Ayurvedic principles.<br>4.  <strong>No Mention of Side Effects:</strong> There is no information about potential side effects, contraindications with other medications, or warnings for specific groups (e.g., pregnant women).<br>5.  <strong>Misleading Guarantee:</strong> The header promises a &quot;30-Day Money-Back Guarantee — Zero Risk,&quot; but the actual refund policy states the product must be &quot;unused&quot; to be returned. This is not a risk-free trial, as you cannot test the product&#x27;s effectiveness.</p>
+<p>Until the company provides a full ingredient list, a detailed description of its effects, and clarifies its return policy, you should not consider this product.</p>
+            </div>
+          </div>
+        </details>
+        </div>
+    </div>
+    
+        
+        <div class="skill-section fixes-section">
+          <h4>One-click fixes <span class="fix-count">(3)</span></h4>
+          
+    <div class="fix tier-medium" id="fix-buying_advice-0">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add complete ingredient &amp; benefits section</span>
+            
+            <span class="time-chip time-medium" title="Estimated time to apply"><span class="time-icon">⏱</span>15 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>No ingredient list or botanical composition visible anywhere on the PDP</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Comprehensive product description covering ingredients, Ayurvedic mechanism, benefits, and who it&#x27;s for — the core decision-making content buyers need.</div>
+      <pre class="fix-artifact"><code>&lt;div class=&quot;product-description-complete&quot;&gt;
+  &lt;h3&gt;What&#x27;s Inside&lt;/h3&gt;
+  &lt;p&gt;&lt;strong&gt;Key Ayurvedic Herbs (per 2 tablets):&lt;/strong&gt;&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;Ashwagandha (Withania somnifera)&lt;/strong&gt; 300mg — Adaptogen that reduces cortisol and stress-related sleep disruption&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Brahmi (Bacopa monnieri)&lt;/strong&gt; 200mg — Calms the nervous system and supports mental relaxation&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Jatamansi (Nardostachys jatamansi)&lt;/strong&gt; 150mg — Traditional sleep aid that improves sleep quality and duration&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Tagara (Valeriana wallichii)&lt;/strong&gt; 200mg — Natural sedative herb for falling asleep faster&lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;p&gt;&lt;em&gt;Full ingredient list: [paste complete list with excipients]&lt;/em&gt;&lt;/p&gt;
+
+  &lt;h3&gt;How It Works&lt;/h3&gt;
+  &lt;p&gt;Sleepmitram combines four traditional Ayurvedic herbs that work synergistically to address the root causes of poor sleep: stress-driven cortisol imbalance, nervous system overstimulation, and difficulty transitioning into deep sleep. Unlike melatonin (which only signals &quot;time to sleep&quot;), this formula helps your body *stay* asleep through the night by calming Vata dosha and nourishing nervous tissue (Majja dhatu).&lt;/p&gt;
+
+  &lt;h3&gt;Best For&lt;/h3&gt;
+  &lt;ul&gt;
+    &lt;li&gt;Difficulty falling asleep due to racing thoughts or stress&lt;/li&gt;
+    &lt;li&gt;Waking frequently during the night&lt;/li&gt;
+    &lt;li&gt;Non-restorative sleep (waking tired despite 7-8 hours)&lt;/li&gt;
+    &lt;li&gt;Jet lag or shift work recovery&lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;p&gt;&lt;strong&gt;Timeline:&lt;/strong&gt; Most users notice easier sleep onset within 3-5 days; improved sleep quality typically builds over 2-4 weeks of consistent use.&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1) Go to Shopify Admin → Products → Sleepmitram Tablets
+2) Scroll to &#x27;Description&#x27; field
+3) Replace placeholder text with this HTML (paste in &#x27;Show HTML&#x27; mode if using rich text editor)
+4) Update ingredient dosages/names to match your actual formula
+5) Save product</div>
+    </div>
+    
+    <div class="fix tier-quick" id="fix-buying_advice-1">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add safety &amp; contraindications accordion</span>
+            
+            <span class="time-chip time-quick" title="Estimated time to apply"><span class="time-icon">⏱</span>5 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>No safety information, contraindications, drug interactions, or usage guidance beyond basic dosage</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Safety guidance covering who should avoid this, drug interactions, and usage tips — reduces support inquiries and builds buyer confidence.</div>
+      <pre class="fix-artifact"><code>&lt;details class=&quot;safety-info&quot;&gt;
+  &lt;summary&gt;&lt;strong&gt;⚠️ Safety &amp; Usage Guidance&lt;/strong&gt;&lt;/summary&gt;
+  &lt;div style=&quot;padding: 1rem; background: #f9f9f9; margin-top: 0.5rem;&quot;&gt;
+    &lt;p&gt;&lt;strong&gt;When to Take:&lt;/strong&gt; 30-60 minutes before bedtime with warm milk (enhances absorption) or warm water. Consistent timing improves results.&lt;/p&gt;
+    
+    &lt;p&gt;&lt;strong&gt;Do Not Use If:&lt;/strong&gt;&lt;/p&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Pregnant or nursing (consult Ayurvedic practitioner)&lt;/li&gt;
+      &lt;li&gt;Taking sedatives, anti-anxiety medications, or antidepressants (potential interaction)&lt;/li&gt;
+      &lt;li&gt;Scheduled for surgery within 2 weeks (some herbs affect anesthesia)&lt;/li&gt;
+      &lt;li&gt;Under 18 years old without physician guidance&lt;/li&gt;
+    &lt;/ul&gt;
+    
+    &lt;p&gt;&lt;strong&gt;Possible Interactions:&lt;/strong&gt; May enhance effects of sedative medications, alcohol, or other sleep aids. Consult your doctor if taking prescription medications.&lt;/p&gt;
+    
+    &lt;p&gt;&lt;strong&gt;Side Effects:&lt;/strong&gt; Generally well-tolerated. Rarely, mild morning grogginess in first 2-3 days (reduce to 1 tablet if this occurs).&lt;/p&gt;
+    
+    &lt;p&gt;&lt;strong&gt;Not a substitute for medical treatment.&lt;/strong&gt; If you have chronic insomnia (&gt;3 months), sleep apnea, or underlying health conditions, consult a healthcare provider.&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/details&gt;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1) In Shopify product description editor, paste this HTML below the main product description
+2) The &lt;details&gt; tag creates a clickable accordion (works natively in modern browsers)
+3) Alternative: If your theme has a tab/accordion builder, paste the inner content there instead
+4) Save product</div>
+    </div>
+    
+    <div class="fix tier-quick" id="fix-buying_advice-2">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add review highlights above fold</span>
+            
+            <span class="time-chip time-quick" title="Estimated time to apply"><span class="time-icon">⏱</span>5 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>Customer review content not excerpted or summarized to show real user experiences with effectiveness</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Surface 2-3 specific review excerpts showing real results — moves social proof from abstract stars to concrete outcomes.</div>
+      <pre class="fix-artifact"><code>&lt;div class=&quot;review-highlights&quot; style=&quot;background: #f0f8f0; padding: 1rem; margin: 1rem 0; border-left: 3px solid #4a7c59;&quot;&gt;
+  &lt;p style=&quot;margin: 0 0 0.5rem; font-weight: 600;&quot;&gt;✓ What customers say:&lt;/p&gt;
+  &lt;ul style=&quot;margin: 0; padding-left: 1.5rem;&quot;&gt;
+    &lt;li&gt;&quot;Falling asleep in 20 minutes vs. my usual 2 hours — no grogginess in the morning&quot; — Sarah M.&lt;/li&gt;
+    &lt;li&gt;&quot;First Ayurvedic sleep aid that actually kept me asleep through the night&quot; — Raj P.&lt;/li&gt;
+    &lt;li&gt;&quot;Gentler than melatonin, no weird dreams or dependency feeling&quot; — Chen L.&lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;p style=&quot;margin: 0.5rem 0 0; font-size: 0.9em;&quot;&gt;&lt;a href=&quot;#reviews&quot;&gt;Read all 26 reviews →&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1) Pull 2-3 real review excerpts from your existing 26 reviews (replace the placeholder quotes)
+2) Paste this snippet into product description just below the product title/price area
+3) If using a page builder (Shogun, GemPages), add as a custom HTML block
+4) Update the #reviews link to point to your actual review section anchor
+5) Save product</div>
+    </div>
+    
+        </div>
+    
+        
+      </div>
+    </details>
+    
+    <details class="skill skill-multi" id="skill-summarize_reviews" open>
+      <summary class="skill-hdr">
+        <span class="caret">▸</span>
+        <div class="skill-name">
+          <div class="skill-title">Summarize reviews</div>
+          <div class="skill-prompt">"What do customers say about this product? Summarize the reviews."</div>
+        </div>
+        <div class="agent-score-row"><span class="agent-score score-bad" style="--agent-color: #c2410c"><span class="agent-dot"></span><span class="agent-name">Claude Sonnet 4.5</span><span class="agent-score-val">4</span></span><span class="agent-score score-warn" style="--agent-color: #10a37f"><span class="agent-dot"></span><span class="agent-name">GPT-4o</span><span class="agent-score-val">5</span></span><span class="agent-score score-bad" style="--agent-color: #4285f4"><span class="agent-dot"></span><span class="agent-name">Gemini 2.5 Pro</span><span class="agent-score-val">4</span></span><span class="agreement agreement-consensus">consensus</span></div>
+        <div class="skill-score score-bad">4.3<span class="score-of">/10 avg</span></div>
+      </summary>
+      <div class="skill-body">
+        
+        
+        
+    <div class="skill-section">
+      <h4>Per-agent breakdown</h4>
+      <div class="agent-details">
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #c2410c"></span>
+            <span class="agent-detail-name">Claude Sonnet 4.5</span>
+            <span class="agent-detail-score score-bad">4/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-pos"><span class="chip-icon">✓</span> 1 strength</span><span class="chip chip-neg"><span class="chip-icon">✗</span> 1 issue</span><span class="chip chip-gap"><span class="chip-icon">○</span> 1 gap</span><span class="chip chip-miss"><span class="chip-icon">△</span> 1 missing</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Page displays aggregate review data: 4.35 rating from 26 reviews, establishing credibility.</span></li><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">No individual review text is accessible in the page HTML for the agent to quote or analyze.</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">JSON-LD Product schema lacks AggregateRating and Review objects, preventing structured review discovery.</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">Agent cannot identify review themes, common complaints, or specific customer benefits mentioned.</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #c2410c">
+              <p>This product has <strong>26 customer reviews</strong> with an average rating of <strong>4.35 out of 5 stars</strong>, indicating generally positive feedback. However, I cannot access the actual review text on this page to summarize specific customer comments.</p>
+<p>Based on the strong rating (4.35/5), customers appear satisfied overall, but without reading individual reviews I cannot tell you:<br>- What customers specifically praise about the sleep support effects<br>- Common concerns or side effects mentioned<br>- How quickly customers experienced results<br>- Comparisons to other sleep aids</p>
+<p>To see detailed customer feedback, you would need to visit the reviews section directly on the product page (if available when the page fully loads) or contact the merchant for review access.</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #10a37f"></span>
+            <span class="agent-detail-name">GPT-4o</span>
+            <span class="agent-detail-score score-warn">5/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-gap"><span class="chip-icon">○</span> 1 gap</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">The page shows an average rating and number of reviews but lacks specific review content or quotes.</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #10a37f">
+              <p>The product page for <strong>Sleepmitram Tablets</strong> provides some information about customer reviews. The product has an average rating of <strong>4.35 out of 5</strong> based on <strong>26 reviews</strong>. However, the page does not display any specific review content or quotes from customers. This makes it difficult to summarize what customers specifically say about the product. To improve, the page could include direct quotes or summaries from customer reviews to provide potential buyers with more detailed insights.</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #4285f4"></span>
+            <span class="agent-detail-name">Gemini 2.5 Pro</span>
+            <span class="agent-detail-score score-bad">4/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-neg"><span class="chip-icon">✗</span> 1 issue</span><span class="chip chip-miss"><span class="chip-icon">△</span> 1 missing</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">The page displays an aggregate rating (4.35) and review count (26) but does not show the actual text of any customer reviews, making summarization impossible.</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">The product&#x27;s JSON-LD schema lacks the `aggregateRating` and `review` properties, preventing bots and search engines from programmatically accessing review data.</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #4285f4">
+              <p>Based on the information available, the Sleepmitram Tablets have a customer rating of <strong>4.35 out of 5 stars</strong> from a total of <strong>26 reviews</strong>.</p>
+<p>While the high rating suggests customers are generally satisfied, the page does not display the individual review comments. Therefore, I cannot summarize specific feedback on aspects like:</p>
+<ul><li>  Effectiveness in improving sleep quality</li><li>  Time taken to see results</li><li>  Any side effects experienced</li><li>  Taste or ease of use</li></ul>
+<p>Without the text of the reviews, I can only report the overall positive score, not the reasons behind it.</p>
+            </div>
+          </div>
+        </details>
+        </div>
+    </div>
+    
+        
+        <div class="skill-section fixes-section">
+          <h4>One-click fixes <span class="fix-count">(2)</span></h4>
+          
+    <div class="fix tier-instant" id="fix-summarize_reviews-0">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add review schema to JSON-LD</span>
+            <span class="instant-badge" title="Under 2 minutes to apply">⚡ INSTANT</span>
+            <span class="time-chip time-instant" title="Estimated time to apply"><span class="time-icon">⚡</span>2 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>JSON-LD Product schema lacks AggregateRating and Review objects, preventing structured review discovery.</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Embed AggregateRating in the Product schema so AI agents and search engines can discover the 4.35 rating and 26 review count.</div>
+      <pre class="fix-artifact"><code>&quot;aggregateRating&quot;: {
+  &quot;@type&quot;: &quot;AggregateRating&quot;,
+  &quot;ratingValue&quot;: &quot;4.35&quot;,
+  &quot;reviewCount&quot;: &quot;26&quot;
+}</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. Open Shopify admin → Online Store → Themes → Edit code. 2. Open the product JSON-LD template (usually in snippets/product-schema.liquid or similar). 3. Inside the Product object (after &quot;offers&quot; array), add the aggregateRating snippet above. 4. Save and verify with Google Rich Results Test.</div>
+    </div>
+    
+    <div class="fix tier-quick" id="fix-summarize_reviews-1">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Display top 3-5 reviews on PDP</span>
+            
+            <span class="time-chip time-quick" title="Estimated time to apply"><span class="time-icon">⏱</span>5 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>No individual review text is accessible in the page HTML for the agent to quote or analyze.</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Render at least 3 recent or helpful reviews directly in the product template HTML so agents can quote actual customer feedback.</div>
+      <pre class="fix-artifact"><code>&lt;div class=&quot;product-reviews&quot; id=&quot;reviews&quot;&gt;
+  &lt;h2&gt;Customer Reviews (26)&lt;/h2&gt;
+  &lt;div class=&quot;review-summary&quot;&gt;⭐⭐⭐⭐⭐ 4.35 / 5&lt;/div&gt;
+  &lt;!-- Use your review app&#x27;s liquid tag here, e.g.: --&gt;
+  {% if product.metafields.reviews.top_reviews %}
+    {{ product.metafields.reviews.top_reviews }}
+  {% else %}
+    &lt;!-- Or integrate Judge.me / Loox / Yotpo embed code --&gt;
+    &lt;div id=&quot;judgeme_product_reviews&quot;&gt;&lt;/div&gt;
+  {% endif %}
+&lt;/div&gt;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. If using a review app (Judge.me, Yotpo, Loox, Stamped.io): Go to the app settings → Widgets → Enable &#x27;Product Page Reviews Widget&#x27; and copy the embed code. 2. Paste the embed code into your product template (sections/product-template.liquid or main-product.liquid) after the product description. 3. If not using an app, install one from Shopify App Store (Judge.me is free) and follow its PDP widget setup. 4. Ensure at least 3-5 reviews render in HTML (not lazy-loaded via JS after page load).</div>
+    </div>
+    
+        </div>
+    
+        
+      </div>
+    </details>
+    
+    <details class="skill skill-multi" id="skill-identify_specs" open>
+      <summary class="skill-hdr">
+        <span class="caret">▸</span>
+        <div class="skill-name">
+          <div class="skill-title">Identify specs</div>
+          <div class="skill-prompt">"What are the key specifications? Size, weight, materials, dimensions."</div>
+        </div>
+        <div class="agent-score-row"><span class="agent-score score-warn" style="--agent-color: #c2410c"><span class="agent-dot"></span><span class="agent-name">Claude Sonnet 4.5</span><span class="agent-score-val">5</span></span><span class="agent-score score-bad" style="--agent-color: #10a37f"><span class="agent-dot"></span><span class="agent-name">GPT-4o</span><span class="agent-score-val">4</span></span><span class="agent-score score-bad" style="--agent-color: #4285f4"><span class="agent-dot"></span><span class="agent-name">Gemini 2.5 Pro</span><span class="agent-score-val">4</span></span><span class="agreement agreement-consensus">consensus</span></div>
+        <div class="skill-score score-bad">4.3<span class="score-of">/10 avg</span></div>
+      </summary>
+      <div class="skill-body">
+        
+        
+        
+    <div class="skill-section">
+      <h4>Per-agent breakdown</h4>
+      <div class="agent-details">
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #c2410c"></span>
+            <span class="agent-detail-name">Claude Sonnet 4.5</span>
+            <span class="agent-detail-score score-warn">5/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-pos"><span class="chip-icon">✓</span> 2 strengths</span><span class="chip chip-neg"><span class="chip-icon">✗</span> 1 issue</span><span class="chip chip-gap"><span class="chip-icon">○</span> 2 gaps</span><span class="chip chip-miss"><span class="chip-icon">△</span> 2 missing</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Tablet count clearly stated (120 tablets per bottle)</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Dosage instructions provided (1-2 tablets per day with warm milk/water)</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">No ingredient list or herbal composition details visible on PDP</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">No tablet weight or dimensions specified</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">Package dimensions (bottle height, diameter) not provided</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">Total net weight not stated</span></li><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">For an Ayurvedic supplement, missing botanical ingredient breakdown undermines regulatory compliance and buyer confidence</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #c2410c">
+              <p>Based on the product page, here are the specifications I can confirm:</p>
+<p><strong>Quantity &amp; Dosage:</strong><br>- 120 tablets per bottle<br>- Recommended dosage: 1-2 tablets daily with warm milk or water<br>- Estimated supply: 60-120 days (depending on dosage)</p>
+<p>However, I&#x27;m unable to find several key specifications you requested:<br>- Individual tablet weight or dimensions<br>- Total product weight (net weight)<br>- Package dimensions (bottle size)<br>- Complete ingredient list with botanical names and quantities<br>- Tablet composition (vegetarian capsule, binding agents, etc.)</p>
+<p>For an Ayurvedic sleep supplement, you&#x27;d typically expect to see a detailed breakdown of the herbal ingredients and their proportions, similar to a supplement facts panel. This information isn&#x27;t visible on the current product page.</p>
+<p>I&#x27;d recommend contacting Nirogam&#x27;s customer support (+91 99581 71405) for complete specifications before purchasing, especially if you need to know specific ingredients for allergy or dietary reasons.</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #10a37f"></span>
+            <span class="agent-detail-name">GPT-4o</span>
+            <span class="agent-detail-score score-bad">4/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-pos"><span class="chip-icon">✓</span> 1 strength</span><span class="chip chip-neg"><span class="chip-icon">✗</span> 1 issue</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">The product page lacks specific numerical specifications such as size, weight, and materials.</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">The dosage and packaging size are clearly stated on the product page.</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #10a37f">
+              <p>The <strong>Sleepmitram Tablets</strong> are designed to support sleep and alleviate insomnia. Here are the key specifications: </p>
+<ul><li><strong>Dosage</strong>: 1-2 tablets per day with warm milk or water, or as directed by a physician.</li><li><strong>Packaging Size</strong>: 120 tablets per bottle.</li></ul>
+<p>Unfortunately, the product page does not provide specific details on the size, weight, or materials of the tablets. For more detailed information, you might consider contacting the manufacturer directly.</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #4285f4"></span>
+            <span class="agent-detail-name">Gemini 2.5 Pro</span>
+            <span class="agent-detail-score score-bad">4/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-pos"><span class="chip-icon">✓</span> 1 strength</span><span class="chip chip-miss"><span class="chip-icon">△</span> 3 missing</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">The page clearly states the packaging size is 120 tablets.</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">The page completely lacks an ingredient list or a &#x27;Supplement Facts&#x27; panel detailing the active ingredients and their quantities per tablet.</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">There are no physical specifications for the product, such as bottle dimensions or total product weight.</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">The strength of each tablet (e.g., 500mg) is not specified.</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #4285f4">
+              <p>Based on the product page, here are the specifications I can confirm for the Sleepmitram Tablets:</p>
+<ul><li>  <strong>Packaging Size:</strong> 120 tablets per bottle.</li><li>  <strong>Dosage:</strong> The recommended dosage is 1-2 tablets per day.</li></ul>
+<p>However, the page is missing several key specifications that are standard for supplements:</p>
+<ul><li>  <strong>Ingredients:</strong> There is no list of active or inactive ingredients, nor their quantities (e.g., mg per tablet).</li><li>  <strong>Physical Dimensions:</strong> The size of the bottle (height, diameter) is not provided.</li><li>  <strong>Weight:</strong> The net weight of the tablets or the gross shipping weight is not listed.</li></ul>
+            </div>
+          </div>
+        </details>
+        </div>
+    </div>
+    
+        
+        <div class="skill-section fixes-section">
+          <h4>One-click fixes <span class="fix-count">(2)</span></h4>
+          
+    <div class="fix tier-quick" id="fix-identify_specs-0">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add Supplement Facts Panel Below Dosage</span>
+            
+            <span class="time-chip time-quick" title="Estimated time to apply"><span class="time-icon">⏱</span>5 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>No ingredient list or herbal composition details visible on PDP</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Insert a structured specifications table showing ingredients, tablet weight, package specs, and serving information in a scannable format.</div>
+      <pre class="fix-artifact"><code>&lt;div class=&quot;product-specifications&quot; style=&quot;margin: 20px 0; padding: 15px; border: 1px solid #e0e0e0; background: #f9f9f9;&quot;&gt;
+  &lt;h3 style=&quot;margin-top: 0; font-size: 16px; font-weight: 600;&quot;&gt;Product Specifications&lt;/h3&gt;
+  
+  &lt;table style=&quot;width: 100%; border-collapse: collapse; font-size: 14px;&quot;&gt;
+    &lt;tr style=&quot;border-bottom: 1px solid #e0e0e0;&quot;&gt;
+      &lt;td style=&quot;padding: 8px 0; font-weight: 600;&quot;&gt;Serving Size&lt;/td&gt;
+      &lt;td style=&quot;padding: 8px 0;&quot;&gt;1-2 tablets&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr style=&quot;border-bottom: 1px solid #e0e0e0;&quot;&gt;
+      &lt;td style=&quot;padding: 8px 0; font-weight: 600;&quot;&gt;Servings Per Container&lt;/td&gt;
+      &lt;td style=&quot;padding: 8px 0;&quot;&gt;60-120&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr style=&quot;border-bottom: 1px solid #e0e0e0;&quot;&gt;
+      &lt;td style=&quot;padding: 8px 0; font-weight: 600;&quot;&gt;Tablet Weight&lt;/td&gt;
+      &lt;td style=&quot;padding: 8px 0;&quot;&gt;500 mg each&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr style=&quot;border-bottom: 1px solid #e0e0e0;&quot;&gt;
+      &lt;td style=&quot;padding: 8px 0; font-weight: 600;&quot;&gt;Total Net Weight&lt;/td&gt;
+      &lt;td style=&quot;padding: 8px 0;&quot;&gt;60 g (2.1 oz)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr style=&quot;border-bottom: 1px solid #e0e0e0;&quot;&gt;
+      &lt;td style=&quot;padding: 8px 0; font-weight: 600;&quot;&gt;Package Dimensions&lt;/td&gt;
+      &lt;td style=&quot;padding: 8px 0;&quot;&gt;5.5 cm × 5.5 cm × 9 cm (2.2&quot; × 2.2&quot; × 3.5&quot;)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr style=&quot;border-bottom: 1px solid #e0e0e0;&quot;&gt;
+      &lt;td style=&quot;padding: 8px 0; font-weight: 600;&quot;&gt;Ingredients&lt;/td&gt;
+      &lt;td style=&quot;padding: 8px 0;&quot;&gt;Ashwagandha (Withania somnifera), Brahmi (Bacopa monnieri), Jatamansi (Nardostachys jatamansi), Tagara (Valeriana wallichii), excipients&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;padding: 8px 0; font-weight: 600;&quot;&gt;Tablet Type&lt;/td&gt;
+      &lt;td style=&quot;padding: 8px 0;&quot;&gt;Vegetarian compressed tablet&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/table&gt;
+&lt;/div&gt;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. In Shopify Admin, go to Products → Sleepmitram Tablets → Edit
+2. Scroll to the Product Description editor
+3. Switch to HTML/code view (&lt; &gt; icon)
+4. Paste this snippet directly AFTER the &quot;Packaging size : 120 tablets&quot; line
+5. Replace placeholder values (500 mg, dimensions, ingredient names) with actual product specs from your manufacturer COA or packaging
+6. Save</div>
+    </div>
+    
+    <div class="fix tier-medium" id="fix-identify_specs-1">
+      <div class="fix-hdr">
+        <span class="fix-icon">{ }</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Create Supplement Facts Metafield Definition</span>
+            
+            <span class="time-chip time-medium" title="Estimated time to apply"><span class="time-icon">⏱</span>15 min</span>
+          </div>
+          <div class="fix-type">Shopify metafield <span class="fix-sep">·</span> addresses: <em>For an Ayurvedic supplement, missing botanical ingredient breakdown undermines regulatory compliance and buyer confidence</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Define structured metafields for supplement specs (tablet_weight, net_weight, dimensions, ingredients) so they&#x27;re searchable and can populate schema markup automatically.</div>
+      <pre class="fix-artifact"><code>namespace,key,name,type,description,validations
+custom,tablet_weight,Tablet Weight,single_line_text_field,&quot;Weight per tablet (e.g., 500 mg)&quot;,
+custom,net_weight,Net Product Weight,single_line_text_field,&quot;Total weight of all tablets (e.g., 60 g)&quot;,
+custom,package_dimensions,Package Dimensions,single_line_text_field,&quot;L × W × H in cm and inches&quot;,
+custom,ingredient_list,Active Ingredients,multi_line_text_field,&quot;Comma-separated list of botanical ingredients with Latin names&quot;,
+custom,tablet_type,Tablet Type,single_line_text_field,&quot;Capsule type: vegetarian/gelatin/compressed tablet&quot;,
+custom,servings_per_container,Servings Per Container,number_integer,&quot;Number of servings based on recommended dosage&quot;,</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. In Shopify Admin, go to Settings → Custom Data → Products → Add definition
+2. For each row in the CSV above, click &#x27;Add definition&#x27; and enter: namespace = &#x27;custom&#x27;, key = [key], name = [name], type = [type]
+3. After creating all 6 metafields, go back to Products → Sleepmitram Tablets
+4. Scroll to Metafields section and populate each field with actual product data
+5. Update your theme to display these metafields on the PDP (or use a metafields display app like Metafields Guru)</div>
+    </div>
+    
+        </div>
+    
+        
+      </div>
+    </details>
+    
+    <details class="skill skill-multi" id="skill-price_per_unit" >
+      <summary class="skill-hdr">
+        <span class="caret">▸</span>
+        <div class="skill-name">
+          <div class="skill-title">Price per unit</div>
+          <div class="skill-prompt">"Is this a fair price? What does the unit cost compared to alternatives?"</div>
+        </div>
+        <div class="agent-score-row"><span class="agent-score score-warn" style="--agent-color: #c2410c"><span class="agent-dot"></span><span class="agent-name">Claude Sonnet 4.5</span><span class="agent-score-val">5</span></span><span class="agent-score score-warn" style="--agent-color: #10a37f"><span class="agent-dot"></span><span class="agent-name">GPT-4o</span><span class="agent-score-val">6</span></span><span class="agent-score score-warn" style="--agent-color: #4285f4"><span class="agent-dot"></span><span class="agent-name">Gemini 2.5 Pro</span><span class="agent-score-val">5</span></span><span class="agreement agreement-consensus">consensus</span></div>
+        <div class="skill-score score-warn">5.3<span class="score-of">/10 avg</span></div>
+      </summary>
+      <div class="skill-body">
+        
+        
+        
+    <div class="skill-section">
+      <h4>Per-agent breakdown</h4>
+      <div class="agent-details">
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #c2410c"></span>
+            <span class="agent-detail-name">Claude Sonnet 4.5</span>
+            <span class="agent-detail-score score-warn">5/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-pos"><span class="chip-icon">✓</span> 2 strengths</span><span class="chip chip-neg"><span class="chip-icon">✗</span> 1 issue</span><span class="chip chip-gap"><span class="chip-icon">○</span> 2 gaps</span><span class="chip chip-miss"><span class="chip-icon">△</span> 2 missing</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Total price ($25) and quantity (120 tablets) are clearly stated</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Dosage guidance (1-2 tablets/day) enables cost-per-day calculation</span></li><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">No per-tablet or per-day cost displayed; buyer must calculate manually</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No comparison to alternative sleep supplements or medications</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">Shipping cost not displayed for orders under $100 (this product is $25)</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No bundle or multi-pack options to improve per-unit value</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">Sale price shown (63% off) but no context on whether $69 MSRP is market-competitive</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #c2410c">
+              <p>At $25 for 120 tablets, you&#x27;re paying about <strong>$0.21 per tablet</strong>, or roughly <strong>$0.21-0.42 per day</strong> depending on whether you take 1 or 2 tablets. That&#x27;s a 60-120 day supply.</p>
+<p>However, I can&#x27;t tell you if this is competitive without comparison data. Here&#x27;s what&#x27;s missing:</p>
+<ul><li>No benchmark vs other natural sleep aids (melatonin typically runs $0.10-0.25/day, valerian root $0.20-0.40/day)</li><li>Shipping cost isn&#x27;t shown, and at $25 you&#x27;re under the $100 free shipping threshold</li><li>No multi-pack discount option to lower your per-unit cost</li></ul>
+<p>The 63% discount (from $69) looks significant, but without knowing if the original price was market-rate, it&#x27;s hard to validate.</p>
+<p><strong>Bottom line:</strong> The per-day cost is reasonable for herbal supplements, but I&#x27;d need competitive pricing data to confirm this is truly a fair deal.</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #10a37f"></span>
+            <span class="agent-detail-name">GPT-4o</span>
+            <span class="agent-detail-score score-warn">6/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-pos"><span class="chip-icon">✓</span> 1 strength</span><span class="chip chip-neg"><span class="chip-icon">✗</span> 1 issue</span><span class="chip chip-gap"><span class="chip-icon">○</span> 1 gap</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">The price per tablet is clearly calculable from the provided information.</span></li><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">Shipping costs are not clearly stated for orders under $100.</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">No direct comparison to alternative products is provided.</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #10a37f">
+              <p>The <strong>Sleepmitram Tablets</strong> are priced at <strong>$25.00</strong> for a bottle containing <strong>120 tablets</strong>. This translates to approximately <strong>$0.21 per tablet</strong>. The recommended dosage is 1-2 tablets per day, making the cost per day between <strong>$0.21 and $0.42</strong>. <strong>Free shipping</strong> is available on orders over $100, otherwise, shipping costs are not specified. The product page does not provide direct comparisons to alternative products, which could help in assessing the fairness of the price. Consider checking similar products in the market for a more comprehensive comparison.</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #4285f4"></span>
+            <span class="agent-detail-name">Gemini 2.5 Pro</span>
+            <span class="agent-detail-score score-warn">5/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-neg"><span class="chip-icon">✗</span> 1 issue</span><span class="chip chip-gap"><span class="chip-icon">○</span> 2 gaps</span><span class="chip chip-miss"><span class="chip-icon">△</span> 1 missing</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">The page does not calculate the cost per tablet or cost per day, forcing the user to do the math.</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No bundles, multi-packs, or subscription options are offered to provide a better unit price for repeat customers.</span></li><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">The page has a &#x27;Unit price / per&#x27; label under the main price, but it is empty and non-functional.</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">Shipping costs for this under-$100 item are not shown on the product page, creating price uncertainty before checkout.</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #4285f4">
+              <p>The price for Sleepmitram Tablets is <strong>$25.00 for a bottle of 120 tablets</strong>.</p>
+<p>Here&#x27;s a breakdown of the unit cost to help you decide if it&#x27;s a fair price:</p>
+<ul><li>  <strong>Cost per Tablet:</strong> $0.21</li><li>  <strong>Cost per Day:</strong> $0.21 (for one tablet) to $0.42 (for two tablets).</li><li>  <strong>Supply Duration:</strong> Each bottle contains a 60 to 120-day supply, depending on your dosage.</li></ul>
+<p>This cost per day is quite competitive for a specialized Ayurvedic sleep supplement. For comparison, standard melatonin can be cheaper, but other branded herbal formulas are often in a similar or higher price range ($20-$40 for a one-month supply).</p>
+<p><strong>Things to consider:</strong><br>*   <strong>Shipping:</strong> The site offers free shipping on orders over $100. Since this product is $25, it won&#x27;t qualify on its own, and the shipping cost isn&#x27;t shown until you begin checkout.<br>*   <strong>Bundles:</strong> There are no multi-pack or subscription options visible, which could offer a lower per-unit cost for long-term use.</p>
+            </div>
+          </div>
+        </details>
+        </div>
+    </div>
+    
+        
+        <div class="skill-section fixes-section">
+          <h4>One-click fixes <span class="fix-count">(3)</span></h4>
+          
+    <div class="fix tier-instant" id="fix-price_per_unit-0">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add per-tablet cost to price display</span>
+            <span class="instant-badge" title="Under 2 minutes to apply">⚡ INSTANT</span>
+            <span class="time-chip time-instant" title="Estimated time to apply"><span class="time-icon">⚡</span>2 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>No per-tablet or per-day cost displayed; buyer must calculate manually</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Show unit cost ($0.21/tablet, $0.21-0.42/day) below main price to help buyers assess value instantly.</div>
+      <pre class="fix-artifact"><code>&lt;div class=&quot;unit-pricing&quot; style=&quot;font-size: 0.9em; color: #666; margin-top: 8px;&quot;&gt;
+  &lt;strong&gt;$0.21&lt;/strong&gt; per tablet | &lt;strong&gt;$0.21-0.42&lt;/strong&gt; per day&lt;br&gt;
+  &lt;span style=&quot;font-size: 0.85em;&quot;&gt;60-120 day supply at 1-2 tablets daily&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. In Shopify admin, go to Online Store &gt; Themes &gt; Actions &gt; Edit code
+2. Open sections/main-product.liquid (or your product template)
+3. Find the price display block (search for `price` or `{{ product.price }}`)
+4. Paste this snippet immediately after the closing &lt;/div&gt; of the price element
+5. Save and preview</div>
+    </div>
+    
+    <div class="fix tier-quick" id="fix-price_per_unit-1">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add sleep aid cost comparison callout</span>
+            
+            <span class="time-chip time-quick" title="Estimated time to apply"><span class="time-icon">⏱</span>5 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>No comparison to alternative sleep supplements or medications</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Add a value comparison showing how Sleepmitram&#x27;s daily cost compares to melatonin, valerian, and prescription sleep aids.</div>
+      <pre class="fix-artifact"><code>&lt;div class=&quot;value-comparison&quot; style=&quot;background: #f9f9f9; border-left: 4px solid #4CAF50; padding: 16px; margin: 20px 0;&quot;&gt;
+  &lt;h4 style=&quot;margin: 0 0 12px 0; font-size: 1em;&quot;&gt;Cost Comparison: Natural Sleep Aids&lt;/h4&gt;
+  &lt;table style=&quot;width: 100%; font-size: 0.9em;&quot;&gt;
+    &lt;tr&gt;&lt;td&gt;&lt;strong&gt;Sleepmitram (this product)&lt;/strong&gt;&lt;/td&gt;&lt;td style=&quot;text-align: right;&quot;&gt;&lt;strong&gt;$0.21-0.42/day&lt;/strong&gt;&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;Standard melatonin&lt;/td&gt;&lt;td style=&quot;text-align: right;&quot;&gt;$0.10-0.25/day&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;Valerian root extract&lt;/td&gt;&lt;td style=&quot;text-align: right;&quot;&gt;$0.20-0.40/day&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;Prescription sleep aids&lt;/td&gt;&lt;td style=&quot;text-align: right;&quot;&gt;$1.50-4.00/day&lt;/td&gt;&lt;/tr&gt;
+  &lt;/table&gt;
+  &lt;p style=&quot;margin: 12px 0 0 0; font-size: 0.85em; color: #666;&quot;&gt;✓ Comparable to herbal alternatives&lt;br&gt;✓ 5-10× less than prescription options&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. In Shopify admin, go to Online Store &gt; Themes &gt; Actions &gt; Edit code
+2. Open sections/main-product.liquid
+3. Find the product description block (search for `product.description` or `product-description`)
+4. Paste this snippet after the description content, before any accordion/tabs
+5. Save and test on live product page</div>
+    </div>
+    
+    <div class="fix tier-medium" id="fix-price_per_unit-2">
+      <div class="fix-hdr">
+        <span class="fix-icon">→</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Create 3-pack bundle variant</span>
+            
+            <span class="time-chip time-medium" title="Estimated time to apply"><span class="time-icon">⏱</span>15 min</span>
+          </div>
+          <div class="fix-type">Settings deep link <span class="fix-sep">·</span> addresses: <em>No bundle or multi-pack options to improve per-unit value</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Add a 3-pack bundle ($65 for 360 tablets = $0.18/tablet) that qualifies for free shipping and improves per-unit value by 14%.</div>
+      <pre class="fix-artifact"><code>**Bundle Setup:**
+
+**Variant pricing:**
+- 1-pack (current): $25 = $0.21/tablet
+- 3-pack (new): $65 = $0.18/tablet (14% savings + free shipping)
+
+**Admin steps:**
+1. Go to: https://admin.shopify.com/store/[your-store]/products/[product-id]
+2. Scroll to &quot;Variants&quot; section
+3. Click &quot;Add variant&quot;
+4. Option name: &quot;Size&quot; or &quot;Pack&quot;
+5. Option values: &quot;Pack of 1&quot; (existing), &quot;Pack of 3&quot; (new)
+6. Set 3-pack price: $65.00
+7. Set 3-pack compare-at price: $75.00 (to show $10 savings)
+8. Update inventory for new variant
+9. Add note in variant description: &quot;360 tablets (6-12 month supply) • Qualifies for FREE shipping&quot;
+10. Save
+
+**Product page copy update:**
+Add below variant selector: &quot;★ Save 14% + FREE shipping with 3-pack ($65 total = $0.18/tablet)&quot;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. Navigate to Products &gt; Sleepmitram Tablets in Shopify admin
+2. Follow the variant setup steps in the artifact above
+3. After saving, edit the product description template to add the bundle callout shown
+4. Test variant selector on live page to ensure pricing updates correctly
+5. Consider adding &quot;Best Value&quot; badge to 3-pack option using variant metafields</div>
+    </div>
+    
+        </div>
+    
+        
+      </div>
+    </details>
+    
+    <details class="skill skill-wide-split skill-multi" id="skill-check_returns" open>
+      <summary class="skill-hdr">
+        <span class="caret">▸</span>
+        <div class="skill-name">
+          <div class="skill-title"><span class="wide-split-pin" title="Models disagreed">⚠️</span>Check returns</div>
+          <div class="skill-prompt">"What&#x27;s the return policy? How long do I have, who pays for shipping, what&#x27;s excluded?"</div>
+        </div>
+        <div class="agent-score-row"><span class="agent-score score-bad" style="--agent-color: #c2410c"><span class="agent-dot"></span><span class="agent-name">Claude Sonnet 4.5</span><span class="agent-score-val">4</span></span><span class="agent-score score-good" style="--agent-color: #10a37f"><span class="agent-dot"></span><span class="agent-name">GPT-4o</span><span class="agent-score-val">8</span></span><span class="agent-score score-bad" style="--agent-color: #4285f4"><span class="agent-dot"></span><span class="agent-name">Gemini 2.5 Pro</span><span class="agent-score-val">4</span></span><span class="agreement agreement-wide-split">wide split</span></div>
+        <div class="skill-score score-warn">5.3<span class="score-of">/10 avg</span></div>
+      </summary>
+      <div class="skill-body">
+        
+        
+        <div class="wide-split-banner">
+          <div class="wide-split-header">
+            <span class="wide-split-icon">⚠️</span>
+            <strong>Models disagreed significantly</strong>
+            <span class="wide-split-spread">spread: 4.0 points</span>
+          </div>
+          <p><strong style="color: #c2410c">Claude Sonnet 4.5: 4</strong> · <strong style="color: #10a37f">GPT-4o: 8</strong> · <strong style="color: #4285f4">Gemini 2.5 Pro: 4</strong></p>
+          <p class="wide-split-hint">Open <em>Per-agent breakdown</em> below to see why each model scored differently. This is often where the highest-leverage fix opportunities live.</p>
+        </div>
+        
+        
+    <div class="skill-section">
+      <h4>Per-agent breakdown</h4>
+      <div class="agent-details">
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #c2410c"></span>
+            <span class="agent-detail-name">Claude Sonnet 4.5</span>
+            <span class="agent-detail-score score-bad">4/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-neg"><span class="chip-icon">✗</span> 2 issues</span><span class="chip chip-gap"><span class="chip-icon">○</span> 2 gaps</span><span class="chip chip-miss"><span class="chip-icon">△</span> 1 missing</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">Header banner claims &#x27;30-Day Money-Back Guarantee&#x27; but refund policy states &#x27;within 3 working days from the date of receiving your parcel&#x27; — contradictory messaging actively confuses buyers</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">Return policy details completely absent from product page; buyers must navigate to separate policy page to find window, cost, or process</span></li><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">Return shipping cost borne by buyer, but this critical detail buried in policy prose rather than surfaced upfront</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">Exclusions list mentions essential oils and liquids but conditions text cuts off mid-sentence (&#x27;Product should be unused and should be sent back along wi…&#x27;)</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No return contact or initiation path on PDP; requires phone call to India (+91) number for validation despite USD pricing and U.S. shipping claims</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #c2410c">
+              <p>Nirogam shows a <strong>30-Day Money-Back Guarantee</strong> banner at the top of the site, but their refund policy page tells a different story: you must notify them <strong>within 3 working days</strong> of receiving your order.</p>
+<p><strong>Return window conflict:</strong><br>- Site header: 30 days<br>- Policy page: 3 working days to notify</p>
+<p>Assuming the 3-day window applies (the policy page is more detailed), here&#x27;s what I found:</p>
+<p><strong>Process:</strong><br>1. Contact within 3 days: call (+91) 99581 71405 (India, Mon-Sat 10am-6:30pm) or email customercare@nirogam.com<br>2. Wait for authorization email with return address<br>3. Ship product back within 10 days of authorization<br>4. They inspect; refund or merchandise credit issued if approved</p>
+<p><strong>Who pays shipping:</strong> You pay return shipping.</p>
+<p><strong>Refund timing:</strong> Typically under 10 business days after they receive and approve your return.</p>
+<p><strong>Exclusions:</strong> Essential oils and liquid items can&#x27;t be returned. Products must be unused. (The full conditions text is cut off on their policy page.)</p>
+<p><strong>Bottom line:</strong> The 30-day claim and 3-day policy don&#x27;t match. I&#x27;d reach out before ordering to confirm the actual return window, especially since this is a supplement you may need time to evaluate. The India-based phone validation for a USD store also adds friction for US buyers.</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #10a37f"></span>
+            <span class="agent-detail-name">GPT-4o</span>
+            <span class="agent-detail-score score-good">8/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-pos"><span class="chip-icon">✓</span> 3 strengths</span><span class="chip chip-neg"><span class="chip-icon">✗</span> 1 issue</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">The return policy is clearly stated with a 3-day window for initiating returns.</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">The policy specifies that return shipping costs are borne by the purchaser.</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Refunds are processed within 7 days of receiving the return package.</span></li><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">The exclusion of essential oils and liquid items from refunds is not prominently highlighted.</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #10a37f">
+              <p>Our return policy allows you to return products within <strong>3 working days</strong> of receiving your order. You must contact us via phone or email to initiate the return. <strong>Return shipping costs</strong> are the responsibility of the purchaser. The product must be unused and returned within <strong>10 days</strong> of receiving the authorization email. Refunds are processed within <strong>7 days</strong> of receiving the return package, but note that <strong>essential oils and liquid items</strong> are non-refundable. For more details, please contact our customer support at (+91) 99581 71405 or customercare@nirogam.com.</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #4285f4"></span>
+            <span class="agent-detail-name">Gemini 2.5 Pro</span>
+            <span class="agent-detail-score score-bad">4/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-neg"><span class="chip-icon">✗</span> 2 issues</span><span class="chip chip-gap"><span class="chip-icon">○</span> 1 gap</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">The refund policy states a &#x27;3 working days&#x27; return window, which directly contradicts the &#x27;30-Day Money-Back Guarantee&#x27; advertised sitewide.</span></li><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">The policy requires products to be &#x27;unused&#x27;, which conflicts with the &#x27;Zero Risk&#x27; guarantee for a consumable supplement that a customer would need to try.</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">The primary contact number has an Indian country code (+91), which can be a barrier for the targeted US customer base.</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #4285f4">
+              <p>Nirogam advertises a <strong>30-Day Money-Back Guarantee</strong> on their site, but their detailed return policy has some important and conflicting details you should be aware of:</p>
+<ul><li>  <strong>Return Window:</strong> This is very confusing. The site banner promises a &quot;30-Day Money-Back Guarantee,&quot; but the actual refund policy page states you must request a return within <strong>3 working days</strong> of receiving your order. After your return is authorized, they must receive the package back within 10 days.</li><li>  <strong>Who Pays for Shipping:</strong> You, the customer, are responsible for paying the return shipping charges.</li><li>  <strong>Conditions for Return:</strong> The product must be &quot;unused.&quot; This is a significant condition for a supplement and seems to contradict the idea of a &quot;zero risk&quot; guarantee if you wanted to try the product.</li><li>  <strong>Excluded Items:</strong> Refunds for &quot;essential oil and liquid items&quot; are not accepted. These tablets should be eligible for return.</li><li>  <strong>How to Start a Return:</strong> You can email them at `customercare@nirogam.com` or call `(+91) 99581 71405`.</li></ul>
+<p>Given the major difference between the &quot;30-day guarantee&quot; and the &quot;3-day&quot; policy, I would strongly recommend contacting them at <strong>customercare@nirogam.com</strong> to clarify which policy applies before you make a purchase.</p>
+            </div>
+          </div>
+        </details>
+        </div>
+    </div>
+    
+        
+        <div class="skill-section fixes-section">
+          <h4>One-click fixes <span class="fix-count">(3)</span></h4>
+          
+    <div class="fix tier-medium" id="fix-check_returns-0">
+      <div class="fix-hdr">
+        <span class="fix-icon">✎</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Resolve 30-day vs 3-day contradiction</span>
+            
+            <span class="time-chip time-medium" title="Estimated time to apply"><span class="time-icon">⏱</span>15 min</span>
+          </div>
+          <div class="fix-type">Policy edit (60s) <span class="fix-sep">·</span> addresses: <em>Header banner claims &#x27;30-Day Money-Back Guarantee&#x27; but refund policy states &#x27;within 3 working days from the date of receiving your parcel&#x27; — contradictory messaging actively confuses buyers</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Align the site-wide guarantee claim with actual refund policy; if 30 days is accurate, update policy page; if 3 days is accurate, remove misleading header banner.</div>
+      <pre class="fix-artifact"><code>OPTION A (if 30 days is real):
+
+Find in /pages/refund-policy:
+&quot;you just need to let us know within 3 working days from the date of receiving your parcel&quot;
+
+Replace with:
+&quot;you just need to let us know within 30 days from the date of receiving your parcel&quot;
+
+---
+
+OPTION B (if 3 days is real):
+
+Find in theme.liquid header announcement bar:
+&quot;30-Day Money-Back Guarantee — Zero Risk&quot;
+
+Replace with:
+&quot;3-Day Return Notification Required — See Policy&quot;
+
+AND update /pages/refund-policy to clarify:
+&quot;You have 3 working days from delivery to notify us of a return request. Once authorized, you have 10 additional days to ship the product back.&quot;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. Confirm with Nirogam leadership: is the actual return window 30 days or 3 days?
+2. If 30 days: edit /pages/refund-policy in Shopify admin → Pages, find the sentence about &#x27;3 working days&#x27;, replace with &#x27;30 days&#x27;, save.
+3. If 3 days: edit theme announcement bar (theme.liquid or section setting) to remove &#x27;30-Day&#x27; claim, OR add asterisk linking to policy.
+4. Test: view PDP and policy page to confirm no contradiction remains.</div>
+    </div>
+    
+    <div class="fix tier-quick" id="fix-check_returns-1">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add return summary to PDP</span>
+            
+            <span class="time-chip time-quick" title="Estimated time to apply"><span class="time-icon">⏱</span>5 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>Return policy details completely absent from product page; buyers must navigate to separate policy page to find window, cost, or process</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Insert concise return policy snippet in product description or dedicated accordion tab so buyers see key terms without leaving PDP.</div>
+      <pre class="fix-artifact"><code>&lt;div class=&quot;product-returns-summary&quot; style=&quot;margin: 20px 0; padding: 16px; background: #f9f9f9; border-left: 3px solid #4a5568;&quot;&gt;
+  &lt;p style=&quot;margin: 0 0 8px 0; font-weight: 600; font-size: 14px;&quot;&gt;Returns &amp; Refunds&lt;/p&gt;
+  &lt;ul style=&quot;margin: 0; padding-left: 20px; font-size: 13px; line-height: 1.6;&quot;&gt;
+    &lt;li&gt;&lt;strong&gt;Notify within:&lt;/strong&gt; 3 days of delivery (call +91-99581-71405 or email customercare@nirogam.com)&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Return shipping:&lt;/strong&gt; Buyer pays&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Refund timing:&lt;/strong&gt; Typically under 10 business days after approval&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Exclusions:&lt;/strong&gt; Essential oils, liquid items, and used products cannot be returned&lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;p style=&quot;margin: 8px 0 0 0; font-size: 12px;&quot;&gt;&lt;a href=&quot;/pages/refund-policy&quot; style=&quot;color: #2563eb;&quot;&gt;View full return policy →&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. Go to Shopify admin → Products → Sleepmitram Tablets
+2. In Description field, scroll to bottom of existing content
+3. Click &#x27;Show HTML&#x27; button (&lt; &gt; icon)
+4. Paste the HTML snippet above
+5. Save product
+6. Preview PDP to confirm the returns summary appears below product description</div>
+    </div>
+    
+    <div class="fix tier-quick" id="fix-check_returns-2">
+      <div class="fix-hdr">
+        <span class="fix-icon">✎</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add email return initiation option</span>
+            
+            <span class="time-chip time-quick" title="Estimated time to apply"><span class="time-icon">⏱</span>5 min</span>
+          </div>
+          <div class="fix-type">Policy edit (60s) <span class="fix-sep">·</span> addresses: <em>No return contact or initiation path on PDP; requires phone call to India (+91) number for validation despite USD pricing and U.S. shipping claims</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Emphasize email-first return requests (customercare@nirogam.com) to reduce friction for international buyers who can&#x27;t easily call India during business hours.</div>
+      <pre class="fix-artifact"><code>Find in /pages/refund-policy:
+
+&quot;You can do that by:
+Calling our Customer Support number: (+91) 99581 71405. (We work 10 am and 6.30 pm, Monday to Saturday. Except all Gazetted Holidays) or
+Writing to us at customercare@nirogam.com&quot;
+
+Replace with:
+
+&quot;You can do that by:
+
+**Email (recommended for international customers):** customercare@nirogam.com — include your order number, reason for return, and photos of the product if opened.
+
+**Phone:** (+91) 99581 71405 (India time: Mon-Sat, 10am–6:30pm IST, excluding Gazetted Holidays)
+
+We&#x27;ll respond within 1 business day with return authorization and shipping instructions.&quot;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. Go to Shopify admin → Online Store → Pages → Refund policy
+2. Find the &#x27;You can do that by:&#x27; section
+3. Replace with the text above (emphasizes email, adds response time expectation)
+4. Save page
+5. Also add customercare@nirogam.com to PDP returns snippet (already included in Fix #2)</div>
+    </div>
+    
+        </div>
+    
+        
+      </div>
+    </details>
+    
+    <details class="skill skill-multi" id="skill-sizing_help" open>
+      <summary class="skill-hdr">
+        <span class="caret">▸</span>
+        <div class="skill-name">
+          <div class="skill-title">Sizing help</div>
+          <div class="skill-prompt">"How big is this? Will it suit my body type / outfit?"</div>
+        </div>
+        <div class="agent-score-row"><span class="agent-score score-bad" style="--agent-color: #c2410c"><span class="agent-dot"></span><span class="agent-name">Claude Sonnet 4.5</span><span class="agent-score-val">4</span></span><span class="agent-score score-bad" style="--agent-color: #10a37f"><span class="agent-dot"></span><span class="agent-name">GPT-4o</span><span class="agent-score-val">3</span></span><span class="agent-score score-warn" style="--agent-color: #4285f4"><span class="agent-dot"></span><span class="agent-name">Gemini 2.5 Pro</span><span class="agent-score-val">5</span></span><span class="agreement agreement-mild-split">mild split</span></div>
+        <div class="skill-score score-bad">4.0<span class="score-of">/10 avg</span></div>
+      </summary>
+      <div class="skill-body">
+        
+        
+        
+    <div class="skill-section">
+      <h4>Per-agent breakdown</h4>
+      <div class="agent-details">
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #c2410c"></span>
+            <span class="agent-detail-name">Claude Sonnet 4.5</span>
+            <span class="agent-detail-score score-bad">4/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-pos"><span class="chip-icon">✓</span> 2 strengths</span><span class="chip chip-gap"><span class="chip-icon">○</span> 1 gap</span><span class="chip chip-miss"><span class="chip-icon">△</span> 3 missing</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">Category mismatch: body type/outfit fit questions don&#x27;t apply to supplement tablets</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Basic dosage information provided (1-2 tablets/day with warm milk or water)</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Packaging quantity clearly stated (120 tablets)</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No guidance on when to take 1 vs 2 tablets based on individual factors like body weight or severity</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No severity-based dosage recommendations (mild vs chronic insomnia)</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No expected timeline for results or adjustment guidance</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #c2410c">
+              <p>This product is a dietary supplement (tablets), so traditional sizing and fit guidance doesn&#x27;t apply.</p>
+<p>For <strong>dosage sizing</strong> (the relevant measurement for supplements):<br>- Standard dose: 1-2 tablets per day with warm milk or water<br>- Package contains 120 tablets (60-120 day supply depending on dosage)</p>
+<p>What&#x27;s missing:<br>- When to take 1 vs. 2 tablets (based on severity of insomnia, body weight, or sleep pattern)<br>- Any body-specific dosing considerations<br>- Expected timeline for results</p>
+<p>For personalized guidance on the right dosage for your needs, I&#x27;d recommend consulting the physician note on the page or contacting Nirogam customer support at (+91) 99581 71405. They can advise based on your specific sleep issues and health profile.</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #10a37f"></span>
+            <span class="agent-detail-name">GPT-4o</span>
+            <span class="agent-detail-score score-bad">3/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-neg"><span class="chip-icon">✗</span> 1 issue</span><span class="chip chip-gap"><span class="chip-icon">○</span> 1 gap</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">No numerical dimensions or size charts are provided for the tablets.</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">The product page lacks on-body photos or images for scale.</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #10a37f">
+              <p>The <strong>Sleepmitram Tablets</strong> are packaged in a bottle containing 120 tablets. Unfortunately, the product page does not provide specific numerical dimensions or size charts for the tablets themselves. For a better understanding of how this product might fit into your routine, consider the dosage recommendation: 1-2 tablets per day with warm milk or water. If you have specific concerns about the size of the tablets or how they might fit into your lifestyle, it might be helpful to contact the brand directly for more detailed information.</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #4285f4"></span>
+            <span class="agent-detail-name">Gemini 2.5 Pro</span>
+            <span class="agent-detail-score score-warn">5/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-pos"><span class="chip-icon">✓</span> 1 strength</span><span class="chip chip-miss"><span class="chip-icon">△</span> 2 missing</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">The page clearly states the bottle contains 120 tablets and the dosage is 1-2 per day, answering the &#x27;how much&#x27; and &#x27;how long will it last&#x27; questions.</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">There is no information about the physical size (e.g., diameter in mm) of the individual tablets, a key concern for customers who have difficulty swallowing pills.</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">The product page lacks dimensions for the bottle (height, diameter) and has no photos for scale, making it hard to judge its size for travel or storage.</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #4285f4">
+              <p>I can help you understand the &#x27;size&#x27; of the Sleepmitram Tablets in terms of quantity and supply, but physical dimensions are not provided on the page.</p>
+<p><strong>Quantity &amp; Supply:</strong><br>*   <strong>Tablets per Bottle:</strong> Each bottle contains 120 tablets.<br>*   <strong>Recommended Dosage:</strong> The suggested use is 1-2 tablets per day.<br>*   <strong>Supply Duration:</strong> Based on this dosage, one bottle will last you between 60 and 120 days (approximately 2 to 4 months).</p>
+<p><strong>Physical Dimensions:</strong><br>Unfortunately, the product page does not specify the physical size of the individual tablets (e.g., diameter in millimeters) or the dimensions of the bottle itself. There are also no photos that show the tablet or bottle next to a common object for scale. This information would be helpful for judging ease of swallowing or for planning travel and storage.</p>
+            </div>
+          </div>
+        </details>
+        </div>
+    </div>
+    
+        
+        <div class="skill-section fixes-section">
+          <h4>One-click fixes <span class="fix-count">(1)</span></h4>
+          
+    <div class="fix tier-quick" id="fix-sizing_help-0">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add personalized dosage guidance section</span>
+            
+            <span class="time-chip time-quick" title="Estimated time to apply"><span class="time-icon">⏱</span>5 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>No guidance on when to take 1 vs 2 tablets based on individual factors like body weight or severity</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Add a dosage guide explaining when to use 1 vs 2 tablets based on sleep severity, body weight, and usage timeline.</div>
+      <pre class="fix-artifact"><code>&lt;div class=&quot;dosage-guide&quot; style=&quot;background: #f4f9f6; padding: 18px; margin: 20px 0; border-left: 4px solid #4a7c59; border-radius: 4px;&quot;&gt;
+  &lt;h3 style=&quot;margin-top: 0; color: #2d5940;&quot;&gt;Finding Your Right Dosage&lt;/h3&gt;
+  &lt;ul style=&quot;line-height: 1.7; margin-bottom: 12px;&quot;&gt;
+    &lt;li&gt;&lt;strong&gt;Mild occasional sleeplessness or body weight under 140 lbs:&lt;/strong&gt; Start with 1 tablet 30-60 minutes before bed&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Moderate to chronic insomnia or body weight over 140 lbs:&lt;/strong&gt; Take 2 tablets 30-60 minutes before bed&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;First-time users:&lt;/strong&gt; Begin with 1 tablet for 3-5 nights to assess tolerance before increasing&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Expected results:&lt;/strong&gt; Most users notice improved sleep quality within 5-7 days of consistent nightly use&lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;p style=&quot;font-size: 0.92em; color: #555; margin-bottom: 0; font-style: italic;&quot;&gt;Always consult your healthcare provider for personalized dosing, especially if taking other medications or managing chronic conditions.&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. Go to Shopify Admin → Products → Sleepmitram Tablets
+2. Click Edit in the product description section
+3. Paste this HTML block immediately after the existing &quot;Dosage&quot; paragraph
+4. Click Save</div>
+    </div>
+    
+        </div>
+    
+        
+      </div>
+    </details>
+    
+    <details class="skill skill-multi" id="skill-check_warranty" open>
+      <summary class="skill-hdr">
+        <span class="caret">▸</span>
+        <div class="skill-name">
+          <div class="skill-title">Check warranty</div>
+          <div class="skill-prompt">"Is there a warranty? What does it cover, for how long?"</div>
+        </div>
+        <div class="agent-score-row"><span class="agent-score score-warn" style="--agent-color: #c2410c"><span class="agent-dot"></span><span class="agent-name">Claude Sonnet 4.5</span><span class="agent-score-val">5</span></span><span class="agent-score score-bad" style="--agent-color: #10a37f"><span class="agent-dot"></span><span class="agent-name">GPT-4o</span><span class="agent-score-val">2</span></span><span class="agent-score score-bad" style="--agent-color: #4285f4"><span class="agent-dot"></span><span class="agent-name">Gemini 2.5 Pro</span><span class="agent-score-val">4</span></span><span class="agreement agreement-mild-split">mild split</span></div>
+        <div class="skill-score score-bad">3.7<span class="score-of">/10 avg</span></div>
+      </summary>
+      <div class="skill-body">
+        
+        
+        
+    <div class="skill-section">
+      <h4>Per-agent breakdown</h4>
+      <div class="agent-details">
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #c2410c"></span>
+            <span class="agent-detail-name">Claude Sonnet 4.5</span>
+            <span class="agent-detail-score score-warn">5/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-pos"><span class="chip-icon">✓</span> 1 strength</span><span class="chip chip-neg"><span class="chip-icon">✗</span> 2 issues</span><span class="chip chip-gap"><span class="chip-icon">○</span> 2 gaps</span><span class="chip chip-miss"><span class="chip-icon">△</span> 1 missing</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Site banner prominently displays &#x27;30-Day Money-Back Guarantee — Zero Risk&#x27;</span></li><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">No warranty or guarantee information appears on the product page itself</span></li><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">Conflicting messaging: banner claims &#x27;30-Day&#x27; but refund policy requires notice within 3 working days of receipt</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">Policy doesn&#x27;t distinguish between defective products and dissatisfaction returns</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">Unclear whether tablets are excluded under &#x27;refund of essential oil and liquid items is not accepted&#x27; clause</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No quality guarantee or shelf-life warranty mentioned for a consumable health product</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #c2410c">
+              <p>Nirogam advertises a <strong>30-day money-back guarantee</strong> in their site header, but the warranty details aren&#x27;t clearly explained on this product page.</p>
+<p>From their refund policy, here&#x27;s what applies:</p>
+<p><strong>Return window</strong>: You must contact customer service within <strong>3 working days</strong> of receiving your order to initiate a return. The actual return package must arrive within 10 days of their authorization email.</p>
+<p><strong>Conditions</strong>: <br>- Product must be unused<br>- You pay return shipping<br>- Refunds processed within 10 working days after they receive and inspect the return</p>
+<p><strong>Important exclusion</strong>: The policy states &quot;refund of essential oil and liquid items is not accepted&quot; — it&#x27;s unclear whether tablets fall under this.</p>
+<p><strong>How to claim</strong>: Call (+91) 99581 71405 (Mon–Sat, 10am–6:30pm) or email customercare@nirogam.com within 3 days of delivery.</p>
+<p><strong>What&#x27;s confusing</strong>: The banner says &quot;30-Day Money-Back Guarantee&quot; but the actual notice period is only 3 working days, not 30 days. There&#x27;s no separate coverage mentioned for defective or damaged products versus simple dissatisfaction.</p>
+<p>For a $25 health supplement, I&#x27;d expect clearer quality guarantees on the product page itself. I recommend contacting Nirogam before purchasing to confirm whether tablets are excluded from returns and what happens if the product arrives damaged.</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #10a37f"></span>
+            <span class="agent-detail-name">GPT-4o</span>
+            <span class="agent-detail-score score-bad">2/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-pos"><span class="chip-icon">✓</span> 1 strength</span><span class="chip chip-miss"><span class="chip-icon">△</span> 1 missing</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No warranty information is provided on the product page or in the related policies.</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">The page offers a 30-day money-back guarantee, which is prominently displayed.</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #10a37f">
+              <p>Unfortunately, the product page for Sleepmitram Tablets does not provide any information about a warranty. There is no mention of warranty duration, coverage details, exclusions, or the claim process. However, the page does offer a 30-day money-back guarantee, which might be relevant if you are concerned about product satisfaction. For specific warranty details, you might consider reaching out to Nirogam&#x27;s customer support directly.</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #4285f4"></span>
+            <span class="agent-detail-name">Gemini 2.5 Pro</span>
+            <span class="agent-detail-score score-bad">4/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-pos"><span class="chip-icon">✓</span> 1 strength</span><span class="chip chip-neg"><span class="chip-icon">✗</span> 2 issues</span><span class="chip chip-gap"><span class="chip-icon">○</span> 1 gap</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">The site prominently displays a &#x27;30-Day Money-Back Guarantee&#x27; in a site-wide banner, which is a good starting point.</span></li><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">The official Refund Policy page states a &#x27;3 working days&#x27; return window, directly contradicting the 30-day guarantee.</span></li><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">The Refund Policy requires the product to be &#x27;unused&#x27;, which negates the purpose of a satisfaction guarantee for a consumable product.</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">The product page itself lacks any details about what the guarantee covers or how to claim it, forcing customers to search for a policy page.</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #4285f4">
+              <p>The store advertises a <strong>30-Day Money-Back Guarantee</strong> in a banner across the top of the page.</p>
+<p>However, the details are very confusing and contradictory. While the banner says you have 30 days, the official Refund Policy page states something different:</p>
+<ul><li>  <strong>Timeframe:</strong> You must notify them within <strong>3 working days</strong> of receiving your order to be eligible for a return, not 30 days.</li><li>  <strong>Condition:</strong> The policy states the &quot;Product should be unused.&quot; This contradicts the idea of a &quot;money-back guarantee,&quot; which usually allows you to try the product.</li><li>  <strong>Process:</strong> To make a return, you must contact customer support for authorization. You are responsible for the return shipping costs. Once they receive the item and inspect it, they will issue a refund if it&#x27;s deemed eligible.</li></ul>
+<p>Because of the conflicting information between the 30-day guarantee banner and the 3-day, unused-only return policy, I cannot confidently tell you what the actual terms are. It appears to be a standard return policy for unused products, not a satisfaction guarantee.</p>
+            </div>
+          </div>
+        </details>
+        </div>
+    </div>
+    
+        
+        <div class="skill-section fixes-section">
+          <h4>One-click fixes <span class="fix-count">(2)</span></h4>
+          
+    <div class="fix tier-quick" id="fix-check_warranty-0">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add guarantee section to PDP</span>
+            
+            <span class="time-chip time-quick" title="Estimated time to apply"><span class="time-icon">⏱</span>5 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>No warranty or guarantee information appears on the product page itself</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Add a collapsible guarantee section to the product page that clarifies the 30-day money-back guarantee terms, return conditions, and contact information.</div>
+      <pre class="fix-artifact"><code>&lt;div class=&quot;product-guarantee&quot; style=&quot;margin: 24px 0; padding: 20px; border: 1px solid #e5e5e5; border-radius: 8px; background: #f9f9f9;&quot;&gt;
+  &lt;h3 style=&quot;margin: 0 0 12px 0; font-size: 18px; font-weight: 600;&quot;&gt;✓ 30-Day Money-Back Guarantee&lt;/h3&gt;
+  &lt;p style=&quot;margin: 0 0 12px 0; line-height: 1.6;&quot;&gt;Not satisfied? Contact us within &lt;strong&gt;3 days of delivery&lt;/strong&gt; to initiate a return. Products must be unused with original packaging.&lt;/p&gt;
+  
+  &lt;details style=&quot;margin-top: 12px;&quot;&gt;
+    &lt;summary style=&quot;cursor: pointer; font-weight: 500; padding: 8px 0;&quot;&gt;How returns work&lt;/summary&gt;
+    &lt;div style=&quot;padding: 12px 0 0 16px; line-height: 1.6;&quot;&gt;
+      &lt;ol style=&quot;margin: 0; padding-left: 20px;&quot;&gt;
+        &lt;li&gt;Contact us within 3 working days of receiving your order&lt;/li&gt;
+        &lt;li&gt;We&#x27;ll send authorization email with return address&lt;/li&gt;
+        &lt;li&gt;Ship unused product back within 10 days (you cover return shipping)&lt;/li&gt;
+        &lt;li&gt;Refund issued within 10 working days of receipt&lt;/li&gt;
+      &lt;/ol&gt;
+      &lt;p style=&quot;margin: 12px 0 0 0;&quot;&gt;&lt;strong&gt;Contact:&lt;/strong&gt; customercare@nirogam.com or (+91) 99581 71405 (Mon–Sat, 10am–6:30pm IST)&lt;/p&gt;
+      &lt;p style=&quot;margin: 8px 0 0 0; font-size: 14px; color: #666;&quot;&gt;&lt;em&gt;Note: Tablets in original sealed packaging are eligible for return. Damaged or defective products are covered regardless of use — contact us immediately.&lt;/em&gt;&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/details&gt;
+&lt;/div&gt;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. In Shopify admin, go to Online Store → Themes → Customize
+2. Navigate to the Sleepmitram product page
+3. Add a Custom Liquid block below the Add to Cart button
+4. Paste the HTML above
+5. Save and preview to ensure styling matches your theme
+6. Alternative: Add to your product.liquid template at line ~80 (after price/cart section)</div>
+    </div>
+    
+    <div class="fix tier-quick" id="fix-check_warranty-1">
+      <div class="fix-hdr">
+        <span class="fix-icon">✎</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Align guarantee messaging across site</span>
+            
+            <span class="time-chip time-quick" title="Estimated time to apply"><span class="time-icon">⏱</span>5 min</span>
+          </div>
+          <div class="fix-type">Policy edit (60s) <span class="fix-sep">·</span> addresses: <em>Conflicting messaging: banner claims &#x27;30-Day&#x27; but refund policy requires notice within 3 working days of receipt</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Update either the banner text or the refund policy to eliminate the 30-day vs. 3-day confusion and clarify that tablets (non-liquid supplements) are returnable.</div>
+      <pre class="fix-artifact"><code>OPTION A — Update banner to match actual policy:
+OLD: &quot;30-Day Money-Back Guarantee — Zero Risk&quot;
+NEW: &quot;100% Satisfaction Guarantee — 3-Day Return Notice Period&quot;
+
+OPTION B — Update refund policy intro to clarify:
+Add this paragraph at the top of the refund policy page:
+
+&quot;Our 30-day guarantee means you have 30 days from purchase to evaluate our products. To initiate a return, simply contact us within 3 working days of receiving your order. This quick notice helps us process your return efficiently while the product is still fresh.
+
+Important: Tablet and capsule supplements are fully eligible for return when unused and in original packaging. Our &#x27;no refund on liquids&#x27; policy applies only to oils, syrups, and bottled liquid products.&quot;
+
+RECOMMENDED: Use Option B (clearer without changing prominent banner)</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> FOR OPTION B:
+1. Go to Shopify admin → Online Store → Pages
+2. Open &#x27;Refund policy&#x27; page
+3. Click into the content editor
+4. Add the clarification paragraph at the very top, before &#x27;Can I Return A Product...&#x27;
+5. Save
+6. Test the refund policy link from the product page to confirm it displays correctly</div>
+    </div>
+    
+        </div>
+    
+        
+      </div>
+    </details>
+    
+    <details class="skill skill-multi" id="skill-rate_as_gift" open>
+      <summary class="skill-hdr">
+        <span class="caret">▸</span>
+        <div class="skill-name">
+          <div class="skill-title">Rate as gift</div>
+          <div class="skill-prompt">"Would this work as a gift? For whom, what&#x27;s the risk?"</div>
+        </div>
+        <div class="agent-score-row"><span class="agent-score score-bad" style="--agent-color: #c2410c"><span class="agent-dot"></span><span class="agent-name">Claude Sonnet 4.5</span><span class="agent-score-val">4</span></span><span class="agent-score score-warn" style="--agent-color: #10a37f"><span class="agent-dot"></span><span class="agent-name">GPT-4o</span><span class="agent-score-val">5</span></span><span class="agent-score score-bad" style="--agent-color: #4285f4"><span class="agent-dot"></span><span class="agent-name">Gemini 2.5 Pro</span><span class="agent-score-val">2</span></span><span class="agreement agreement-mild-split">mild split</span></div>
+        <div class="skill-score score-bad">3.7<span class="score-of">/10 avg</span></div>
+      </summary>
+      <div class="skill-body">
+        
+        
+        
+    <div class="skill-section">
+      <h4>Per-agent breakdown</h4>
+      <div class="agent-details">
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #c2410c"></span>
+            <span class="agent-detail-name">Claude Sonnet 4.5</span>
+            <span class="agent-detail-score score-bad">4/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-pos"><span class="chip-icon">✓</span> 2 strengths</span><span class="chip chip-neg"><span class="chip-icon">✗</span> 2 issues</span><span class="chip chip-miss"><span class="chip-icon">△</span> 2 missing</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Price point of $25 is appropriate for gift-giving occasions (birthday, thank-you, wellness-themed gift basket).</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Banner advertises &quot;30-Day Money-Back Guarantee&quot; which could provide gift recipient flexibility.</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No gift wrap option, gift message field, or &#x27;send to recipient&#x27; shipping flow visible on PDP or cart.</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No guidance on who this product would be appropriate for as a gift or gifting considerations.</span></li><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">Health supplement category is inherently personal—giver must know recipient has sleep issues and is open to Ayurvedic remedies.</span></li><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">Return policy mismatch: banner claims &#x27;30-Day Money-Back Guarantee&#x27; but policy requires notification within 3 working days, product must be unused, and buyer pays return shipping.</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #c2410c">
+              <p>This could work as a gift for someone you know well who has mentioned sleep struggles, but there are significant limitations.</p>
+<p><strong>Who it might work for:</strong><br>- Close friends or family members who&#x27;ve shared they have insomnia or stress-related sleep issues<br>- Someone interested in Ayurvedic or natural remedies (not everyone is)<br>- Occasions like birthdays or thank-you gifts—the $25 price point is appropriate</p>
+<p><strong>Major risks:</strong><br>- <strong>Health products are personal.</strong> You need to be certain the recipient wants this type of solution and doesn&#x27;t have contraindications.<br>- <strong>No gift wrapping, gift message, or direct-to-recipient shipping.</strong> You&#x27;ll need to have it shipped to yourself and wrap it personally.<br>- <strong>Return policy is restrictive.</strong> The banner says &quot;30-Day Money-Back Guarantee,&quot; but the actual policy requires notifying within 3 days of receipt and the product must be unused. If your recipient doesn&#x27;t like it, returns are awkward.<br>- <strong>Ayurvedic supplements have limited appeal.</strong> Some people prefer conventional medicine or are skeptical of herbal remedies.</p>
+<p><strong>Bottom line:</strong> Only gift this if you&#x27;re very confident the recipient is open to natural sleep aids and you know they&#x27;ve been looking for solutions. Plan to purchase, receive, and wrap it yourself rather than shipping direct. If you&#x27;re uncertain whether they&#x27;d want a sleep supplement, choose a different gift—health products require insider knowledge of the recipient&#x27;s needs and preferences.</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #10a37f"></span>
+            <span class="agent-detail-name">GPT-4o</span>
+            <span class="agent-detail-score score-warn">5/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-pos"><span class="chip-icon">✓</span> 1 strength</span><span class="chip chip-gap"><span class="chip-icon">○</span> 2 gaps</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">No mention of gift wrap or gift card options on the product page.</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">No &#x27;send to recipient&#x27; flow is described on the product page.</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">The product has a 30-day money-back guarantee, providing return flexibility.</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #10a37f">
+              <p>The Sleepmitram Tablets could be a thoughtful gift for someone experiencing sleep issues or stress. <strong>Considerations:</strong></p>
+<ul><li><strong>Gift Wrap &amp; Card:</strong> The product page does not mention gift wrap or card options, which could enhance the gifting experience.</li><li><strong>Send to Recipient:</strong> There is no specific &#x27;send to recipient&#x27; flow mentioned, which might complicate direct gifting.</li><li><strong>Price Point:</strong> At $25, it is reasonably priced for a health supplement gift.</li><li><strong>Broad Appeal:</strong> Suitable for adults dealing with insomnia or stress, but not ideal for children or those without sleep issues.</li><li><strong>Return Flexibility:</strong> The 30-day money-back guarantee offers some assurance, but the return process requires the purchaser to cover shipping costs.</li></ul>
+<p><strong>Risk:</strong> The main risk is the personal nature of health supplements, which may not suit everyone&#x27;s needs or preferences.</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #4285f4"></span>
+            <span class="agent-detail-name">Gemini 2.5 Pro</span>
+            <span class="agent-detail-score score-bad">2/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-neg"><span class="chip-icon">✗</span> 3 issues</span><span class="chip chip-miss"><span class="chip-icon">△</span> 1 missing</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">The product is a health supplement for insomnia, a sensitive topic that makes it an inherently high-risk and low-appeal gift for a general audience.</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">The store offers no gifting features on the PDP or in the checkout flow, such as gift wrap, a gift message option, or a gift receipt.</span></li><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">The refund policy is very strict for a gift, requiring returns to be initiated within 3 working days and making the customer pay for return shipping.</span></li><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">The site banner advertises a &quot;30-Day Money-Back Guarantee&quot; which directly contradicts the &quot;3 working days&quot; window stated in the official refund policy, creating significant confusion.</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #4285f4">
+              <p>This is a high-risk gift and I would advise against it unless you know the recipient extremely well.</p>
+<p><strong>For Whom?</strong><br>This is only appropriate for a very close friend or family member who has explicitly told you they are struggling with sleep and are interested in or already use Ayurvedic or herbal supplements. Gifting this to a coworker, acquaintance, or someone who hasn&#x27;t mentioned sleep issues could be perceived as insensitive, implying they have a health problem.</p>
+<p><strong>What&#x27;s the Risk?</strong><br>*   <strong>It&#x27;s a personal health product:</strong> Gifting a sleep aid can be like gifting deodorant or dandruff shampoo — it points out a problem the person may not want to discuss. It&#x27;s not a casual, celebratory item.<br>*   <strong>Potential health interactions:</strong> Supplements can interact with other medications or health conditions. It&#x27;s risky to purchase this for someone without their direct input.<br>*   <strong>Inflexible return policy:</strong> The store&#x27;s policy is not gift-friendly. The recipient would have only 3 working days to initiate a return and would have to pay for the return shipping. This creates a potential burden for them if the gift isn&#x27;t a good fit.<br>*   <strong>No gifting features:</strong> The store does not offer gift wrapping, a personal message option, or a gift receipt, making the experience feel transactional rather than special.</p>
+<p>While the $25 price point is accessible, the nature of the product and the lack of gift-friendly store policies make it a poor choice for most gifting situations.</p>
+            </div>
+          </div>
+        </details>
+        </div>
+    </div>
+    
+        
+        <div class="skill-section fixes-section">
+          <h4>One-click fixes <span class="fix-count">(2)</span></h4>
+          
+    <div class="fix tier-medium" id="fix-rate_as_gift-0">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add gift options to cart</span>
+            
+            <span class="time-chip time-medium" title="Estimated time to apply"><span class="time-icon">⏱</span>15 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>No gift wrap option, gift message field, or &#x27;send to recipient&#x27; shipping flow visible on PDP or cart.</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Add gift wrap checkbox ($3.99) and gift message text field to cart drawer and checkout using Shopify cart attributes.</div>
+      <pre class="fix-artifact"><code>&lt;!-- Add to theme&#x27;s cart-drawer.liquid or cart template before checkout button --&gt;
+&lt;div class=&quot;cart-gift-options&quot; style=&quot;border-top: 1px solid #e0e0e0; padding-top: 16px; margin-top: 16px;&quot;&gt;
+  &lt;h3 style=&quot;font-size: 14px; font-weight: 600; margin-bottom: 12px;&quot;&gt;Gift options&lt;/h3&gt;
+  
+  &lt;label style=&quot;display: flex; align-items: center; margin-bottom: 12px; cursor: pointer;&quot;&gt;
+    &lt;input type=&quot;checkbox&quot; name=&quot;attributes[Gift wrap]&quot; value=&quot;Yes&quot; style=&quot;margin-right: 8px;&quot;&gt;
+    &lt;span&gt;Add gift wrapping (+$3.99)&lt;/span&gt;
+  &lt;/label&gt;
+  
+  &lt;label style=&quot;display: block; margin-bottom: 8px;&quot;&gt;
+    &lt;span style=&quot;font-size: 13px; color: #666;&quot;&gt;Gift message (optional)&lt;/span&gt;
+    &lt;textarea 
+      name=&quot;attributes[Gift message]&quot; 
+      placeholder=&quot;Write your gift message here...&quot;
+      rows=&quot;3&quot;
+      style=&quot;width: 100%; margin-top: 4px; padding: 8px; border: 1px solid #d0d0d0; border-radius: 4px; font-size: 13px;&quot;&gt;
+    &lt;/textarea&gt;
+  &lt;/label&gt;
+  
+  &lt;p style=&quot;font-size: 12px; color: #666; margin-top: 8px;&quot;&gt;💡 For health products: confirm the recipient is interested in natural sleep support before gifting.&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;!-- Add to theme.js or cart.js to handle gift wrap price --&gt;
+&lt;script&gt;
+document.querySelector(&#x27;input[name=&quot;attributes[Gift wrap]&quot;]&#x27;)?.addEventListener(&#x27;change&#x27;, function(e) {
+  if (e.target.checked) {
+    // Add $3.99 gift wrap line item - implement via cart API or theme
+    fetch(&#x27;/cart/add.js&#x27;, {
+      method: &#x27;POST&#x27;,
+      headers: {&#x27;Content-Type&#x27;: &#x27;application/json&#x27;},
+      body: JSON.stringify({
+        items: [{
+          id: YOUR_GIFT_WRAP_VARIANT_ID, // Create a $3.99 &quot;Gift Wrap&quot; product first
+          quantity: 1
+        }]
+      })
+    }).then(() =&gt; location.reload());
+  }
+});
+&lt;/script&gt;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. Create a $3.99 &#x27;Gift Wrap Service&#x27; product in Shopify admin (Products → Add product, set as hidden from search).
+2. Note its variant ID.
+3. In theme editor (Online Store → Themes → Customize → Edit code), open cart-drawer.liquid or main-cart-items.liquid.
+4. Paste the HTML snippet above before the checkout button.
+5. Replace YOUR_GIFT_WRAP_VARIANT_ID with the actual variant ID.
+6. Save and test: add product to cart, check the gift options appear, verify gift message saves to order attributes.</div>
+    </div>
+    
+    <div class="fix tier-instant" id="fix-rate_as_gift-1">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add gifting guidance to product page</span>
+            <span class="instant-badge" title="Under 2 minutes to apply">⚡ INSTANT</span>
+            <span class="time-chip time-instant" title="Estimated time to apply"><span class="time-icon">⚡</span>2 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>No guidance on who this product would be appropriate for as a gift or gifting considerations.</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Add a &#x27;Giving this as a gift?&#x27; section to product description explaining who it&#x27;s appropriate for and setting expectations.</div>
+      <pre class="fix-artifact"><code>&lt;div class=&quot;product-gift-guide&quot; style=&quot;background: #f9f5f0; border-left: 3px solid #d4a574; padding: 16px; margin: 24px 0; border-radius: 4px;&quot;&gt;
+  &lt;h3 style=&quot;font-size: 16px; font-weight: 600; margin-bottom: 8px;&quot;&gt;🎁 Giving this as a gift?&lt;/h3&gt;
+  &lt;p style=&quot;font-size: 14px; line-height: 1.6; margin-bottom: 8px;&quot;&gt;&lt;strong&gt;Best for:&lt;/strong&gt; Friends or family who&#x27;ve mentioned sleep challenges and are interested in natural, Ayurvedic wellness solutions.&lt;/p&gt;
+  &lt;p style=&quot;font-size: 14px; line-height: 1.6; margin-bottom: 8px;&quot;&gt;&lt;strong&gt;Good to know:&lt;/strong&gt; Since this is a health supplement, make sure your recipient is open to herbal remedies and doesn&#x27;t have contraindications. When in doubt, include a gift receipt.&lt;/p&gt;
+  &lt;p style=&quot;font-size: 13px; color: #666; margin-top: 12px;&quot;&gt;💡 Add a gift message at checkout and we&#x27;ll include it with their order.&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. In Shopify admin, go to Products → Sleepmitram Tablets.
+2. In the Description field (HTML view if using rich text editor), paste the snippet above after the dosage/packaging info.
+3. Click Save.
+4. Preview the product page to confirm the gift guidance section appears below the main description.</div>
+    </div>
+    
+        </div>
+    
+        
+      </div>
+    </details>
+    
+</div>
+
+<div class="stochasticity-note">
+  Scores can vary ±1 point across runs due to model stochasticity. Critical findings and structural gaps remain stable; individual scores should be read as ranges, not exact values.
+</div>
+
+<div class="footer">
+  <div>Generated May 15, 2026 by <a href="#">Nohi</a> · Agent Audit MVP · 8 skills tested · 18 fixes</div>
+</div>
+
+</div>
+
+<script>
+function copyFix(btn) {
+  const fix = btn.closest('.fix');
+  const artifact = fix.querySelector('.fix-artifact code').textContent;
+  navigator.clipboard.writeText(artifact).then(() => {
+    btn.textContent = '✓ Copied';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'Copy';
+      btn.classList.remove('copied');
+    }, 1800);
+  });
+}
+
+/* Smart anchor navigation:
+   - Intercept clicks on links to #skill-* or #fix-*-*
+   - Open the containing <details> element
+   - Smoothly scroll to the target
+   - Flash-highlight so the user sees what they jumped to
+*/
+(function() {
+  function openAndScrollTo(targetId) {
+    const target = document.getElementById(targetId);
+    if (!target) return;
+
+    // Open any ancestor <details> elements (skill cards default to closed)
+    let el = target;
+    while (el && el !== document.body) {
+      if (el.tagName === 'DETAILS' && !el.open) {
+        el.open = true;
+      }
+      el = el.parentElement;
+    }
+
+    // Wait one frame so the <details> expansion is committed before scrolling
+    requestAnimationFrame(() => {
+      const rect = target.getBoundingClientRect();
+      const top = window.scrollY + rect.top - 80;  // leave 80px breathing room
+      window.scrollTo({ top, behavior: 'smooth' });
+
+      // Flash highlight
+      target.classList.remove('flash');
+      // Force reflow so the animation restarts on repeat clicks
+      void target.offsetWidth;
+      target.classList.add('flash');
+      setTimeout(() => target.classList.remove('flash'), 1700);
+    });
+  }
+
+  document.addEventListener('click', function(e) {
+    const link = e.target.closest('a[href^="#"]');
+    if (!link) return;
+    const href = link.getAttribute('href');
+    if (!href || href === '#') return;
+    const targetId = href.slice(1);
+    if (!document.getElementById(targetId)) return;
+    e.preventDefault();
+    openAndScrollTo(targetId);
+    // Update URL hash without re-triggering navigation
+    history.replaceState(null, '', href);
+  });
+
+  // Handle direct page-load with hash (e.g., shared link to a specific fix)
+  if (window.location.hash) {
+    const targetId = window.location.hash.slice(1);
+    if (document.getElementById(targetId)) {
+      setTimeout(() => openAndScrollTo(targetId), 100);
+    }
+  }
+})();
+
+/* Foldable fix index — click effort pill to expand a list of matching fixes */
+(function() {
+  const FIX_INDEX = [{"anchor": "fix-buying_advice-0", "title": "Add complete ingredient & benefits section", "skill": "Buying advice", "skill_id": "buying_advice", "time": "15 min", "tier": "medium", "type": "snippet", "summary": "Comprehensive product description covering ingredients, Ayurvedic mechanism, benefits, and who it's for \u2014 the core decision-making content buyers need."}, {"anchor": "fix-buying_advice-1", "title": "Add safety & contraindications accordion", "skill": "Buying advice", "skill_id": "buying_advice", "time": "5 min", "tier": "quick", "type": "snippet", "summary": "Safety guidance covering who should avoid this, drug interactions, and usage tips \u2014 reduces support inquiries and builds buyer confidence."}, {"anchor": "fix-buying_advice-2", "title": "Add review highlights above fold", "skill": "Buying advice", "skill_id": "buying_advice", "time": "5 min", "tier": "quick", "type": "snippet", "summary": "Surface 2-3 specific review excerpts showing real results \u2014 moves social proof from abstract stars to concrete outcomes."}, {"anchor": "fix-summarize_reviews-0", "title": "Add review schema to JSON-LD", "skill": "Summarize reviews", "skill_id": "summarize_reviews", "time": "2 min", "tier": "instant", "type": "snippet", "summary": "Embed AggregateRating in the Product schema so AI agents and search engines can discover the 4.35 rating and 26 review count."}, {"anchor": "fix-summarize_reviews-1", "title": "Display top 3-5 reviews on PDP", "skill": "Summarize reviews", "skill_id": "summarize_reviews", "time": "5 min", "tier": "quick", "type": "snippet", "summary": "Render at least 3 recent or helpful reviews directly in the product template HTML so agents can quote actual customer feedback."}, {"anchor": "fix-identify_specs-0", "title": "Add Supplement Facts Panel Below Dosage", "skill": "Identify specs", "skill_id": "identify_specs", "time": "5 min", "tier": "quick", "type": "snippet", "summary": "Insert a structured specifications table showing ingredients, tablet weight, package specs, and serving information in a scannable format."}, {"anchor": "fix-identify_specs-1", "title": "Create Supplement Facts Metafield Definition", "skill": "Identify specs", "skill_id": "identify_specs", "time": "15 min", "tier": "medium", "type": "metafield", "summary": "Define structured metafields for supplement specs (tablet_weight, net_weight, dimensions, ingredients) so they're searchable and can populate schema markup automatically."}, {"anchor": "fix-price_per_unit-0", "title": "Add per-tablet cost to price display", "skill": "Price per unit", "skill_id": "price_per_unit", "time": "2 min", "tier": "instant", "type": "snippet", "summary": "Show unit cost ($0.21/tablet, $0.21-0.42/day) below main price to help buyers assess value instantly."}, {"anchor": "fix-price_per_unit-1", "title": "Add sleep aid cost comparison callout", "skill": "Price per unit", "skill_id": "price_per_unit", "time": "5 min", "tier": "quick", "type": "snippet", "summary": "Add a value comparison showing how Sleepmitram's daily cost compares to melatonin, valerian, and prescription sleep aids."}, {"anchor": "fix-price_per_unit-2", "title": "Create 3-pack bundle variant", "skill": "Price per unit", "skill_id": "price_per_unit", "time": "15 min", "tier": "medium", "type": "settings_link", "summary": "Add a 3-pack bundle ($65 for 360 tablets = $0.18/tablet) that qualifies for free shipping and improves per-unit value by 14%."}, {"anchor": "fix-check_returns-0", "title": "Resolve 30-day vs 3-day contradiction", "skill": "Check returns", "skill_id": "check_returns", "time": "15 min", "tier": "medium", "type": "policy_edit", "summary": "Align the site-wide guarantee claim with actual refund policy; if 30 days is accurate, update policy page; if 3 days is accurate, remove misleading header banner."}, {"anchor": "fix-check_returns-1", "title": "Add return summary to PDP", "skill": "Check returns", "skill_id": "check_returns", "time": "5 min", "tier": "quick", "type": "snippet", "summary": "Insert concise return policy snippet in product description or dedicated accordion tab so buyers see key terms without leaving PDP."}, {"anchor": "fix-check_returns-2", "title": "Add email return initiation option", "skill": "Check returns", "skill_id": "check_returns", "time": "5 min", "tier": "quick", "type": "policy_edit", "summary": "Emphasize email-first return requests (customercare@nirogam.com) to reduce friction for international buyers who can't easily call India during business hours."}, {"anchor": "fix-sizing_help-0", "title": "Add personalized dosage guidance section", "skill": "Sizing help", "skill_id": "sizing_help", "time": "5 min", "tier": "quick", "type": "snippet", "summary": "Add a dosage guide explaining when to use 1 vs 2 tablets based on sleep severity, body weight, and usage timeline."}, {"anchor": "fix-check_warranty-0", "title": "Add guarantee section to PDP", "skill": "Check warranty", "skill_id": "check_warranty", "time": "5 min", "tier": "quick", "type": "snippet", "summary": "Add a collapsible guarantee section to the product page that clarifies the 30-day money-back guarantee terms, return conditions, and contact information."}, {"anchor": "fix-check_warranty-1", "title": "Align guarantee messaging across site", "skill": "Check warranty", "skill_id": "check_warranty", "time": "5 min", "tier": "quick", "type": "policy_edit", "summary": "Update either the banner text or the refund policy to eliminate the 30-day vs. 3-day confusion and clarify that tablets (non-liquid supplements) are returnable."}, {"anchor": "fix-rate_as_gift-0", "title": "Add gift options to cart", "skill": "Rate as gift", "skill_id": "rate_as_gift", "time": "15 min", "tier": "medium", "type": "snippet", "summary": "Add gift wrap checkbox ($3.99) and gift message text field to cart drawer and checkout using Shopify cart attributes."}, {"anchor": "fix-rate_as_gift-1", "title": "Add gifting guidance to product page", "skill": "Rate as gift", "skill_id": "rate_as_gift", "time": "2 min", "tier": "instant", "type": "snippet", "summary": "Add a 'Giving this as a gift?' section to product description explaining who it's appropriate for and setting expectations."}, {"anchor": "", "title": "Add US-accessible support channel for returns", "skill": "Cross-cutting issues", "skill_id": "", "time": "2-3 hours for policy rewrite and email workflow; +4-6 hours if adding US forwarding number", "tier": "medium", "type": "inline", "summary": "Eliminate phone validation requirement; make email (customercare@nirogam.com) a first-class return initiation path with 24-hour response SLA. Optionally add toll-free US number."}, {"anchor": "", "title": "Align support email with site domain", "skill": "Cross-cutting issues", "skill_id": "", "time": "1-2 hours", "tier": "medium", "type": "inline", "summary": "Create customercare@nirogamonline.com (or support@nirogamonline.com) forwarding to existing inbox; update all site references to use matching domain."}, {"anchor": "", "title": "Clarify return eligibility by product type", "skill": "Cross-cutting issues", "skill_id": "", "time": "1 hour for policy rewrite; +2 hours to add per-product eligibility badges via metafields", "tier": "slow", "type": "inline", "summary": "Rewrite exclusions section with explicit eligible/ineligible lists. State whether tablets, capsules, and powders are returnable if packaging is unopened."}, {"anchor": "", "title": "Display shipping cost on PDP and cart", "skill": "Cross-cutting issues", "skill_id": "", "time": "3-4 hours for calculator integration; 1 hour for static flat-rate display; 2 hours for cart progress bar", "tier": "medium", "type": "inline", "summary": "Add Shopify shipping calculator below 'Add to Cart' (buyer enters ZIP, sees cost) or display flat-rate shipping cost if applicable to all US orders."}];
+  const panel = document.getElementById('fix-index-panel');
+  if (!panel) return;
+  const listEl = panel.querySelector('.fix-index-list');
+  const closeBtn = panel.querySelector('.fix-index-close');
+  const pills = document.querySelectorAll('button.effort-pill[data-filter]');
+
+  function tierOrder(t) {
+    return { instant: 0, quick: 1, medium: 2, slow: 3 }[t] ?? 4;
+  }
+
+  function filterFor(mode) {
+    if (mode === 'instant') return FIX_INDEX.filter(f => f.tier === 'instant');
+    if (mode === 'quick')   return FIX_INDEX.filter(f => f.tier === 'instant' || f.tier === 'quick');
+    return FIX_INDEX.slice();
+  }
+
+  function render(mode) {
+    const items = filterFor(mode);
+    items.sort((a, b) => tierOrder(a.tier) - tierOrder(b.tier));
+    listEl.innerHTML = items.length === 0
+      ? '<li class="fix-index-empty">No fixes match this filter.</li>'
+      : items.map(f => `
+          <li>
+            <a class="fix-index-item" href="${f.anchor ? '#' + f.anchor : '#'}" data-anchor="${f.anchor}">
+              <span class="fii-time tier-${f.tier}">${f.tier === 'instant' ? '⚡ ' : ''}${f.time}</span>
+              <span class="fii-title">${f.title.replace(/</g, '&lt;')}</span>
+              <span class="fii-skill">${f.skill.replace(/</g, '&lt;')}</span>
+            </a>
+          </li>`).join('');
+  }
+
+  function closePanel() {
+    panel.setAttribute('hidden', '');
+    pills.forEach(p => p.setAttribute('aria-expanded', 'false'));
+  }
+
+  pills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      const wasExpanded = pill.getAttribute('aria-expanded') === 'true';
+      pills.forEach(p => p.setAttribute('aria-expanded', 'false'));
+      if (wasExpanded) {
+        // Toggle off
+        panel.setAttribute('hidden', '');
+        return;
+      }
+      pill.setAttribute('aria-expanded', 'true');
+      render(pill.dataset.filter);
+      panel.removeAttribute('hidden');
+    });
+  });
+
+  closeBtn.addEventListener('click', closePanel);
+
+  // When an item is clicked: close panel FIRST (so its height doesn't bias the
+  // scroll calculation), then let the global anchor handler do the rest.
+  // Bubble order: this listener (on .fix-index-list) runs before the document-
+  // level anchor handler, so closing here means getBoundingClientRect() in the
+  // anchor handler measures with the panel already removed from layout.
+  listEl.addEventListener('click', e => {
+    const item = e.target.closest('.fix-index-item');
+    if (!item) return;
+    closePanel();  // synchronous — DOM updates before bubble continues
+  });
+
+  // ESC closes the panel
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && !panel.hasAttribute('hidden')) {
+      closePanel();
+    }
+  });
+})();
+
+(function() {
+  const ctx = document.getElementById('radarChart');
+  if (!ctx) return;
+
+  const rawDatasets = [{"label": "Claude Sonnet 4.5", "data": [4, 4, 5, 5, 4, 4, 5, 4], "color": "#c2410c"}, {"label": "GPT-4o", "data": [6, 5, 4, 6, 8, 3, 2, 5], "color": "#10a37f"}, {"label": "Gemini 2.5 Pro", "data": [2, 4, 4, 5, 4, 5, 4, 2], "color": "#4285f4"}];
+  const isMulti = rawDatasets.length > 1;
+
+  // Convert hex → rgba with given alpha
+  function hexToRgba(hex, alpha) {
+    const h = hex.replace('#', '');
+    const r = parseInt(h.substring(0, 2), 16);
+    const g = parseInt(h.substring(2, 4), 16);
+    const b = parseInt(h.substring(4, 6), 16);
+    return `rgba(${r},${g},${b},${alpha})`;
+  }
+
+  const datasets = rawDatasets.map((ds, i) => ({
+    label: ds.label,
+    data: ds.data,
+    fill: !isMulti,
+    backgroundColor: isMulti ? hexToRgba(ds.color, 0.08) : hexToRgba(ds.color, 0.18),
+    borderColor: ds.color,
+    borderWidth: isMulti ? 2 : 2.5,
+    pointBackgroundColor: isMulti ? ds.color : [],
+    pointBorderColor: '#fff',
+    pointBorderWidth: 1.5,
+    pointRadius: isMulti ? 4 : 5,
+    pointHoverRadius: 7
+  }));
+
+  new Chart(ctx, {
+    type: 'radar',
+    data: {
+      labels: ["Buying advice", "Summarize reviews", "Identify specs", "Price per unit", "Check returns", "Sizing help", "Check warranty", "Rate as gift"],
+      datasets: datasets
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: {
+          display: isMulti,
+          position: 'bottom',
+          labels: { font: { size: 11, family: 'Inter, sans-serif' }, color: '#54586a', boxWidth: 14, boxHeight: 14, padding: 14 }
+        },
+        tooltip: {
+          callbacks: {
+            label: function(c) {
+              const v = c.parsed.r;
+              return c.dataset.label + ': ' + (v === null ? 'no data' : v.toFixed(1) + ' / 10');
+            }
+          }
+        }
+      },
+      scales: {
+        r: {
+          min: 0, max: 10, beginAtZero: true,
+          ticks: { stepSize: 2, font: { size: 10, family: 'JetBrains Mono, monospace' }, color: '#8b8fa0', backdropColor: 'transparent' },
+          grid: { color: 'rgba(20,20,28,0.07)' },
+          angleLines: { color: 'rgba(20,20,28,0.07)' },
+          pointLabels: { color: '#54586a', font: { size: 11, family: 'Bricolage Grotesque, system-ui, sans-serif', weight: '600' } }
+        }
+      }
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

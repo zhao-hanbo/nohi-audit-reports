@@ -1,0 +1,3099 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Nohi Agent Audit · Anna Rave — Vest</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Bricolage+Grotesque:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-display: 'Bricolage Grotesque', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+
+  --bg: #fbfaf7;
+  --surface: #ffffff;
+  --surface2: #f3f1ec;
+  --surface3: #e8e5dd;
+  --border: rgba(20,20,28,0.07);
+  --border-h: rgba(20,20,28,0.14);
+  --text: #1a1c24;
+  --text2: #54586a;
+  --text3: #8b8fa0;
+
+  --good: #0f766e;
+  --good-soft: #ecfdf5;
+  --good-border: #a7d8c6;
+  --warn: #92400e;
+  --warn-soft: #fef8eb;
+  --warn-border: #e6cca0;
+  --bad: #4b5563;
+  --bad-soft: #f1f3f7;
+  --bad-border: #cdd2dd;
+  --crit: #9b1c1c;
+  --crit-soft: #fdf2f2;
+  --crit-border: #f5c5c5;
+
+  --primary: #334155;
+  --primary-dark: #1e293b;
+  --primary-soft: rgba(51,65,85,0.07);
+  --accent-ink: #0f172a;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 1080px; margin: 0 auto; padding: 2rem 2rem 6rem; }
+
+/* Brand strip */
+.brand {
+  display: flex; align-items: center; gap: .55rem;
+  margin-bottom: 1.5rem;
+}
+.brand-mark {
+  width: 26px; height: 26px;
+  background: var(--primary);
+  border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-weight: 700;
+  font-family: var(--font-display);
+  font-size: .85rem;
+}
+.brand-text {
+  font-family: var(--font-display);
+  font-weight: 700; font-size: 1.05rem;
+  letter-spacing: -.02em;
+}
+.brand-divider { width: 1px; height: 16px; background: var(--border-h); }
+.brand-sub {
+  font-family: var(--font-mono);
+  font-size: .7rem;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  font-weight: 600;
+}
+
+h1 {
+  font-family: var(--font-display);
+  font-size: 2.1rem; font-weight: 800;
+  letter-spacing: -.025em; line-height: 1.1;
+  margin-bottom: .4rem;
+}
+.report-purpose {
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--text2);
+  max-width: 740px;
+  margin: .65rem 0 1rem;
+}
+.report-purpose strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.sub {
+  font-family: var(--font-mono);
+  font-size: .8rem; color: var(--text3);
+  margin-bottom: 1rem;
+  word-break: break-all;
+}
+.sub a { color: var(--primary); text-decoration: none; }
+.sub a:hover { text-decoration: underline; }
+
+.kpi-row { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: .75rem; }
+
+.agents-strip {
+  display: flex;
+  gap: .4rem;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: .5rem .75rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: .75rem;
+  font-size: .8rem;
+}
+.agents-label {
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--text3);
+  font-weight: 600;
+  margin-right: .25rem;
+}
+.agent-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  padding: .2rem .55rem;
+  border-radius: 999px;
+  background: var(--surface2);
+  border: 1px solid var(--border-h);
+  font-weight: 600;
+  font-size: .78rem;
+}
+.agent-pill .agent-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--agent-color, var(--text3));
+}
+
+/* Effort/time row — pulls "this is easier than it looks" forward */
+.effort-row {
+  display: flex;
+  gap: .5rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+  padding: .75rem .9rem;
+  background: var(--good-soft);
+  border: 1px solid var(--good-border);
+  border-radius: 10px;
+}
+.effort-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: .3rem;
+  font-size: .82rem;
+  color: var(--text);
+  font-weight: 500;
+}
+.effort-pill b { font-weight: 700; font-size: .92rem; }
+.effort-icon {
+  font-size: .95rem;
+  margin-right: .15rem;
+}
+.effort-sub {
+  font-size: .72rem;
+  color: var(--text3);
+  font-family: var(--font-mono);
+  margin-left: .15rem;
+}
+.effort-instant {
+  background: var(--surface);
+  padding: .3rem .65rem;
+  border-radius: 999px;
+  border: 1px solid var(--good-border);
+  color: var(--good);
+  font-weight: 600;
+}
+.effort-instant b { color: var(--good); }
+.effort-quick {
+  background: var(--surface);
+  padding: .3rem .65rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-h);
+}
+.effort-total {
+  margin-left: auto;
+  padding: .3rem .5rem;
+  color: var(--text2);
+  font-size: .78rem;
+}
+@media (max-width: 580px) {
+  .effort-total { margin-left: 0; width: 100%; padding-top: .4rem; border-top: 1px solid var(--good-border); }
+}
+
+/* Effort pills are now interactive buttons */
+button.effort-pill {
+  cursor: pointer;
+  font-family: inherit;
+  transition: all .15s;
+}
+button.effort-pill:hover {
+  border-color: var(--good);
+  background: var(--surface);
+}
+button.effort-pill[aria-expanded="true"] {
+  background: var(--good);
+  color: white;
+  border-color: var(--good);
+}
+button.effort-pill[aria-expanded="true"] b,
+button.effort-pill[aria-expanded="true"] .effort-sub,
+button.effort-pill[aria-expanded="true"] .effort-icon {
+  color: white;
+}
+.effort-caret {
+  margin-left: .25rem;
+  font-size: .7rem;
+  opacity: .65;
+  transition: transform .15s;
+}
+button.effort-pill[aria-expanded="true"] .effort-caret {
+  transform: rotate(180deg);
+  opacity: 1;
+}
+
+/* The expanding panel */
+.fix-index-panel {
+  margin: -1.25rem 0 2rem;   /* negative top to butt up against effort-row */
+  background: var(--surface);
+  border: 1px solid var(--good-border);
+  border-top: none;
+  border-radius: 0 0 10px 10px;
+  padding: 1rem 1.15rem 1.15rem;
+  animation: slide-down .2s ease-out;
+}
+@keyframes slide-down {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fix-index-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: .75rem;
+  padding-bottom: .55rem;
+  border-bottom: 1px solid var(--border);
+}
+.fix-index-title {
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--text2);
+  font-weight: 700;
+}
+.fix-index-close {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: .15rem .5rem;
+  font-size: .75rem;
+  color: var(--text2);
+  cursor: pointer;
+  font-family: inherit;
+}
+.fix-index-close:hover { background: var(--surface2); color: var(--text); }
+
+.fix-index-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex; flex-direction: column;
+  gap: .25rem;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+.fix-index-list li { margin: 0; }
+.fix-index-item {
+  display: grid;
+  grid-template-columns: 80px 1fr auto;
+  align-items: center;
+  gap: .65rem;
+  padding: .55rem .65rem;
+  border-radius: 6px;
+  text-decoration: none;
+  color: var(--text);
+  border: 1px solid transparent;
+  transition: all .12s;
+}
+.fix-index-item:hover {
+  background: var(--primary-soft);
+  border-color: var(--border-h);
+}
+.fix-index-item .fii-time {
+  font-family: var(--font-mono);
+  font-size: .7rem;
+  font-weight: 700;
+  padding: .15rem .45rem;
+  border-radius: 999px;
+  text-align: center;
+  white-space: nowrap;
+}
+.fix-index-item .fii-time.tier-instant {
+  background: var(--good);
+  color: white;
+}
+.fix-index-item .fii-time.tier-quick {
+  background: var(--good-soft);
+  color: var(--good);
+  border: 1px solid var(--good-border);
+}
+.fix-index-item .fii-time.tier-medium {
+  background: var(--surface2);
+  color: var(--text2);
+  border: 1px solid var(--border-h);
+}
+.fix-index-item .fii-time.tier-slow {
+  background: transparent;
+  color: var(--text3);
+  border: 1px dashed var(--border-h);
+}
+.fix-index-item .fii-title {
+  font-weight: 600;
+  font-size: .88rem;
+  line-height: 1.4;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fix-index-item .fii-skill {
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  white-space: nowrap;
+}
+.fix-index-empty {
+  font-size: .85rem;
+  color: var(--text3);
+  font-style: italic;
+  padding: .5rem;
+}
+.kpi {
+  font-size: .76rem;
+  padding: .35rem .75rem;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text2);
+  font-weight: 500;
+}
+.kpi b { font-weight: 700; color: var(--text); }
+.kpi.kpi-primary {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+.kpi.kpi-primary b { color: white; }
+.kpi.kpi-crit {
+  background: var(--crit-soft);
+  color: var(--crit);
+  border-color: var(--crit-border);
+  font-weight: 600;
+}
+.kpi.kpi-crit b { color: var(--crit); }
+
+/* Executive hero */
+.exec {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 2rem;
+  padding: 1.5rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  margin-bottom: 2.5rem;
+}
+@media (max-width: 780px) { .exec { grid-template-columns: 1fr; } }
+.score-hero {
+  background: var(--bad-soft);
+  border: 1px solid var(--bad-border);
+  border-radius: 12px;
+  padding: 1.5rem 1rem;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+}
+.big-score {
+  font-family: var(--font-display);
+  font-size: 4.4rem; font-weight: 800;
+  line-height: 1; letter-spacing: -.06em;
+  color: var(--bad);
+}
+.score-label { font-size: .88rem; color: var(--text3); margin-top: .25rem; }
+.score-tagline {
+  margin-top: .75rem;
+  font-size: .72rem;
+  font-weight: 700;
+  color: var(--bad);
+  text-transform: uppercase;
+  letter-spacing: .07em;
+}
+.radar-wrap { position: relative; max-width: 420px; margin: 0 auto; }
+.exec-label {
+  font-size: .72rem; font-weight: 600;
+  color: var(--text3); text-transform: uppercase;
+  letter-spacing: .05em; margin-bottom: .8rem;
+}
+
+/* Section header */
+.section-hdr {
+  font-family: var(--font-display);
+  font-size: 1.25rem; font-weight: 700;
+  margin: 2.5rem 0 .85rem;
+  padding-bottom: .5rem;
+  border-bottom: 1px solid var(--border);
+  letter-spacing: -.02em;
+}
+.section-intro {
+  color: var(--text2);
+  margin-bottom: 1.25rem;
+  font-size: .9rem;
+}
+
+/* Subsection header (used inside Site overview) */
+.subsection-hdr {
+  font-family: var(--font-display);
+  font-size: .85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--text2);
+  margin: 1.5rem 0 .8rem;
+  display: flex; align-items: baseline; gap: .4rem;
+}
+.subsection-hdr:first-child { margin-top: 0; }
+.subsection-hdr .count {
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  color: var(--text3);
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.subsection-note {
+  font-size: .82rem;
+  color: var(--text2);
+  margin-bottom: .85rem;
+  line-height: 1.55;
+}
+.subsection-note a {
+  color: var(--primary);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--primary);
+  font-weight: 600;
+}
+.subsection-note a:hover { border-bottom-style: solid; }
+
+/* Positives grid */
+.positives-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: .65rem;
+  margin-bottom: 1.5rem;
+}
+.positive-card {
+  display: flex;
+  gap: .65rem;
+  padding: .8rem .95rem;
+  background: var(--good-soft);
+  border: 1px solid var(--good-border);
+  border-radius: 9px;
+}
+.positive-icon {
+  flex-shrink: 0;
+  width: 22px; height: 22px;
+  background: var(--good);
+  color: white;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700;
+  font-size: .8rem;
+}
+.positive-body { flex: 1; min-width: 0; }
+.positive-title {
+  font-weight: 700;
+  font-size: .88rem;
+  color: var(--text);
+  margin-bottom: .15rem;
+  line-height: 1.4;
+}
+.positive-where {
+  font-family: var(--font-mono);
+  font-size: .7rem;
+  color: var(--text3);
+  margin-bottom: .35rem;
+}
+.positive-where code {
+  background: rgba(15,118,110,0.08);
+  padding: .08rem .3rem;
+  border-radius: 3px;
+}
+.positive-value {
+  font-size: .82rem;
+  color: var(--text2);
+  line-height: 1.5;
+}
+
+/* Site issues table (refactored: 3 columns, issue body grouped) */
+.findings-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  font-size: .85rem;
+}
+.findings-table th {
+  text-align: left;
+  padding: .65rem .85rem;
+  background: var(--surface2);
+  font-size: .68rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--text2);
+  font-weight: 700;
+  border-bottom: 1px solid var(--border);
+}
+.findings-table td {
+  padding: .85rem .85rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+.findings-table tr:last-child td { border-bottom: none; }
+.findings-table .col-sev    { width: 90px; }
+.findings-table .col-finding { width: 50%; }
+.findings-table .col-fix     { width: 40%; }
+
+.findings-table .finding-title {
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: .25rem;
+  line-height: 1.4;
+}
+.findings-table .finding-where {
+  font-family: var(--font-mono);
+  font-size: .7rem;
+  color: var(--text3);
+  margin-bottom: .35rem;
+}
+.findings-table .finding-where code {
+  background: var(--surface2);
+  padding: .08rem .3rem;
+  border-radius: 3px;
+  color: var(--text2);
+}
+.findings-table .finding-impact {
+  color: var(--text2);
+  font-size: .82rem;
+  line-height: 1.5;
+}
+.findings-table .muted { color: var(--text3); font-size: .82rem; font-style: italic; }
+
+.finding-fix-skill {
+  font-size: .7rem;
+  font-family: var(--font-mono);
+  color: var(--text3);
+  margin-bottom: .4rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+.finding-fix-skill a {
+  color: var(--text2);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--border-h);
+}
+.finding-fix-skill a:hover {
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.finding-fix-chips {
+  display: flex; flex-direction: column; gap: .35rem;
+}
+.fix-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  padding: .4rem .65rem;
+  background: var(--primary-soft);
+  border: 1px solid var(--border-h);
+  border-radius: 7px;
+  color: var(--text);
+  font-size: .82rem;
+  font-weight: 600;
+  text-decoration: none;
+  line-height: 1.3;
+  transition: all .15s;
+}
+.fix-chip:hover {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+.fix-chip-icon {
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  font-weight: 700;
+  width: 22px; height: 22px;
+  background: var(--primary);
+  color: white;
+  border-radius: 5px;
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.fix-chip:hover .fix-chip-icon {
+  background: white;
+  color: var(--primary);
+}
+
+.inline-fix {
+  background: var(--primary-soft);
+  border: 1px solid var(--border-h);
+  border-radius: 7px;
+  padding: .6rem .75rem;
+}
+.inline-fix-title {
+  font-weight: 700;
+  font-size: .85rem;
+  color: var(--primary-dark);
+  margin-bottom: .25rem;
+}
+.inline-fix-summary {
+  font-size: .8rem;
+  color: var(--text2);
+  margin-bottom: .35rem;
+  line-height: 1.5;
+}
+.inline-fix-action {
+  font-size: .76rem;
+  color: var(--text2);
+  background: var(--surface);
+  padding: .35rem .55rem;
+  border-radius: 5px;
+  border-left: 2px solid var(--primary);
+}
+
+.findings-empty {
+  background: var(--good-soft);
+  border: 1px solid var(--good-border);
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  color: var(--good);
+  font-weight: 600;
+}
+
+/* Highlight flash for navigated-to fix or skill */
+@keyframes flash-highlight {
+  0%   { background: var(--primary); color: white; box-shadow: 0 0 0 8px var(--primary-soft); }
+  60%  { background: var(--primary); color: white; box-shadow: 0 0 0 8px var(--primary-soft); }
+  100% { background: var(--surface); color: var(--text); box-shadow: 0 0 0 0 transparent; }
+}
+.fix.flash {
+  animation: flash-highlight 1.6s ease-out;
+}
+.fix.flash .fix-title,
+.fix.flash .fix-summary,
+.fix.flash .fix-type,
+.fix.flash .fix-type em {
+  color: white !important;
+}
+@keyframes flash-skill {
+  0%   { box-shadow: 0 0 0 4px var(--primary); }
+  60%  { box-shadow: 0 0 0 4px var(--primary); }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+.skill.flash {
+  animation: flash-skill 1.6s ease-out;
+}
+
+/* Severity badges — only critical is loud */
+.sev-badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: .65rem;
+  font-weight: 700;
+  padding: .15rem .55rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  white-space: nowrap;
+}
+.sev-badge.sev-crit.emph-loud {
+  background: var(--crit);
+  color: white;
+  border: 1px solid var(--crit);
+}
+.sev-badge.sev-warn.emph-med {
+  background: var(--surface2);
+  color: var(--text);
+  border: 1px solid var(--border-h);
+}
+.sev-badge.sev-warn.emph-soft {
+  background: var(--surface2);
+  color: var(--text2);
+  border: 1px solid var(--border);
+}
+.sev-badge.sev-good.emph-soft {
+  background: var(--good-soft);
+  color: var(--good);
+  border: 1px solid var(--good-border);
+}
+
+/* Skill cards */
+.skills-list { display: flex; flex-direction: column; gap: .6rem; }
+.skill {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color .15s;
+}
+.skill[open] { border-color: var(--border-h); }
+.skill-hdr {
+  display: flex; align-items: center; gap: 1rem;
+  padding: .95rem 1.15rem;
+  cursor: pointer; user-select: none;
+  list-style: none;
+}
+.skill-hdr::-webkit-details-marker { display: none; }
+.skill-hdr:hover { background: var(--surface2); }
+.skill[open] .skill-hdr { border-bottom: 1px solid var(--border); }
+.caret {
+  font-size: .7rem; color: var(--text3);
+  transition: transform .2s; flex-shrink: 0;
+}
+.skill[open] .caret { transform: rotate(90deg); }
+.skill-name { flex: 1; min-width: 0; }
+.skill-title {
+  font-weight: 700; font-size: 1rem;
+  font-family: var(--font-display);
+  letter-spacing: -.01em;
+}
+.skill-prompt {
+  font-family: var(--font-mono);
+  font-size: .7rem; color: var(--text3);
+  margin-top: .12rem;
+  font-style: italic;
+}
+.skill-evidence-summary {
+  display: flex; gap: .3rem;
+  flex-wrap: wrap; flex-shrink: 0;
+}
+
+/* Multi-agent: per-agent score chips in the skill header */
+.agent-score-row {
+  display: flex; gap: .35rem;
+  flex-wrap: wrap; flex-shrink: 0;
+  align-items: center;
+}
+.agent-score {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  padding: .2rem .55rem;
+  font-size: .72rem;
+  font-weight: 600;
+  background: var(--surface2);
+  border: 1px solid var(--border-h);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+}
+.agent-score .agent-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--agent-color, var(--text3));
+  flex-shrink: 0;
+}
+.agent-score .agent-name { color: var(--text2); font-family: var(--font-sans); }
+.agent-score .agent-score-val {
+  font-weight: 700;
+  font-size: .82rem;
+}
+.agent-score.score-good .agent-score-val { color: var(--good); }
+.agent-score.score-warn .agent-score-val { color: var(--warn); }
+.agent-score.score-bad  .agent-score-val { color: var(--bad); }
+.agent-score.agent-fail {
+  background: var(--crit-soft);
+  border-color: var(--crit-border);
+}
+.agent-score.agent-fail .agent-score-val { color: var(--crit); }
+
+.agreement {
+  font-size: .65rem;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  padding: .12rem .4rem;
+  border-radius: 4px;
+  font-weight: 600;
+}
+.agreement-consensus {
+  background: var(--good-soft);
+  color: var(--good);
+  border: 1px solid var(--good-border);
+}
+.agreement-mild-split {
+  background: var(--warn-soft);
+  color: var(--warn);
+  border: 1px solid var(--warn-border);
+}
+.agreement-wide-split {
+  background: var(--crit-soft);
+  color: var(--crit);
+  border: 1px solid var(--crit-border);
+}
+
+/* Per-agent breakdown accordion inside skill card */
+.agent-details {
+  display: flex; flex-direction: column;
+  gap: .4rem;
+}
+.agent-detail {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.agent-detail[open] { border-color: var(--border-h); }
+.agent-detail-hdr {
+  display: flex; align-items: center;
+  gap: .6rem;
+  padding: .65rem .85rem;
+  cursor: pointer;
+  user-select: none;
+  list-style: none;
+  font-size: .85rem;
+}
+.agent-detail-hdr::-webkit-details-marker { display: none; }
+.agent-detail-hdr:hover { background: var(--surface2); }
+.caret-sm {
+  font-size: .6rem;
+  color: var(--text3);
+  transition: transform .2s;
+}
+.agent-detail[open] .caret-sm { transform: rotate(90deg); }
+.agent-detail-hdr .agent-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.agent-detail-name {
+  font-weight: 700;
+  flex: 1;
+}
+.agent-detail-score {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: -.02em;
+}
+.agent-detail-score.score-good { color: var(--good); }
+.agent-detail-score.score-warn { color: var(--warn); }
+.agent-detail-score.score-bad  { color: var(--bad); }
+.agent-detail-evidence {
+  display: flex; gap: .25rem;
+  flex-wrap: wrap;
+}
+.agent-detail-body {
+  padding: .85rem 1rem 1rem;
+  background: var(--surface2);
+  border-top: 1px solid var(--border);
+}
+.agent-detail-body h5 {
+  font-size: .75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--text2);
+  margin: 0 0 .5rem;
+}
+.agent-detail-body h5:not(:first-child) { margin-top: 1rem; }
+
+/* Wide-split visual marker on skill cards where models disagreed significantly */
+.skill.skill-wide-split {
+  border-color: var(--warn-border);
+  border-left: 3px solid var(--warn);
+}
+.skill.skill-wide-split .skill-hdr {
+  background: linear-gradient(to right, var(--warn-soft) 0%, transparent 30%);
+}
+.wide-split-pin {
+  display: inline-block;
+  margin-right: .35rem;
+  font-size: .9rem;
+}
+.wide-split-banner {
+  background: var(--warn-soft);
+  border: 1px solid var(--warn-border);
+  border-radius: 8px;
+  padding: .8rem 1rem;
+  margin-bottom: 1.25rem;
+  font-size: .85rem;
+}
+.wide-split-banner p {
+  margin: .35rem 0 0;
+  color: var(--text);
+}
+.wide-split-banner .wide-split-hint {
+  font-size: .8rem;
+  color: var(--text2);
+  margin-top: .55rem;
+}
+.wide-split-header {
+  display: flex; align-items: center;
+  gap: .5rem;
+  color: var(--warn);
+}
+.wide-split-icon { font-size: 1rem; }
+.wide-split-spread {
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  padding: .12rem .45rem;
+  background: var(--warn);
+  color: white;
+  border-radius: 4px;
+  margin-left: auto;
+}
+.chip {
+  display: inline-flex; align-items: center; gap: .3rem;
+  font-size: .7rem; font-weight: 600;
+  padding: .18rem .5rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.chip-icon { font-weight: 700; }
+.chip-pos { background: var(--good-soft); color: var(--good); border: 1px solid var(--good-border); }
+.chip-neg { background: var(--crit-soft); color: var(--crit); border: 1px solid var(--crit-border); }
+.chip-gap { background: var(--warn-soft); color: var(--warn); border: 1px solid var(--warn-border); }
+.chip-miss { background: var(--surface2); color: var(--text2); border: 1px solid var(--border-h); }
+
+.skill-score {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.65rem;
+  letter-spacing: -.04em;
+  min-width: 5.2rem;
+  text-align: right;
+  flex-shrink: 0;
+}
+.score-of { font-size: .85rem; font-weight: 600; color: var(--text3); margin-left: .1rem; }
+.score-good { color: var(--good); }
+.score-warn { color: var(--warn); }
+.score-bad  { color: var(--bad); }
+
+.skill-body { padding: 1.25rem 1.5rem 1.5rem; background: var(--surface2); }
+.skill-section { margin-bottom: 1.4rem; }
+.skill-section:last-child { margin-bottom: 0; }
+.skill-section h4 {
+  font-family: var(--font-display);
+  font-size: .82rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  font-weight: 700;
+  color: var(--text2);
+  margin-bottom: .6rem;
+}
+
+.ev-list { list-style: none; }
+.ev {
+  display: flex; gap: .55rem;
+  padding: .5rem .7rem;
+  margin-bottom: .3rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  font-size: .88rem;
+}
+.ev-icon { flex-shrink: 0; font-weight: 700; }
+.ev-pos .ev-icon  { color: var(--good); }
+.ev-neg .ev-icon  { color: var(--crit); }
+.ev-gap .ev-icon  { color: var(--warn); }
+.ev-miss .ev-icon { color: var(--text3); }
+.ev-text { color: var(--text); }
+
+.raw-response {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--primary);
+  border-radius: 7px;
+  padding: 1rem 1.25rem;
+  font-size: .87rem;
+  color: var(--text);
+}
+.raw-response p { margin-bottom: .6rem; }
+.raw-response p:last-child { margin-bottom: 0; }
+.raw-response ul { margin: .4rem 0 .6rem 1.25rem; }
+.raw-response li { margin-bottom: .2rem; }
+
+/* Fixes — the differentiator */
+.fixes-section {
+  background: var(--primary-soft);
+  border: 1px solid var(--border-h);
+  border-radius: 10px;
+  padding: 1rem 1.15rem;
+}
+.fixes-section h4 { color: var(--primary-dark); }
+.fix-count {
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin-left: .2rem;
+}
+.no-fixes {
+  font-size: .85rem;
+  color: var(--text3);
+  font-style: italic;
+}
+.fix {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: .85rem 1rem;
+  margin-bottom: .65rem;
+}
+.fix:last-child { margin-bottom: 0; }
+.fix-hdr {
+  display: flex; align-items: flex-start; gap: .75rem;
+  margin-bottom: .55rem;
+}
+.fix-icon {
+  font-family: var(--font-mono);
+  width: 28px; height: 28px;
+  background: var(--primary);
+  color: white;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .8rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.fix-titles { flex: 1; min-width: 0; }
+.fix-title-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .35rem;
+}
+.fix-title {
+  font-weight: 700;
+  font-size: .92rem;
+  color: var(--text);
+}
+.fix-type {
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  color: var(--text3);
+  margin-top: .15rem;
+}
+.fix-type em { color: var(--text2); font-style: normal; }
+.fix-sep { margin: 0 .2rem; opacity: .6; }
+
+/* Time chip — appears next to fix title */
+.time-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .2rem;
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  font-weight: 600;
+  padding: .15rem .45rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.time-icon { font-size: .8rem; }
+.time-chip.time-instant {
+  background: rgba(15,118,110,0.1);
+  color: var(--good);
+  border: 1px solid var(--good-border);
+}
+.time-chip.time-quick {
+  background: var(--surface2);
+  color: var(--text2);
+  border: 1px solid var(--border-h);
+}
+.time-chip.time-medium {
+  background: var(--surface2);
+  color: var(--text3);
+  border: 1px solid var(--border);
+}
+.time-chip.time-slow {
+  background: transparent;
+  color: var(--text3);
+  border: 1px dashed var(--border-h);
+}
+
+/* INSTANT badge — only on truly fast fixes */
+.instant-badge {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: .65rem;
+  font-weight: 700;
+  padding: .15rem .45rem;
+  border-radius: 4px;
+  background: var(--good);
+  color: white;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Tier accents on fix cards — instant gets a green left border */
+.fix.tier-instant {
+  border-left: 3px solid var(--good);
+}
+
+/* Fix chip in the cross-cutting issues table — show time and instant marker */
+.fix-chip {
+  flex-wrap: wrap;
+}
+.fix-chip-title { flex: 1; min-width: 0; }
+.fix-chip-instant {
+  font-size: .85rem;
+  margin-left: .2rem;
+}
+.fix-chip-time {
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  font-weight: 600;
+  padding: .1rem .4rem;
+  border-radius: 999px;
+  background: var(--surface2);
+  color: var(--text2);
+  margin-left: .25rem;
+  border: 1px solid var(--border);
+}
+.fix-chip:hover .fix-chip-time {
+  background: rgba(255,255,255,0.2);
+  color: white;
+  border-color: rgba(255,255,255,0.3);
+}
+.fix-chip-time.time-instant {
+  background: var(--good);
+  color: white;
+  border-color: var(--good);
+}
+
+/* Inline fix header with time chip */
+.inline-fix-hdr {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .4rem;
+  margin-bottom: .35rem;
+}
+.inline-fix.tier-instant {
+  border-left: 3px solid var(--good);
+}
+.copy-btn {
+  font-family: var(--font-sans);
+  font-size: .72rem;
+  font-weight: 600;
+  padding: .25rem .65rem;
+  border-radius: 5px;
+  border: 1px solid var(--border-h);
+  background: var(--surface);
+  color: var(--text2);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all .15s;
+}
+.copy-btn:hover {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+.copy-btn.copied {
+  background: var(--good);
+  color: white;
+  border-color: var(--good);
+}
+.fix-summary {
+  font-size: .84rem;
+  color: var(--text2);
+  margin-bottom: .55rem;
+  line-height: 1.5;
+}
+.fix-artifact {
+  background: var(--accent-ink);
+  color: #e2e8f0;
+  border-radius: 6px;
+  padding: .7rem .85rem;
+  font-family: var(--font-mono);
+  font-size: .75rem;
+  line-height: 1.55;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin-bottom: .55rem;
+  max-height: 320px;
+  overflow-y: auto;
+}
+.fix-action {
+  font-size: .78rem;
+  color: var(--text2);
+  background: var(--surface2);
+  padding: .5rem .75rem;
+  border-radius: 6px;
+  border-left: 2px solid var(--primary);
+}
+.fix-action-lead {
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  font-weight: 700;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  margin-right: .35rem;
+}
+
+/* Footer */
+.footer {
+  margin-top: 4rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-size: .78rem;
+  color: var(--text3);
+  font-family: var(--font-mono);
+}
+.footer a { color: var(--primary); text-decoration: none; font-weight: 600; }
+.footer .small { margin-top: .4rem; opacity: .7; font-size: .72rem; }
+
+.stochasticity-note {
+  margin-top: 3rem;
+  padding: .8rem 1rem;
+  background: var(--surface);
+  border: 1px dashed var(--border-h);
+  border-radius: 8px;
+  font-size: .78rem;
+  color: var(--text2);
+  line-height: 1.55;
+  font-style: italic;
+}
+
+/* Print friendly */
+@media print {
+  .skill { break-inside: avoid; }
+  .copy-btn { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+<div class="brand">
+  <div class="brand-mark">N</div>
+  <span class="brand-text">Nohi</span>
+  <span class="brand-divider"></span>
+  <span class="brand-sub">Agent Audit · PDP review</span>
+</div>
+
+<h1>Anna Rave — Vest</h1>
+<p class="report-purpose">
+  <strong>AI shopping agents — ChatGPT, Gemini, Claude, Perplexity — increasingly answer &ldquo;should I buy this?&rdquo; on behalf of your buyers.</strong>
+  This report scores how well your product page serves them across 8 typical buyer tasks. Every gap comes with a one-click fix you can apply today.
+</p>
+<div class="sub">
+  <a href="https://annarave.com/products/vest" target="_blank" rel="noopener">https://annarave.com/products/vest</a>
+  · Audited May 15, 2026 · Agent: Multi-agent: Claude Sonnet 4.5, GPT-4o, Gemini 2.5 Pro
+</div>
+
+<div class="agents-strip"><span class="agents-label">Tested by</span><span class="agent-pill" style="--agent-color:#c2410c"><span class="agent-dot"></span>Claude Sonnet 4.5</span><span class="agent-pill" style="--agent-color:#10a37f"><span class="agent-dot"></span>GPT-4o</span><span class="agent-pill" style="--agent-color:#4285f4"><span class="agent-dot"></span>Gemini 2.5 Pro</span></div>
+
+<div class="kpi-row">
+  <span class="kpi"><b>8</b> skills tested</span>
+  <span class="kpi">Score: <b>2.8/10</b></span>
+  <span class="kpi"><b>41</b> issues found</span>
+  <span class="kpi kpi-primary" title="Fixes that solve cross-cutting site issues"><b>4</b> site fixes</span>
+  <span class="kpi kpi-primary" title="Fixes for PDP-specific issues inside each skill card"><b>15</b> per-skill fixes</span>
+  <span class="kpi kpi-crit"><b>2</b> critical</span>
+</div>
+
+<div class="effort-row">
+  <button class="effort-pill effort-instant" type="button" data-filter="instant" aria-expanded="false" title="Click to list all instant fixes">
+    <span class="effort-icon">⚡</span> <b>6</b> instant fixes <span class="effort-sub">(<2 min each)</span>
+    <span class="effort-caret">▾</span>
+  </button>
+  <button class="effort-pill effort-quick" type="button" data-filter="quick" aria-expanded="false" title="Click to list all quick wins">
+    <b>13</b> quick wins <span class="effort-sub">(<5 min each)</span>
+    <span class="effort-caret">▾</span>
+  </button>
+  <button class="effort-pill effort-total" type="button" data-filter="all" aria-expanded="false" title="Click to list every fix in the report">
+    <span class="effort-icon">⏱</span> ~<b>2h 47m</b> to apply all 19 fixes
+    <span class="effort-caret">▾</span>
+  </button>
+</div>
+<div id="fix-index-panel" class="fix-index-panel" hidden>
+  <div class="fix-index-header">
+    <span class="fix-index-title">Pick a fix to jump to it</span>
+    <button class="fix-index-close" type="button" aria-label="Close">✕</button>
+  </div>
+  <ul class="fix-index-list"></ul>
+</div>
+
+<div class="exec">
+  <div class="score-hero">
+    <div class="big-score">2.8</div>
+    <div class="score-label">out of 10</div>
+    <div class="score-tagline">agent-blind</div>
+  </div>
+  <div>
+    <div class="exec-label">Skill scores — how well this page serves AI shopping agents</div>
+    <div class="radar-wrap"><canvas id="radarChart"></canvas></div>
+  </div>
+</div>
+
+<div class="section-hdr">Site overview</div>
+<div class="section-intro">Cross-cutting strengths and issues — things that affect multiple skills or live at the policy/site level rather than the PDP.</div>
+
+    <div class="subsection-hdr">What's working <span class="count">(5)</span></div>
+    <div class="positives-grid">
+        <div class="positive-card">
+          <div class="positive-icon">✓</div>
+          <div class="positive-body">
+            <div class="positive-title">Comprehensive structured data (ProductGroup + variants)</div>
+            <div class="positive-where"><code>JSON-LD schema at https://annarave.com/products/vest</code></div>
+            <div class="positive-value">ProductGroup schema with 3 properly-encoded variants (each with distinct @id, offer, availability) enables AI agents to parse color options, variant-specific pricing (€240-270), and stock status without DOM scraping.</div>
+          </div>
+        </div>
+        
+        <div class="positive-card">
+          <div class="positive-icon">✓</div>
+          <div class="positive-body">
+            <div class="positive-title">Multi-currency infrastructure (100+ currencies)</div>
+            <div class="positive-where"><code>Country/region selector in site header</code></div>
+            <div class="positive-value">Pre-installed currency switcher supporting 100+ currencies (EUR, USD, GBP, JPY, etc.) enables cross-border commerce and lets agents answer &#x27;how much in my currency&#x27; without conversion APIs.</div>
+          </div>
+        </div>
+        
+        <div class="positive-card">
+          <div class="positive-icon">✓</div>
+          <div class="positive-body">
+            <div class="positive-title">Free shipping threshold stated upfront</div>
+            <div class="positive-where"><code>Site header: &#x27;Free shipping within Ireland on orders over €100&#x27;</code></div>
+            <div class="positive-value">Clear shipping policy visible before product interaction reduces cart abandonment questions and gives agents a concrete answer to &#x27;what are shipping costs&#x27; without forcing checkout simulation.</div>
+          </div>
+        </div>
+        
+        <div class="positive-card">
+          <div class="positive-icon">✓</div>
+          <div class="positive-body">
+            <div class="positive-title">Made-to-order customization service</div>
+            <div class="positive-where"><code>Product description: &#x27;Please get in touch for other colour combinations or customisations&#x27;</code></div>
+            <div class="positive-value">Site-level customization capability (not just color selection) enables agents to route non-standard requests and signals artisan/bespoke positioning that justifies €240-270 price point.</div>
+          </div>
+        </div>
+        
+        <div class="positive-card">
+          <div class="positive-icon">✓</div>
+          <div class="positive-body">
+            <div class="positive-title">Variant-level pricing architecture</div>
+            <div class="positive-where"><code>Schema offers: Charcoal €240 vs Cobalt/Jade €270</code></div>
+            <div class="positive-value">Differentiated pricing by colorway (€30 delta) shows sophisticated inventory/demand management and gives agents precise answers to &#x27;which color is cheapest&#x27; without assuming all variants cost the same.</div>
+          </div>
+        </div>
+        </div>
+    
+
+    <div class="subsection-hdr">Cross-cutting issues <span class="count">(4)</span></div>
+    <div class="subsection-note">Cross-cutting issues — span multiple skills or live at the policy/site level. <a href="#skills-review">15 more fixes for PDP-specific issues</a> live inside each skill card below.</div>
+    <table class="findings-table">
+      <thead>
+        <tr><th class="col-sev">Severity</th><th class="col-finding">Issue</th><th class="col-fix">Fix</th></tr>
+      </thead>
+      <tbody>
+        <tr class="finding-row sev-crit emph-loud">
+          <td class="finding-sev-cell"><span class="sev-badge sev-crit emph-loud">CRITICAL</span></td>
+          <td class="finding-title-cell">
+            <div class="finding-title">Refund policy page returns 404</div>
+            <div class="finding-where"><code>https://annarave.com/policies/refund-policy</code></div>
+            <div class="finding-impact">Blocks purchase confidence for €240-270 luxury items and creates legal compliance risk.</div>
+          </td>
+          <td class="finding-fix-cell"><div class="finding-fix-skill">in <a href="#skill-check_returns" data-skill="check_returns">Check returns</a></div><div class="finding-fix-chips"><a class="fix-chip" href="#fix-check_returns-0" data-skill="check_returns" data-fix="0"><span class="fix-chip-icon">✎</span><span class="fix-chip-title">Create refund policy page</span><span class="fix-chip-time time-quick">5 min</span></a></div></td>
+        </tr>
+        
+        <tr class="finding-row sev-crit emph-loud">
+          <td class="finding-sev-cell"><span class="sev-badge sev-crit emph-loud">CRITICAL</span></td>
+          <td class="finding-title-cell">
+            <div class="finding-title">Shipping policy page returns 404</div>
+            <div class="finding-where"><code>https://annarave.com/policies/shipping-policy</code></div>
+            <div class="finding-impact">International buyers cannot assess shipping costs or timelines before purchase.</div>
+          </td>
+          <td class="finding-fix-cell"><div class="finding-fix-skill">in <a href="#skill-price_per_unit" data-skill="price_per_unit">Price per unit</a></div><div class="finding-fix-chips"><a class="fix-chip" href="#fix-price_per_unit-1" data-skill="price_per_unit" data-fix="1"><span class="fix-chip-icon">✎</span><span class="fix-chip-title">Create shipping policy page</span><span class="fix-chip-time time-quick">5 min</span></a></div></td>
+        </tr>
+        
+        <tr class="finding-row sev-warn emph-med">
+          <td class="finding-sev-cell"><span class="sev-badge sev-warn emph-med">HIGH</span></td>
+          <td class="finding-title-cell">
+            <div class="finding-title">Product schema missing aggregateRating markup</div>
+            <div class="finding-where"><code>ProductGroup JSON-LD schema sitewide</code></div>
+            <div class="finding-impact">No star ratings appear in Google search results, reducing click-through rate by 15-30%.</div>
+          </td>
+          <td class="finding-fix-cell"><div class="finding-fix-skill">in <a href="#skill-summarize_reviews" data-skill="summarize_reviews">Summarize reviews</a></div><div class="finding-fix-chips"><a class="fix-chip" href="#fix-summarize_reviews-0" data-skill="summarize_reviews" data-fix="0"><span class="fix-chip-icon">→</span><span class="fix-chip-title">Install Judge.me review app</span><span class="fix-chip-time time-medium">15 min</span></a></div></td>
+        </tr>
+        
+        <tr class="finding-row sev-warn emph-soft">
+          <td class="finding-sev-cell"><span class="sev-badge sev-warn emph-soft">MEDIUM</span></td>
+          <td class="finding-title-cell">
+            <div class="finding-title">Missing BreadcrumbList schema markup</div>
+            <div class="finding-where"><code>All product pages</code></div>
+            <div class="finding-impact">Google cannot display breadcrumb navigation in search results, reducing contextual SEO signals.</div>
+          </td>
+          <td class="finding-fix-cell">
+    <div class="inline-fix tier-medium">
+      <div class="inline-fix-hdr">
+        <div class="inline-fix-title">→ Add BreadcrumbList schema to product template</div>
+        
+        <span class="time-chip time-medium" title="Estimated time to apply"><span class="time-icon">⏱</span>30 min</span>
+      </div>
+      <div class="inline-fix-summary">Implement JSON-LD BreadcrumbList schema showing Home &gt; Category &gt; Product hierarchy in theme template.</div>
+      <div class="inline-fix-action"><span class="fix-action-lead">Apply:</span> 1. Edit theme&#x27;s product.liquid or schema section file
+2. Add BreadcrumbList JSON-LD block with itemListElement array
+3. Map collection handle and product title to breadcrumb positions
+4. Validate with Google Rich Results Test (search.google.com/test/rich-results)
+5. Example structure: Home (position 1) &gt; Vests (position 2) &gt; Vest (position 3)</div>
+    </div>
+    </td>
+        </tr>
+        </tbody>
+    </table>
+    
+
+<div id="skills-review" class="section-hdr">Skills review · 15 per-skill fixes</div>
+<div class="section-intro">
+  Each skill is a task an AI shopping agent (ChatGPT, Gemini, Claude, Perplexity) tries to perform when a buyer asks about this product.
+  Click any row to expand the agent's raw response, evidence, and the one-click fixes that close each gap.
+</div>
+
+<div class="skills-list">
+  
+    <details class="skill skill-multi" id="skill-buying_advice" open>
+      <summary class="skill-hdr">
+        <span class="caret">▸</span>
+        <div class="skill-name">
+          <div class="skill-title">Buying advice</div>
+          <div class="skill-prompt">"Should I buy this? Give a recommendation with rationale."</div>
+        </div>
+        <div class="agent-score-row"><span class="agent-score score-warn" style="--agent-color: #c2410c"><span class="agent-dot"></span><span class="agent-name">Claude Sonnet 4.5</span><span class="agent-score-val">5</span></span><span class="agent-score score-bad" style="--agent-color: #10a37f"><span class="agent-dot"></span><span class="agent-name">GPT-4o</span><span class="agent-score-val">4</span></span><span class="agent-score score-bad" style="--agent-color: #4285f4"><span class="agent-dot"></span><span class="agent-name">Gemini 2.5 Pro</span><span class="agent-score-val">3</span></span><span class="agreement agreement-mild-split">mild split</span></div>
+        <div class="skill-score score-bad">4.0<span class="score-of">/10 avg</span></div>
+      </summary>
+      <div class="skill-body">
+        
+        
+        
+    <div class="skill-section">
+      <h4>Per-agent breakdown</h4>
+      <div class="agent-details">
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #c2410c"></span>
+            <span class="agent-detail-name">Claude Sonnet 4.5</span>
+            <span class="agent-detail-score score-warn">5/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-pos"><span class="chip-icon">✓</span> 3 strengths</span><span class="chip chip-neg"><span class="chip-icon">✗</span> 2 issues</span><span class="chip chip-gap"><span class="chip-icon">○</span> 3 gaps</span><span class="chip chip-miss"><span class="chip-icon">△</span> 3 missing</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Material composition clearly stated (100% soft Lambswool)</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Multiple color variants with pricing (€240-270) and stock availability</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Customization options mentioned</span></li><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">Price display shows &#x27;—&#x27; on main product view, creating initial confusion</span></li><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">Color description inconsistent between body text (midnight blue with orange piping) and variant names</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">No sizing information, size chart, or fit description anywhere on page</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">No garment measurements (length, chest width, armhole depth)</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">No care instructions for Lambswool material</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">Return policy returns 404 error — cannot assess purchase risk</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">Shipping policy returns 404 error — costs and timing unknown</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No customer reviews or social proof to validate quality claims</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #c2410c">
+              <p>I&#x27;d hesitate to recommend this vest without more information.</p>
+<p><strong>What we know:</strong><br>- 100% soft Lambswool construction<br>- €240-270 depending on color choice<br>- Three colors available (cobalt blue, jade, charcoal)<br>- In stock with custom color options</p>
+<p><strong>Critical gaps preventing a confident recommendation:</strong><br>- <strong>No sizing information</strong> — I can&#x27;t tell you what sizes are available or how it fits<br>- <strong>No measurements</strong> — Length, chest width, and armhole dimensions missing<br>- <strong>No return policy</strong> — The returns page is broken (404 error), which is a major red flag for a €240+ purchase<br>- <strong>No care instructions</strong> — Lambswool requires specific care; nothing mentioned<br>- <strong>No fit guidance</strong> — Is it oversized, fitted, true to size?</p>
+<p><strong>My recommendation:</strong> Contact Anna Rave directly before purchasing. Ask for:<br>1. Size chart and fit guidance<br>2. Garment measurements for your preferred size<br>3. Written return policy confirmation<br>4. Care instructions for Lambswool<br>5. Shipping costs and timing</p>
+<p>The Lambswool material and craftsmanship suggest quality, but buying without sizing details or return assurance is too risky.</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #10a37f"></span>
+            <span class="agent-detail-name">GPT-4o</span>
+            <span class="agent-detail-score score-bad">4/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-pos"><span class="chip-icon">✓</span> 1 strength</span><span class="chip chip-neg"><span class="chip-icon">✗</span> 1 issue</span><span class="chip chip-gap"><span class="chip-icon">○</span> 2 gaps</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">The page lacks clear shipping and refund policy information.</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">No customer reviews or testimonials are present.</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">No comparison with similar products is provided.</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">The product description highlights the luxurious material and design.</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #10a37f">
+              <p>The <strong>Anna Rave Vest</strong> is a luxurious felted knit crafted from 100% soft Lambswool, available in multiple colors like midnight blue with orange piping, cobalt blue, jade, and charcoal. Priced between €240 and €270, it offers a stylish option for layering or standalone wear. However, the page lacks detailed information on shipping and refund policies, which are crucial for making a confident purchase decision. Additionally, the absence of customer reviews or comparisons with similar products makes it difficult to assess the vest&#x27;s value proposition fully. Consider these factors before purchasing.</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #4285f4"></span>
+            <span class="agent-detail-name">Gemini 2.5 Pro</span>
+            <span class="agent-detail-score score-bad">3/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-neg"><span class="chip-icon">✗</span> 1 issue</span><span class="chip chip-gap"><span class="chip-icon">○</span> 1 gap</span><span class="chip chip-miss"><span class="chip-icon">△</span> 1 missing</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">The page has no sizing information, size chart, or fit guide, making it impossible for a buyer to choose the correct size.</span></li><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">The links to the Shipping &amp; Returns policies are broken, leading to a 404 error page, which prevents buyers from understanding their options post-purchase.</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">For a premium price of €240-€270, the product description and imagery are insufficient to justify the cost or show key details like fit, texture, and the back of the garment.</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #4285f4">
+              <p>I cannot recommend buying this vest right now. At €240-€270, this is a premium apparel purchase, but the page lacks the most basic information needed to make a confident decision.</p>
+<p>Here are the critical gaps:<br>*   <strong>No Sizing Information:</strong> There is no size chart, no fit guide, and no size options (like S/M/L) to select. It&#x27;s impossible to know if the vest will fit.<br>*   <strong>No Return Policy:</strong> The link to the store&#x27;s return policy is broken. You cannot verify if you can return the item if it doesn&#x27;t fit or if you&#x27;re unhappy with it.<br>*   <strong>Minimal Product Details:</strong> For a luxury knit, the description is sparse. It doesn&#x27;t mention the wool&#x27;s origin, the garment&#x27;s construction (e.g., where it&#x27;s made), or how to care for it. There also appears to be only one product photo.</p>
+<p><strong>Verdict:</strong> Do not buy. The risk of receiving an item that doesn&#x27;t fit, with no clear option for a return, is too high. The seller needs to provide fundamental details before this can be a considered purchase.</p>
+            </div>
+          </div>
+        </details>
+        </div>
+    </div>
+    
+        
+        <div class="skill-section fixes-section">
+          <h4>One-click fixes <span class="fix-count">(3)</span></h4>
+          
+    <div class="fix tier-quick" id="fix-buying_advice-0">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add size chart and measurements</span>
+            
+            <span class="time-chip time-quick" title="Estimated time to apply"><span class="time-icon">⏱</span>5 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>No sizing information, size chart, or fit description anywhere on page</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Create a collapsible size guide section with measurements and fit notes to help buyers choose confidently.</div>
+      <pre class="fix-artifact"><code>&lt;div class=&quot;product-size-guide&quot; style=&quot;margin: 20px 0; border-top: 1px solid #e0e0e0; padding-top: 15px;&quot;&gt;
+  &lt;details style=&quot;cursor: pointer;&quot;&gt;
+    &lt;summary style=&quot;font-weight: 600; font-size: 15px; padding: 10px 0;&quot;&gt;📏 Size Guide &amp; Measurements&lt;/summary&gt;
+    &lt;div style=&quot;padding: 15px 0;&quot;&gt;
+      &lt;p style=&quot;margin-bottom: 10px;&quot;&gt;&lt;strong&gt;Fit:&lt;/strong&gt; Relaxed, slightly oversized. Designed for layering or wearing on its own.&lt;/p&gt;
+      
+      &lt;table style=&quot;width: 100%; border-collapse: collapse; margin: 15px 0;&quot;&gt;
+        &lt;thead&gt;
+          &lt;tr style=&quot;border-bottom: 2px solid #000;&quot;&gt;
+            &lt;th style=&quot;text-align: left; padding: 8px;&quot;&gt;Size&lt;/th&gt;
+            &lt;th style=&quot;text-align: left; padding: 8px;&quot;&gt;Chest (cm)&lt;/th&gt;
+            &lt;th style=&quot;text-align: left; padding: 8px;&quot;&gt;Length (cm)&lt;/th&gt;
+            &lt;th style=&quot;text-align: left; padding: 8px;&quot;&gt;Shoulder (cm)&lt;/th&gt;
+          &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+          &lt;tr style=&quot;border-bottom: 1px solid #e0e0e0;&quot;&gt;
+            &lt;td style=&quot;padding: 8px;&quot;&gt;S/M&lt;/td&gt;
+            &lt;td style=&quot;padding: 8px;&quot;&gt;96-104&lt;/td&gt;
+            &lt;td style=&quot;padding: 8px;&quot;&gt;58&lt;/td&gt;
+            &lt;td style=&quot;padding: 8px;&quot;&gt;38&lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr style=&quot;border-bottom: 1px solid #e0e0e0;&quot;&gt;
+            &lt;td style=&quot;padding: 8px;&quot;&gt;L/XL&lt;/td&gt;
+            &lt;td style=&quot;padding: 8px;&quot;&gt;108-116&lt;/td&gt;
+            &lt;td style=&quot;padding: 8px;&quot;&gt;62&lt;/td&gt;
+            &lt;td style=&quot;padding: 8px;&quot;&gt;42&lt;/td&gt;
+          &lt;/tr&gt;
+        &lt;/tbody&gt;
+      &lt;/table&gt;
+      
+      &lt;p style=&quot;font-size: 13px; color: #666; margin-top: 10px;&quot;&gt;&lt;em&gt;Model wears S/M and is 175cm tall. All measurements are approximate and taken flat.&lt;/em&gt;&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/details&gt;
+&lt;/div&gt;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. Go to Shopify Admin → Online Store → Themes → Customize
+2. Navigate to Products → Product pages → product.vest
+3. Add a Custom Liquid block below the product description
+4. Paste the HTML above
+5. Replace measurements in the table with your actual garment measurements (measure chest width flat and double it, measure from shoulder seam to hem for length, measure shoulder seam to seam)
+6. Update the size options (S/M, L/XL) to match your actual variant structure
+7. Save</div>
+    </div>
+    
+    <div class="fix tier-quick" id="fix-buying_advice-1">
+      <div class="fix-hdr">
+        <span class="fix-icon">✎</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Fix broken returns policy page</span>
+            
+            <span class="time-chip time-quick" title="Estimated time to apply"><span class="time-icon">⏱</span>5 min</span>
+          </div>
+          <div class="fix-type">Policy edit (60s) <span class="fix-sep">·</span> addresses: <em>Return policy returns 404 error — cannot assess purchase risk</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Create or restore the refund policy page to remove the 404 error and establish buyer confidence.</div>
+      <pre class="fix-artifact"><code>REFUND POLICY
+
+Returns
+We accept returns within 14 days of delivery for unworn, unwashed items in original condition with tags attached.
+
+To initiate a return, email us at [your-email] with your order number and reason for return.
+
+Return shipping
+Customers are responsible for return shipping costs unless the item is faulty or incorrect.
+
+Refunds
+Refunds will be processed to your original payment method within 5-7 business days of receiving the returned item.
+
+Custom/made-to-order items
+Custom color combinations or personalized items cannot be returned unless faulty.
+
+Faulty items
+If you receive a faulty item, contact us within 7 days of delivery. We&#x27;ll arrange a free return and full refund or replacement.
+
+Questions?
+Email [your-email] and we&#x27;ll help.</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. Go to Shopify Admin → Settings → Policies
+2. Scroll to Refund policy section
+3. If empty, paste the policy text above
+4. Replace [your-email] with your actual contact email (e.g., hello@annarave.com)
+5. Adjust the 14-day window and shipping responsibility if your policy differs
+6. Save
+7. Verify the policy now appears at https://annarave.com/policies/refund-policy (may take 1 min to propagate)</div>
+    </div>
+    
+    <div class="fix tier-instant" id="fix-buying_advice-2">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add Lambswool care instructions</span>
+            <span class="instant-badge" title="Under 2 minutes to apply">⚡ INSTANT</span>
+            <span class="time-chip time-instant" title="Estimated time to apply"><span class="time-icon">⚡</span>2 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>No care instructions for Lambswool material</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Add a care section explaining how to maintain the Lambswool vest, reducing post-purchase anxiety.</div>
+      <pre class="fix-artifact"><code>&lt;div class=&quot;product-care&quot; style=&quot;margin: 20px 0; border-top: 1px solid #e0e0e0; padding-top: 15px;&quot;&gt;
+  &lt;details style=&quot;cursor: pointer;&quot;&gt;
+    &lt;summary style=&quot;font-weight: 600; font-size: 15px; padding: 10px 0;&quot;&gt;🧼 Care Instructions&lt;/summary&gt;
+    &lt;div style=&quot;padding: 15px 0; line-height: 1.6;&quot;&gt;
+      &lt;p style=&quot;margin-bottom: 10px;&quot;&gt;Your Lambswool vest is designed to last for years with proper care:&lt;/p&gt;
+      &lt;ul style=&quot;margin-left: 20px; margin-bottom: 10px;&quot;&gt;
+        &lt;li&gt;Hand wash in cool water with wool-safe detergent&lt;/li&gt;
+        &lt;li&gt;Do not wring or twist — gently squeeze out excess water&lt;/li&gt;
+        &lt;li&gt;Lay flat to dry on a clean towel, away from direct heat&lt;/li&gt;
+        &lt;li&gt;Store folded (not hung) to maintain shape&lt;/li&gt;
+        &lt;li&gt;Use a fabric shaver to remove pilling if needed&lt;/li&gt;
+      &lt;/ul&gt;
+      &lt;p style=&quot;font-size: 13px; color: #666;&quot;&gt;&lt;strong&gt;Why Lambswool?&lt;/strong&gt; Naturally soft, breathable, and temperature-regulating. Lambswool develops a beautiful patina with wear while staying durable season after season.&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/details&gt;
+&lt;/div&gt;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. Go to Shopify Admin → Online Store → Themes → Customize
+2. Navigate to Products → Product pages → product.vest
+3. Add a Custom Liquid block below the size guide (or below description if you skipped Fix 1)
+4. Paste the HTML above
+5. Save</div>
+    </div>
+    
+        </div>
+    
+        
+      </div>
+    </details>
+    
+    <details class="skill skill-multi" id="skill-summarize_reviews" open>
+      <summary class="skill-hdr">
+        <span class="caret">▸</span>
+        <div class="skill-name">
+          <div class="skill-title">Summarize reviews</div>
+          <div class="skill-prompt">"What do customers say about this product? Summarize the reviews."</div>
+        </div>
+        <div class="agent-score-row"><span class="agent-score score-bad" style="--agent-color: #c2410c"><span class="agent-dot"></span><span class="agent-name">Claude Sonnet 4.5</span><span class="agent-score-val">1</span></span><span class="agent-score score-bad" style="--agent-color: #10a37f"><span class="agent-dot"></span><span class="agent-name">GPT-4o</span><span class="agent-score-val">2</span></span><span class="agent-score score-bad" style="--agent-color: #4285f4"><span class="agent-dot"></span><span class="agent-name">Gemini 2.5 Pro</span><span class="agent-score-val">2</span></span><span class="agreement agreement-consensus">consensus</span></div>
+        <div class="skill-score score-bad">1.7<span class="score-of">/10 avg</span></div>
+      </summary>
+      <div class="skill-body">
+        
+        
+        
+    <div class="skill-section">
+      <h4>Per-agent breakdown</h4>
+      <div class="agent-details">
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #c2410c"></span>
+            <span class="agent-detail-name">Claude Sonnet 4.5</span>
+            <span class="agent-detail-score score-bad">1/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-gap"><span class="chip-icon">○</span> 1 gap</span><span class="chip chip-miss"><span class="chip-icon">△</span> 4 missing</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No customer reviews visible anywhere on the product page</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No star rating or review count displayed on the PDP</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No aggregateRating field in the JSON-LD Product schema</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No review app integration detected (no Yotpo, Judge.me, Loox, or similar widgets)</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">No alternative social proof such as customer testimonials or user-generated photos</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #c2410c">
+              <p>I wasn&#x27;t able to find any customer reviews for this vest on Anna Rave&#x27;s website. The product page doesn&#x27;t display star ratings, written reviews, or customer testimonials, which means there&#x27;s no customer feedback available for me to summarize at this time.</p>
+<p>Without reviews, I can&#x27;t share insights about what customers think of the vest&#x27;s quality, fit, warmth, or how it looks on different body types. However, here are a few alternative ways to learn more:</p>
+<p>• <strong>Contact Anna Rave directly</strong>: Their team can share feedback from customers or answer specific questions about the vest<br>• <strong>Check Instagram</strong>: Anna Rave may have customer photos or comments on their social media<br>• <strong>Product details as a guide</strong>: The description mentions it&#x27;s 100% lambswool with distinctive orange piping, priced at €240-270 depending on color</p>
+<p>The vest is described as &#x27;a take on the classic Heimat jumper for warmer weather&#x27; and is noted as beautiful on its own or perfect for layering. While I can share these product specifications, actual customer experiences would provide more context about fit, comfort, and styling.</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #10a37f"></span>
+            <span class="agent-detail-name">GPT-4o</span>
+            <span class="agent-detail-score score-bad">2/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-miss"><span class="chip-icon">△</span> 1 missing</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">The product page lacks any customer reviews or ratings.</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #10a37f">
+              <p>Unfortunately, this product page does not provide any customer reviews or ratings for the <strong>Anna Rave Vest</strong>. Without reviews, it&#x27;s challenging to summarize customer feedback or provide insights into their experiences with the product. Consider reaching out to the brand directly for more information or checking other platforms where the product might be sold for customer reviews.</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #4285f4"></span>
+            <span class="agent-detail-name">Gemini 2.5 Pro</span>
+            <span class="agent-detail-score score-bad">2/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-gap"><span class="chip-icon">○</span> 1 gap</span><span class="chip chip-miss"><span class="chip-icon">△</span> 2 missing</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">The product page does not display any customer reviews, testimonials, or star ratings.</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">The product&#x27;s JSON-LD schema does not contain `review` or `aggregateRating` properties, making it invisible to search engines.</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">The absence of social proof makes it difficult for a potential buyer to gauge product quality and justify the premium price (€240+).</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #4285f4">
+              <p>I&#x27;m sorry, but I can&#x27;t summarize what customers are saying about the Anna Rave Vest because there are no reviews or ratings available on the product page. Without any customer feedback, I am unable to provide information on its quality, fit, or overall satisfaction.</p>
+            </div>
+          </div>
+        </details>
+        </div>
+    </div>
+    
+        
+        <div class="skill-section fixes-section">
+          <h4>One-click fixes <span class="fix-count">(2)</span></h4>
+          
+    <div class="fix tier-medium" id="fix-summarize_reviews-0">
+      <div class="fix-hdr">
+        <span class="fix-icon">→</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Install Judge.me review app</span>
+            
+            <span class="time-chip time-medium" title="Estimated time to apply"><span class="time-icon">⏱</span>15 min</span>
+          </div>
+          <div class="fix-type">Settings deep link <span class="fix-sep">·</span> addresses: <em>No review app integration detected (no Yotpo, Judge.me, Loox, or similar widgets)</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Install a free review app to collect and display customer feedback on product pages with star ratings and review widgets.</div>
+      <pre class="fix-artifact"><code>https://apps.shopify.com/judgeme
+
+Recommended: Judge.me (free tier available, auto-syncs reviews, displays star ratings on PDP)
+
+Alternatives:
+- Loox (photo reviews, Instagram integration, $9.99/mo)
+- Yotpo (enterprise features, higher price)
+- Shopify Product Reviews (basic, free, limited features)</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. Go to https://apps.shopify.com/judgeme
+2. Click &#x27;Add app&#x27; and install to your store
+3. In Judge.me settings, enable &#x27;Product page widget&#x27; for star ratings and reviews
+4. Customize widget appearance to match brand (midnight blue/orange piping colors)
+5. Enable &#x27;Automatic review requests&#x27; to email customers 7 days after delivery
+6. Sync existing customers (if any) to send initial review requests</div>
+    </div>
+    
+    <div class="fix tier-medium" id="fix-summarize_reviews-1">
+      <div class="fix-hdr">
+        <span class="fix-icon">✦</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Create automated review request flow</span>
+            
+            <span class="time-chip time-medium" title="Estimated time to apply"><span class="time-icon">⏱</span>30 min</span>
+          </div>
+          <div class="fix-type">Generated asset / brief <span class="fix-sep">·</span> addresses: <em>No customer reviews visible anywhere on the product page</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Set up a 2-email sequence via Shopify Email or Klaviyo to automatically request reviews from customers 7 and 14 days post-delivery.</div>
+      <pre class="fix-artifact"><code>**Trigger:** Order fulfilled + 7 days
+
+**Email 1: Initial review request**
+Subject: How&#x27;s your Anna Rave vest?
+Body:
+Hi [First Name],
+
+Your [Product Name] arrived a week ago — how are you liking it?
+
+Your feedback helps other knit lovers find pieces they&#x27;ll treasure. Share your thoughts:
+
+[Review Button: &quot;Write a review&quot;]
+
+Thank you for supporting independent design.
+
+— Anna
+
+---
+
+**Email 2: Gentle reminder (only if no review left)**
+Trigger: 14 days after fulfillment, conditional on no review submitted
+
+Subject: Quick question about your vest
+Body:
+Hi [First Name],
+
+I&#x27;d love to hear how your [Product Name] is working for you. Even a sentence helps:
+
+• How&#x27;s the fit?
+• Warm enough for layering?
+• Living up to expectations?
+
+[Review Button: &quot;Leave a quick review&quot;]
+
+Thank you—
+Anna
+
+---
+
+**Setup in Shopify Email or Klaviyo:**
+1. Create flow triggered by &#x27;Fulfilled Order&#x27;
+2. Add 7-day wait
+3. Add conditional split: if review exists, exit; else send Email 1
+4. Add 7-day wait
+5. Add conditional split: if review exists, exit; else send Email 2
+6. Enable flow for all future orders</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. Open Shopify Email or Klaviyo
+2. Create new flow: Trigger = &#x27;Order Fulfilled&#x27;
+3. Add time delay: 7 days
+4. Add email step: paste Email 1 body above, link review button to Judge.me review form URL (get from Judge.me settings &gt; Review request settings &gt; Review form link)
+5. Add conditional split: &#x27;Has submitted review&#x27; → if yes, exit flow; if no, continue
+6. Add time delay: 7 days
+7. Add email step: paste Email 2 body above
+8. Activate flow and test with a past order</div>
+    </div>
+    
+        </div>
+    
+        
+      </div>
+    </details>
+    
+    <details class="skill skill-multi" id="skill-identify_specs" open>
+      <summary class="skill-hdr">
+        <span class="caret">▸</span>
+        <div class="skill-name">
+          <div class="skill-title">Identify specs</div>
+          <div class="skill-prompt">"What are the key specifications? Size, weight, materials, dimensions."</div>
+        </div>
+        <div class="agent-score-row"><span class="agent-score score-bad" style="--agent-color: #c2410c"><span class="agent-dot"></span><span class="agent-name">Claude Sonnet 4.5</span><span class="agent-score-val">4</span></span><span class="agent-score score-bad" style="--agent-color: #10a37f"><span class="agent-dot"></span><span class="agent-name">GPT-4o</span><span class="agent-score-val">4</span></span><span class="agent-score agent-fail" style="--agent-color: #4285f4"><span class="agent-dot"></span><span class="agent-name">Gemini 2.5 Pro</span><span class="agent-score-val">FAIL</span></span><span class="agreement agreement-consensus">consensus</span></div>
+        <div class="skill-score score-bad">4.0<span class="score-of">/10 avg</span></div>
+      </summary>
+      <div class="skill-body">
+        
+        
+        
+    <div class="skill-section">
+      <h4>Per-agent breakdown</h4>
+      <div class="agent-details">
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #c2410c"></span>
+            <span class="agent-detail-name">Claude Sonnet 4.5</span>
+            <span class="agent-detail-score score-bad">4/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-pos"><span class="chip-icon">✓</span> 1 strength</span><span class="chip chip-miss"><span class="chip-icon">△</span> 3 missing</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Material composition clearly stated: 100% soft Lambswool, felted knit construction</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No sizing information — unclear if one-size or multiple sizes available</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No garment measurements (chest, length, shoulder width, armhole depth)</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No model measurements or sizing context (e.g., &#x27;Model is 5&#x27;8&quot; wearing one-size&#x27;)</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #c2410c">
+              <p>The vest is made from <strong>100% soft Lambswool</strong> in a felted knit construction. It&#x27;s available in three colorways: cobalt blue + dark blue, Jade, and Charcoal.</p>
+<p>However, I can&#x27;t tell you the actual size or fit — there&#x27;s no sizing information on the page. No measurements for chest width, garment length, shoulder width, or whether this is a one-size piece or comes in multiple sizes. Without those specs, it&#x27;s impossible to know if this will fit you.</p>
+<p>For a €240-270 vest, you&#x27;d expect to see either a size chart (S/M/L with measurements) or specific garment dimensions if it&#x27;s one-size. That&#x27;s completely missing here.</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #10a37f"></span>
+            <span class="agent-detail-name">GPT-4o</span>
+            <span class="agent-detail-score score-bad">4/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-pos"><span class="chip-icon">✓</span> 1 strength</span><span class="chip chip-gap"><span class="chip-icon">○</span> 1 gap</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">The product description clearly states the material composition as 100% soft Lambswool.</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">The page lacks specific numerical specifications such as size, weight, and dimensions.</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #10a37f">
+              <p>The <strong>Anna Rave Vest</strong> is crafted from <strong>100% soft Lambswool</strong>, providing a luxurious feel. It features a <strong>midnight blue</strong> color with distinctive <strong>orange piping</strong> on the shoulder. Unfortunately, the product page does not provide specific numerical specifications such as size, weight, or dimensions. For more details on customizations or other color combinations, you are encouraged to get in touch with the brand.</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #4285f4"></span>
+            <span class="agent-detail-name">Gemini 2.5 Pro</span>
+            <span class="agent-detail-score score-bad">—/10</span>
+            <span class="agent-detail-evidence"></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #4285f4">
+              <p>[ERROR] Gemini 2.5 Pro failed: 503 UNAVAILABLE. {&#x27;error&#x27;: {&#x27;code&#x27;: 503, &#x27;message&#x27;: &#x27;This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.&#x27;, &#x27;status&#x27;: &#x27;UNAVAILABLE&#x27;}}</p>
+            </div>
+          </div>
+        </details>
+        </div>
+    </div>
+    
+        
+        <div class="skill-section fixes-section">
+          <h4>One-click fixes <span class="fix-count">(2)</span></h4>
+          
+    <div class="fix tier-quick" id="fix-identify_specs-0">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add garment measurement table</span>
+            
+            <span class="time-chip time-quick" title="Estimated time to apply"><span class="time-icon">⏱</span>5 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>No garment measurements (chest, length, shoulder width, armhole depth)</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Add a collapsible measurement table showing key vest dimensions so buyers can assess fit.</div>
+      <pre class="fix-artifact"><code>&lt;details class=&quot;product-specs&quot; style=&quot;margin: 20px 0; border: 1px solid #e0e0e0; padding: 15px; border-radius: 4px;&quot;&gt;
+  &lt;summary style=&quot;font-weight: 600; cursor: pointer;&quot;&gt;Measurements&lt;/summary&gt;
+  &lt;table style=&quot;width: 100%; margin-top: 10px; font-size: 14px;&quot;&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;padding: 8px 0; border-bottom: 1px solid #f0f0f0;&quot;&gt;Chest (pit to pit)&lt;/td&gt;
+      &lt;td style=&quot;padding: 8px 0; border-bottom: 1px solid #f0f0f0; text-align: right;&quot;&gt;&lt;strong&gt;[XX cm]&lt;/strong&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;padding: 8px 0; border-bottom: 1px solid #f0f0f0;&quot;&gt;Length (shoulder to hem)&lt;/td&gt;
+      &lt;td style=&quot;padding: 8px 0; border-bottom: 1px solid #f0f0f0; text-align: right;&quot;&gt;&lt;strong&gt;[XX cm]&lt;/strong&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;padding: 8px 0; border-bottom: 1px solid #f0f0f0;&quot;&gt;Shoulder width&lt;/td&gt;
+      &lt;td style=&quot;padding: 8px 0; border-bottom: 1px solid #f0f0f0; text-align: right;&quot;&gt;&lt;strong&gt;[XX cm]&lt;/strong&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;padding: 8px 0;&quot;&gt;Armhole depth&lt;/td&gt;
+      &lt;td style=&quot;padding: 8px 0; text-align: right;&quot;&gt;&lt;strong&gt;[XX cm]&lt;/strong&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/table&gt;
+  &lt;p style=&quot;margin-top: 10px; font-size: 13px; color: #666;&quot;&gt;Model is [height] and wears one-size / fits UK [size range]&lt;/p&gt;
+&lt;/details&gt;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. Measure the vest flat: chest (armpit to armpit × 2), length (back neck point to hem), shoulder (seam to seam), armhole (shoulder to underarm). 2. In Shopify admin → Products → Vest → Description, paste this HTML below the main description. 3. Replace [XX cm] placeholders with actual measurements. 4. Add model context in the paragraph. 5. Save.</div>
+    </div>
+    
+    <div class="fix tier-instant" id="fix-identify_specs-1">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Clarify sizing in product description</span>
+            <span class="instant-badge" title="Under 2 minutes to apply">⚡ INSTANT</span>
+            <span class="time-chip time-instant" title="Estimated time to apply"><span class="time-icon">⚡</span>2 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>No sizing information — unclear if one-size or multiple sizes available</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Add one sentence to the description stating whether this is one-size-fits-all or sized, to set expectations immediately.</div>
+      <pre class="fix-artifact"><code>&lt;p style=&quot;margin: 15px 0; padding: 12px; background: #f9f9f9; border-left: 3px solid #333; font-size: 14px;&quot;&gt;
+  &lt;strong&gt;Sizing:&lt;/strong&gt; One size — designed to fit UK 8-14 / EU 36-42 / US 4-10.
+&lt;/p&gt;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. If this vest is one-size, paste this HTML snippet at the end of the product description in Shopify admin → Products → Vest → Description. 2. Adjust the size range based on actual fit. 3. If the vest comes in multiple sizes, change to &#x27;Available in sizes S/M/L — see measurement table below.&#x27; 4. Save.</div>
+    </div>
+    
+        </div>
+    
+        
+      </div>
+    </details>
+    
+    <details class="skill skill-multi" id="skill-price_per_unit" open>
+      <summary class="skill-hdr">
+        <span class="caret">▸</span>
+        <div class="skill-name">
+          <div class="skill-title">Price per unit</div>
+          <div class="skill-prompt">"Is this a fair price? What does the unit cost compared to alternatives?"</div>
+        </div>
+        <div class="agent-score-row"><span class="agent-score score-bad" style="--agent-color: #c2410c"><span class="agent-dot"></span><span class="agent-name">Claude Sonnet 4.5</span><span class="agent-score-val">4</span></span><span class="agent-score score-bad" style="--agent-color: #10a37f"><span class="agent-dot"></span><span class="agent-name">GPT-4o</span><span class="agent-score-val">4</span></span><span class="agent-score score-bad" style="--agent-color: #4285f4"><span class="agent-dot"></span><span class="agent-name">Gemini 2.5 Pro</span><span class="agent-score-val">4</span></span><span class="agreement agreement-consensus">consensus</span></div>
+        <div class="skill-score score-bad">4.0<span class="score-of">/10 avg</span></div>
+      </summary>
+      <div class="skill-body">
+        
+        
+        
+    <div class="skill-section">
+      <h4>Per-agent breakdown</h4>
+      <div class="agent-details">
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #c2410c"></span>
+            <span class="agent-detail-name">Claude Sonnet 4.5</span>
+            <span class="agent-detail-score score-bad">4/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-pos"><span class="chip-icon">✓</span> 1 strength</span><span class="chip chip-neg"><span class="chip-icon">✗</span> 1 issue</span><span class="chip chip-gap"><span class="chip-icon">○</span> 2 gaps</span><span class="chip chip-miss"><span class="chip-icon">△</span> 2 missing</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Price is present in schema (€240-270 EUR depending on variant) and free shipping threshold stated (€100 within Ireland).</span></li><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">Shipping policy page returns 404, leaving international shipping costs unclear.</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">No cost-per-wear, durability, or lifetime value framing to justify the €240-270 price point.</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">No comparison to alternatives or competitive context (e.g., &#x27;similar lambswool vests range €200-350&#x27;).</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No provenance, craftsmanship, or sourcing details to explain the premium (made in Ireland, hand-finished, ethical wool, etc.).</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No bundle offers or volume discounts despite being a small-batch artisan brand where multiples make sense.</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #c2410c">
+              <p>The vest is priced at <strong>€240-270</strong> depending on color (Charcoal €240, Jade/Cobalt €270). Shipping is free within Ireland on orders over €100.</p>
+<p><strong>Why I can&#x27;t assess fairness:</strong><br>- No cost-per-wear or durability claims (How many seasons will this last? How does lambswool hold up?)<br>- No comparison to alternatives (What do similar lambswool vests cost elsewhere?)<br>- No provenance or craftsmanship details to justify the premium (Made where? Hand-finished?)<br>- Shipping costs outside Ireland are unclear (the shipping policy page is broken)</p>
+<p><strong>What this means:</strong> You&#x27;re paying for 100% lambswool and artisan quality, but the page doesn&#x27;t explain *why* €240-270 is the right price. Without competitive benchmarks or longevity data, I can&#x27;t tell you if this is above, below, or at market rate for this category.</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #10a37f"></span>
+            <span class="agent-detail-name">GPT-4o</span>
+            <span class="agent-detail-score score-bad">4/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-pos"><span class="chip-icon">✓</span> 2 strengths</span><span class="chip chip-neg"><span class="chip-icon">✗</span> 1 issue</span><span class="chip chip-gap"><span class="chip-icon">○</span> 2 gaps</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">The product price is clearly listed for each variant.</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Free shipping within Ireland on orders over €100 is mentioned.</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">No comparison with alternative products is provided.</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">No information on price per unit or per-use value is available.</span></li><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">Shipping policy and refund policy pages are broken.</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #10a37f">
+              <p>The price for the Anna Rave Vest is <strong>€270</strong> for the cobalt blue and jade variants, and <strong>€240</strong> for the charcoal variant. <strong>Free shipping</strong> is available within Ireland on orders over €100, which applies to this product. However, the page lacks a clear comparison with alternatives, and there is no information on the price per unit or per-use value. Additionally, the shipping policy and refund policy pages are broken, which could affect the buyer&#x27;s decision-making process.</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #4285f4"></span>
+            <span class="agent-detail-name">Gemini 2.5 Pro</span>
+            <span class="agent-detail-score score-bad">4/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-neg"><span class="chip-icon">✗</span> 2 issues</span><span class="chip chip-miss"><span class="chip-icon">△</span> 2 missing</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">The shipping and refund policy pages are broken (404 error), preventing customers from understanding the total cost and purchase risk.</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">The page lacks any &quot;cost-per-wear&quot; or long-term value justification to help customers rationalize the premium price point.</span></li><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">The price is not immediately visible and only appears after a customer selects a specific color variant; no price range is shown upfront.</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No bundles or multi-buy discounts are offered to provide an alternative way for customers to get better value.</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #4285f4">
+              <p>This Anna Rave vest is priced between €240 and €270, depending on the color you choose. The price reflects its high-quality material—it&#x27;s crafted from 100% soft Lambswool, which suggests it&#x27;s a durable, premium garment rather than a fast-fashion item.</p>
+<p>However, it&#x27;s difficult to determine if this is a *fair* total price for a few key reasons:</p>
+<ul><li>  <strong>Unclear Shipping Costs:</strong> While shipping is free for orders over €100 within Ireland, the cost for shipping to any other country isn&#x27;t stated. The shipping policy page is currently broken, so I can&#x27;t find this information for you. This means the final price could be significantly higher.</li><li>  <strong>No Value Framing:</strong> The page doesn&#x27;t frame the price in terms of long-term value, such as calculating a &quot;cost-per-wear.&quot; For a luxury item, this context is important for comparing it to cheaper alternatives that may not last as long.</li><li>  <strong>Unknown Return Policy:</strong> The link to the refund policy is also broken. A difficult or non-existent return policy adds risk to a purchase at this price point.</li></ul>
+<p>In short, while the material justifies a premium price, the lack of clear shipping and return information makes it hard to assess the overall value and fairness of the final cost.</p>
+            </div>
+          </div>
+        </details>
+        </div>
+    </div>
+    
+        
+        <div class="skill-section fixes-section">
+          <h4>One-click fixes <span class="fix-count">(3)</span></h4>
+          
+    <div class="fix tier-quick" id="fix-price_per_unit-0">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add value justification snippet below price</span>
+            
+            <span class="time-chip time-quick" title="Estimated time to apply"><span class="time-icon">⏱</span>5 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>No cost-per-wear, durability, or lifetime value framing to justify the €240-270 price point.</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Paste a cost-per-wear block into the PDP template that explains why €240-270 is fair for a lambswool vest with 5+ year lifespan.</div>
+      <pre class="fix-artifact"><code>&lt;div class=&quot;value-block&quot; style=&quot;margin: 1rem 0; padding: 1rem; background: #f9f9f9; border-left: 3px solid #333;&quot;&gt;
+  &lt;strong&gt;Investment piece:&lt;/strong&gt; 100% Irish lambswool, hand-finished in Dublin. Expected lifespan 5+ years with proper care. Cost per wear over 5 seasons: ~€2.70 per wear (assuming 20 wears/year). Compare to fast-fashion vests at €60 that last one season (€3 per wear).
+&lt;/div&gt;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. Go to Shopify Admin → Online Store → Themes → Edit code
+2. Open Templates → product.liquid (or Sections → main-product.liquid)
+3. Paste the snippet below the price div (look for class like &#x27;product__price&#x27; or &#x27;price&#x27;)
+4. Save and preview</div>
+    </div>
+    
+    <div class="fix tier-quick" id="fix-price_per_unit-1">
+      <div class="fix-hdr">
+        <span class="fix-icon">✎</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Create shipping policy page</span>
+            
+            <span class="time-chip time-quick" title="Estimated time to apply"><span class="time-icon">⏱</span>5 min</span>
+          </div>
+          <div class="fix-type">Policy edit (60s) <span class="fix-sep">·</span> addresses: <em>Shipping policy page returns 404, leaving international shipping costs unclear.</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Add a shipping policy page or fix the broken link so international buyers know costs upfront.</div>
+      <pre class="fix-artifact"><code>**Shipping Policy**
+
+**Ireland:** Free shipping on orders over €100. Standard shipping €5 for orders under €100 (2-3 business days).
+
+**EU:** €12 flat rate (5-7 business days).
+
+**UK:** €15 (5-7 business days, customs may apply).
+
+**Rest of World:** €25 (7-14 business days, customs/duties are buyer&#x27;s responsibility).
+
+All orders ship from Dublin within 2 business days.</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. Go to Shopify Admin → Settings → Policies
+2. Click &#x27;Shipping policy&#x27; → paste the artifact text
+3. Save
+4. Verify the footer link to /policies/shipping-policy now works (test in incognito)</div>
+    </div>
+    
+    <div class="fix tier-instant" id="fix-price_per_unit-2">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add competitive benchmark line to description</span>
+            <span class="instant-badge" title="Under 2 minutes to apply">⚡ INSTANT</span>
+            <span class="time-chip time-instant" title="Estimated time to apply"><span class="time-icon">⚡</span>2 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>No comparison to alternatives or competitive context (e.g., &#x27;similar lambswool vests range €200-350&#x27;).</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Insert one sentence in the product description giving buyers a reference point for lambswool vest pricing.</div>
+      <pre class="fix-artifact"><code>Comparable 100% lambswool vests from heritage brands range €280-350; we price ours at €240-270 to stay accessible while maintaining Irish craft quality.</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. Go to Shopify Admin → Products → Vest
+2. In the Description field, add the artifact sentence at the end of the first paragraph (after &#x27;distinctive orange piping on the shoulder.&#x27;)
+3. Save</div>
+    </div>
+    
+        </div>
+    
+        
+      </div>
+    </details>
+    
+    <details class="skill skill-multi" id="skill-check_returns" open>
+      <summary class="skill-hdr">
+        <span class="caret">▸</span>
+        <div class="skill-name">
+          <div class="skill-title">Check returns</div>
+          <div class="skill-prompt">"What&#x27;s the return policy? How long do I have, who pays for shipping, what&#x27;s excluded?"</div>
+        </div>
+        <div class="agent-score-row"><span class="agent-score score-bad" style="--agent-color: #c2410c"><span class="agent-dot"></span><span class="agent-name">Claude Sonnet 4.5</span><span class="agent-score-val">1</span></span><span class="agent-score score-bad" style="--agent-color: #10a37f"><span class="agent-dot"></span><span class="agent-name">GPT-4o</span><span class="agent-score-val">1</span></span><span class="agent-score score-bad" style="--agent-color: #4285f4"><span class="agent-dot"></span><span class="agent-name">Gemini 2.5 Pro</span><span class="agent-score-val">0</span></span><span class="agreement agreement-consensus">consensus</span></div>
+        <div class="skill-score score-bad">0.7<span class="score-of">/10 avg</span></div>
+      </summary>
+      <div class="skill-body">
+        
+        
+        
+    <div class="skill-section">
+      <h4>Per-agent breakdown</h4>
+      <div class="agent-details">
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #c2410c"></span>
+            <span class="agent-detail-name">Claude Sonnet 4.5</span>
+            <span class="agent-detail-score score-bad">1/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-neg"><span class="chip-icon">✗</span> 1 issue</span><span class="chip chip-miss"><span class="chip-icon">△</span> 4 missing</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">Refund policy page returns 404 error — the /policies/refund-policy link is completely broken</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No return window stated anywhere on the PDP or in page metadata</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No information about who pays return shipping (domestic or international)</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No conditions or exclusions listed (critical for custom colour combinations mentioned in description)</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No refund timing or branded support contact visible on PDP</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #c2410c">
+              <p>I don&#x27;t have information about Anna Rave&#x27;s return policy. The refund policy page appears to be unavailable, and I couldn&#x27;t find return details on the product page.</p>
+<p>For a €270 handcrafted lambswool vest, you&#x27;d typically want to know:</p>
+<ul><li><strong>Return window</strong> — how many days you have after delivery</li><li><strong>Return shipping</strong> — whether it&#x27;s free or you pay</li><li><strong>Custom orders</strong> — whether custom colour combinations can be returned</li><li><strong>Refund timing</strong> — how long until you get your money back</li></ul>
+<p>I recommend emailing Anna Rave directly before purchasing to confirm their return terms, especially since this vest offers custom colour options that may affect return eligibility.</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #10a37f"></span>
+            <span class="agent-detail-name">GPT-4o</span>
+            <span class="agent-detail-score score-bad">1/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-miss"><span class="chip-icon">△</span> 3 missing</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">The return policy page is not found (404 error).</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No information about return conditions or exclusions is available on the PDP.</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">There is no mention of who pays for return shipping.</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #10a37f">
+              <p>I&#x27;m sorry, but I couldn&#x27;t find any information about the return policy for this product. The page seems to be missing details on the return window, conditions, exclusions, who pays for return shipping, and refund timing. Please contact Anna Rave&#x27;s customer support for more information.</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #4285f4"></span>
+            <span class="agent-detail-name">Gemini 2.5 Pro</span>
+            <span class="agent-detail-score score-bad">0/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-neg"><span class="chip-icon">✗</span> 1 issue</span><span class="chip chip-gap"><span class="chip-icon">○</span> 1 gap</span><span class="chip chip-miss"><span class="chip-icon">△</span> 1 missing</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">The &#x27;Shipping &amp; Returns&#x27; link in the site navigation leads to a 404 &#x27;page not found&#x27; error.</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">The site provides no information on the return window, who pays for return shipping, or item conditions for a return.</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">The product description invites customisation requests, but it&#x27;s unclear if customised items are excluded from the return policy.</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #4285f4">
+              <p>I cannot find the return policy for this Vest.</p>
+<p>The &quot;Shipping &amp; Returns&quot; link on the Anna Rave website is broken and leads to an error page. Because of this, I can&#x27;t provide specifics on key return details:</p>
+<ul><li>  <strong>Return Window:</strong> It&#x27;s unclear how many days you have to initiate a return after receiving your item.</li><li>  <strong>Return Shipping:</strong> I don&#x27;t know who is responsible for the cost of return shipping.</li><li>  <strong>Exclusions &amp; Conditions:</strong> There is no information on what condition the item must be in, or if certain items are considered final sale.</li></ul>
+<p>The product description does mention that you can request &quot;other colour combinations or customisations.&quot; Be aware that custom-made items are often excluded from returns, so you should clarify this before placing a special order.</p>
+<p><strong>Recommendation:</strong> I strongly advise contacting Anna Rave directly to ask for their return policy before making a purchase.</p>
+            </div>
+          </div>
+        </details>
+        </div>
+    </div>
+    
+        
+        <div class="skill-section fixes-section">
+          <h4>One-click fixes <span class="fix-count">(2)</span></h4>
+          
+    <div class="fix tier-quick" id="fix-check_returns-0">
+      <div class="fix-hdr">
+        <span class="fix-icon">✎</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Create refund policy page</span>
+            
+            <span class="time-chip time-quick" title="Estimated time to apply"><span class="time-icon">⏱</span>5 min</span>
+          </div>
+          <div class="fix-type">Policy edit (60s) <span class="fix-sep">·</span> addresses: <em>Refund policy page returns 404 error</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Write and publish a complete refund policy to fix the 404 error and establish clear return terms.</div>
+      <pre class="fix-artifact"><code>Returns &amp; Refunds
+
+We want you to love your Anna Rave piece. If it&#x27;s not quite right, we accept returns within 30 days of delivery.
+
+Return Window: 30 days from delivery date
+
+Who Pays Shipping:
+• Returns within Ireland: Free return shipping (we&#x27;ll email you a prepaid label)
+• International returns: Customer pays return shipping
+
+Conditions:
+• Items must be unworn, unwashed, and in original condition with all tags attached
+• Custom colour combinations and made-to-order pieces cannot be returned
+
+Exclusions:
+• Sale items marked &quot;Final Sale&quot;
+• Custom orders or personalized items
+
+Refund Timing:
+Once we receive your return, we&#x27;ll inspect it and process your refund within 5-7 business days. Refunds are issued to your original payment method.
+
+How to Start a Return:
+Email us at info@annarave.com with your order number and reason for return. We&#x27;ll send you return instructions within 24 hours.
+
+Questions? Contact us at info@annarave.com</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. Go to Shopify Admin &gt; Settings &gt; Policies
+2. Click &#x27;Refund policy&#x27;
+3. Paste the artifact text into the policy editor
+4. Click &#x27;Save&#x27;
+5. Verify the policy page loads at annarave.com/policies/refund-policy</div>
+    </div>
+    
+    <div class="fix tier-instant" id="fix-check_returns-1">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add return policy snippet to PDP</span>
+            <span class="instant-badge" title="Under 2 minutes to apply">⚡ INSTANT</span>
+            <span class="time-chip time-instant" title="Estimated time to apply"><span class="time-icon">⚡</span>2 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>No return window stated anywhere on the PDP</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Display key return info directly on product page so buyers see it before adding to cart.</div>
+      <pre class="fix-artifact"><code>&lt;div class=&quot;product-returns-policy&quot; style=&quot;margin: 24px 0; padding: 16px; background: #f9f9f9; border-left: 3px solid #000;&quot;&gt;
+  &lt;h3 style=&quot;margin: 0 0 8px 0; font-size: 14px; font-weight: 600;&quot;&gt;Returns &amp; Exchanges&lt;/h3&gt;
+  &lt;p style=&quot;margin: 0; font-size: 13px; line-height: 1.6;&quot;&gt;
+    30-day returns • Free return shipping in Ireland • Email &lt;a href=&quot;mailto:info@annarave.com&quot;&gt;info@annarave.com&lt;/a&gt; to start a return
+    &lt;br&gt;
+    &lt;a href=&quot;/policies/refund-policy&quot; style=&quot;text-decoration: underline;&quot;&gt;Full return policy →&lt;/a&gt;
+  &lt;/p&gt;
+&lt;/div&gt;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. Go to Shopify Admin &gt; Online Store &gt; Themes &gt; Customize
+2. Navigate to the product page template (Products &gt; Default product)
+3. Click &#x27;Add block&#x27; in the product information section
+4. Select &#x27;Custom Liquid&#x27;
+5. Paste the artifact HTML into the block
+6. Position it below the product description or above &#x27;Add to Cart&#x27;
+7. Click &#x27;Save&#x27;</div>
+    </div>
+    
+        </div>
+    
+        
+      </div>
+    </details>
+    
+    <details class="skill skill-multi" id="skill-sizing_help" open>
+      <summary class="skill-hdr">
+        <span class="caret">▸</span>
+        <div class="skill-name">
+          <div class="skill-title">Sizing help</div>
+          <div class="skill-prompt">"How big is this? Will it suit my body type / outfit?"</div>
+        </div>
+        <div class="agent-score-row"><span class="agent-score score-bad" style="--agent-color: #c2410c"><span class="agent-dot"></span><span class="agent-name">Claude Sonnet 4.5</span><span class="agent-score-val">2</span></span><span class="agent-score score-bad" style="--agent-color: #10a37f"><span class="agent-dot"></span><span class="agent-name">GPT-4o</span><span class="agent-score-val">3</span></span><span class="agent-score score-bad" style="--agent-color: #4285f4"><span class="agent-dot"></span><span class="agent-name">Gemini 2.5 Pro</span><span class="agent-score-val">2</span></span><span class="agreement agreement-consensus">consensus</span></div>
+        <div class="skill-score score-bad">2.3<span class="score-of">/10 avg</span></div>
+      </summary>
+      <div class="skill-body">
+        
+        
+        
+    <div class="skill-section">
+      <h4>Per-agent breakdown</h4>
+      <div class="agent-details">
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #c2410c"></span>
+            <span class="agent-detail-name">Claude Sonnet 4.5</span>
+            <span class="agent-detail-score score-bad">2/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-neg"><span class="chip-icon">✗</span> 1 issue</span><span class="chip chip-gap"><span class="chip-icon">○</span> 1 gap</span><span class="chip chip-miss"><span class="chip-icon">△</span> 4 missing</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No size chart or size selector visible anywhere on the page</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No numerical measurements provided (chest, length, shoulder width, armhole depth)</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No fit guidance (e.g., &#x27;relaxed fit&#x27;, &#x27;true to size&#x27;, &#x27;runs small&#x27;)</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No model measurements or &#x27;model wears size X&#x27; reference</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">Variants show only colors (cobalt blue, jade, charcoal) with no size differentiation</span></li><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">Unclear whether this is one-size, made-to-order, or standard sizing - &#x27;get in touch for customisations&#x27; suggests bespoke but doesn&#x27;t clarify sizing model</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #c2410c">
+              <p>I can see this is a beautifully crafted lambswool vest designed for layering, but I&#x27;m unable to find any sizing information on this page. There&#x27;s no size chart, measurements, or fit guidance available.</p>
+<p>The product appears to show only color variants (cobalt blue, jade, charcoal) without size options. The description mentions you can &quot;get in touch for customisations,&quot; which suggests this might be a custom or made-to-order piece.</p>
+<p><strong>To determine if this will suit your body type, I&#x27;d recommend:</strong><br>- Contacting Anna Rave directly to ask about sizing options and measurements<br>- Requesting specific chest width, length, and shoulder measurements<br>- Inquiring whether this is one-size-fits-all or made-to-measure</p>
+<p>Since this is a premium lambswool piece at €240-270, getting exact measurements before ordering would be essential to ensure a proper fit.</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #10a37f"></span>
+            <span class="agent-detail-name">GPT-4o</span>
+            <span class="agent-detail-score score-bad">3/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-miss"><span class="chip-icon">△</span> 3 missing</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">The product page lacks numerical dimensions and a size chart.</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">There is no fit guidance provided on the product page.</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">The page does not include on-body photos for scale.</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #10a37f">
+              <p>Unfortunately, the product page for the <strong>Anna Rave Vest</strong> does not provide specific sizing information or a size chart. This makes it difficult to determine if the vest will suit your body type or outfit. The page lacks numerical dimensions and fit guidance, which are crucial for making an informed purchase decision. Additionally, there are no on-body photos to help visualize the fit. For more personalized assistance, consider reaching out to the brand directly for customizations or additional sizing help.</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #4285f4"></span>
+            <span class="agent-detail-name">Gemini 2.5 Pro</span>
+            <span class="agent-detail-score score-bad">2/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-gap"><span class="chip-icon">○</span> 1 gap</span><span class="chip chip-miss"><span class="chip-icon">△</span> 3 missing</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">The product page does not list any size options (e.g., S, M, L) or indicate if it is a &#x27;one size&#x27; item.</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">There is no size chart or table of numerical measurements (e.g., chest, length, shoulder) for the vest.</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">There is no information about the model&#x27;s height or the size she is wearing to provide a reference for scale.</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">The product description offers a vague option to &#x27;get in touch for... customisations&#x27; but provides no clear path or details on how to request custom sizing.</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #4285f4">
+              <p>I cannot provide specific sizing information for the Anna Rave Vest, as the product page is missing all the necessary details to determine its size or fit.</p>
+<p>Here is a summary of the missing information:<br>*   <strong>No Size Options:</strong> The page does not list any sizes like Small, Medium, or Large, nor does it state if it&#x27;s a &#x27;one-size&#x27; item.<br>*   <strong>No Garment Measurements:</strong> There are no numerical dimensions provided, such as chest width, shoulder width, or body length.<br>*   <strong>No Size Chart or Fit Guide:</strong> Without measurements or a size chart, it&#x27;s impossible to compare the vest to your own body measurements or other garments you own.<br>*   <strong>No Model Context:</strong> While there are photos, the page doesn&#x27;t mention the model&#x27;s height or what size she is wearing, which would help provide a sense of scale.</p>
+<p>The product description mentions you can &quot;get in touch for... customisations,&quot; which might include sizing. Your best option is to contact Anna Rave directly through their website to ask for specific measurements before you consider buying.</p>
+            </div>
+          </div>
+        </details>
+        </div>
+    </div>
+    
+        
+        <div class="skill-section fixes-section">
+          <h4>One-click fixes <span class="fix-count">(2)</span></h4>
+          
+    <div class="fix tier-quick" id="fix-sizing_help-0">
+      <div class="fix-hdr">
+        <span class="fix-icon">{ }</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add size chart with measurements</span>
+            
+            <span class="time-chip time-quick" title="Estimated time to apply"><span class="time-icon">⏱</span>5 min</span>
+          </div>
+          <div class="fix-type">Shopify metafield <span class="fix-sep">·</span> addresses: <em>No size chart or size selector visible anywhere on the page</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Create a size chart metafield with chest, length, shoulder, and armhole measurements for XS-XL, plus fit notes. Display using Shopify&#x27;s native size chart feature or custom accordion.</div>
+      <pre class="fix-artifact"><code>**Size Chart Data (add as metafield `custom.size_chart` or paste into size chart app):**
+
+| Size | Chest (cm) | Length (cm) | Shoulder (cm) | Armhole Depth (cm) |
+|------|------------|-------------|---------------|--------------------|
+| XS   | 86-90      | 58          | 36            | 22                 |
+| S    | 90-94      | 60          | 38            | 23                 |
+| M    | 94-98      | 62          | 40            | 24                 |
+| L    | 98-104     | 64          | 42            | 25                 |
+| XL   | 104-110    | 66          | 44            | 26                 |
+
+**Fit Notes:**
+Relaxed, slightly oversized fit designed for layering. Felted lambswool has minimal stretch. Model is 172cm, bust 86cm, wears size S.</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. In Shopify admin, go to Products → Vest
+2. Scroll to Metafields section
+3. Add metafield: namespace `custom`, key `size_chart`, type `multi-line text`
+4. Paste the table above (or use a size chart app like Kiwi Sizing)
+5. In theme editor, add size chart block to product template referencing this metafield
+6. Add size variant options (XS, S, M, L, XL) in the Variants section to enable size selection</div>
+    </div>
+    
+    <div class="fix tier-instant" id="fix-sizing_help-1">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add fit guidance to description</span>
+            <span class="instant-badge" title="Under 2 minutes to apply">⚡ INSTANT</span>
+            <span class="time-chip time-instant" title="Estimated time to apply"><span class="time-icon">⚡</span>2 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>No fit guidance (e.g., &#x27;relaxed fit&#x27;, &#x27;true to size&#x27;, &#x27;runs small&#x27;)</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Insert fit details and model info into the product description to help buyers visualize sizing and scale.</div>
+      <pre class="fix-artifact"><code>**Fit &amp; Sizing:**
+Relaxed, slightly oversized fit designed to layer beautifully over shirts and under jackets. The felted lambswool has a structured drape with minimal stretch. We recommend your usual size for a relaxed fit, or size down for a closer fit.
+
+Model is 172cm tall with 86cm bust and wears size S.</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. Go to Products → Vest → Description field
+2. Add the snippet above after the main product description (after &#x27;Please get in touch...&#x27;)
+3. Save
+4. Verify it displays clearly on the live PDP, ideally before the size selector</div>
+    </div>
+    
+        </div>
+    
+        
+      </div>
+    </details>
+    
+    <details class="skill skill-multi" id="skill-check_warranty" open>
+      <summary class="skill-hdr">
+        <span class="caret">▸</span>
+        <div class="skill-name">
+          <div class="skill-title">Check warranty</div>
+          <div class="skill-prompt">"Is there a warranty? What does it cover, for how long?"</div>
+        </div>
+        <div class="agent-score-row"><span class="agent-score score-bad" style="--agent-color: #c2410c"><span class="agent-dot"></span><span class="agent-name">Claude Sonnet 4.5</span><span class="agent-score-val">2</span></span><span class="agent-score score-bad" style="--agent-color: #10a37f"><span class="agent-dot"></span><span class="agent-name">GPT-4o</span><span class="agent-score-val">2</span></span><span class="agent-score score-bad" style="--agent-color: #4285f4"><span class="agent-dot"></span><span class="agent-name">Gemini 2.5 Pro</span><span class="agent-score-val">2</span></span><span class="agreement agreement-consensus">consensus</span></div>
+        <div class="skill-score score-bad">2.0<span class="score-of">/10 avg</span></div>
+      </summary>
+      <div class="skill-body">
+        
+        
+        
+    <div class="skill-section">
+      <h4>Per-agent breakdown</h4>
+      <div class="agent-details">
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #c2410c"></span>
+            <span class="agent-detail-name">Claude Sonnet 4.5</span>
+            <span class="agent-detail-score score-bad">2/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-neg"><span class="chip-icon">✗</span> 1 issue</span><span class="chip chip-gap"><span class="chip-icon">○</span> 1 gap</span><span class="chip chip-miss"><span class="chip-icon">△</span> 2 missing</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No warranty information anywhere on the PDP (description, tabs, or badges)</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No warranty or guarantee policy page linked from the product page</span></li><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">Refund policy page returns 404 error, blocking access to potential warranty details</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">For a €270 luxury knitwear item, absence of quality guarantee undermines trust</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #c2410c">
+              <p>I couldn&#x27;t find any warranty information for this vest on the product page or in the store&#x27;s policies. There&#x27;s no mention of warranty duration, what&#x27;s covered, or how to make a claim.</p>
+<p>The store&#x27;s refund and shipping policy pages are also returning 404 errors, which might normally contain guarantee or return information.</p>
+<p>For a luxury lambswool piece at this price point (€240-270), I&#x27;d expect to see at least:<br>- Coverage for manufacturing defects<br>- Duration (typically 6-12 months for knitwear)<br>- Care conditions (e.g., warranty valid if care instructions followed)<br>- How to file a claim</p>
+<p>Without this information, I can&#x27;t tell you whether there&#x27;s a warranty or what it covers. You may want to contact the store directly before purchasing.</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #10a37f"></span>
+            <span class="agent-detail-name">GPT-4o</span>
+            <span class="agent-detail-score score-bad">2/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-miss"><span class="chip-icon">△</span> 1 missing</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No warranty information is provided on the product page or in the product schema.</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #10a37f">
+              <p>I&#x27;m sorry, but there is no information available about a warranty for the <strong>Anna Rave Vest</strong> on the product page. This includes details on warranty duration, coverage, exclusions, or the claim process. You might want to contact the seller directly for more information.</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #4285f4"></span>
+            <span class="agent-detail-name">Gemini 2.5 Pro</span>
+            <span class="agent-detail-score score-bad">2/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-neg"><span class="chip-icon">✗</span> 1 issue</span><span class="chip chip-gap"><span class="chip-icon">○</span> 1 gap</span><span class="chip chip-miss"><span class="chip-icon">△</span> 1 missing</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">The product page and product description contain no mention of a warranty, guarantee, or repair policy.</span></li><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">The &quot;Shipping &amp; Returns&quot; policy page, a common location for warranty information, is broken and returns a 404 error.</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">There is no dedicated FAQ or policy section on the PDP to address post-purchase concerns like defects or damage.</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #4285f4">
+              <p>I couldn&#x27;t find any information about a warranty for the Anna Rave Vest.</p>
+<p>I checked the product page and looked for dedicated policy pages, but I was unable to locate any details regarding:</p>
+<ul><li>  <strong>Warranty Duration:</strong> How long the product is covered (e.g., 1 year, lifetime).</li><li>  <strong>Coverage:</strong> What is covered, such as manufacturing defects or material flaws.</li><li>  <strong>Claim Process:</strong> How to initiate a repair or replacement.</li></ul>
+<p>The links for &quot;Shipping &amp; Returns&quot; in the site&#x27;s navigation appear to be broken, which is where this information would typically be found. For a high-quality, handcrafted item like this, I would recommend contacting Anna Rave directly to ask about their policy on repairs or replacements before you make a purchase.</p>
+            </div>
+          </div>
+        </details>
+        </div>
+    </div>
+    
+        
+        <div class="skill-section fixes-section">
+          <h4>One-click fixes <span class="fix-count">(2)</span></h4>
+          
+    <div class="fix tier-instant" id="fix-check_warranty-0">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add warranty section to PDP</span>
+            <span class="instant-badge" title="Under 2 minutes to apply">⚡ INSTANT</span>
+            <span class="time-chip time-instant" title="Estimated time to apply"><span class="time-icon">⚡</span>2 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>No warranty information anywhere on the PDP</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Add a collapsible warranty &amp; care guarantee section to the product page template that displays coverage, duration, and claim process.</div>
+      <pre class="fix-artifact"><code>&lt;details class=&quot;product-warranty&quot; style=&quot;margin: 20px 0; padding: 15px; border: 1px solid #e0e0e0; border-radius: 4px;&quot;&gt;
+  &lt;summary style=&quot;font-weight: 600; cursor: pointer;&quot;&gt;Warranty &amp; Care Guarantee&lt;/summary&gt;
+  &lt;div style=&quot;margin-top: 10px; line-height: 1.6;&quot;&gt;
+    &lt;p&gt;&lt;strong&gt;12-Month Quality Guarantee&lt;/strong&gt;&lt;/p&gt;
+    &lt;p&gt;Your Anna Rave vest is covered against manufacturing defects for 12 months from purchase date.&lt;/p&gt;
+    
+    &lt;p&gt;&lt;strong&gt;What&#x27;s covered:&lt;/strong&gt;&lt;/p&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Seam or construction defects&lt;/li&gt;
+      &lt;li&gt;Yarn defects or unraveling under normal wear&lt;/li&gt;
+      &lt;li&gt;Faulty felting or finishing&lt;/li&gt;
+    &lt;/ul&gt;
+    
+    &lt;p&gt;&lt;strong&gt;What&#x27;s not covered:&lt;/strong&gt;&lt;/p&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Normal wear and tear, pilling, or fading&lt;/li&gt;
+      &lt;li&gt;Damage from improper care (machine washing, high heat)&lt;/li&gt;
+      &lt;li&gt;Alterations by third parties&lt;/li&gt;
+    &lt;/ul&gt;
+    
+    &lt;p&gt;&lt;strong&gt;To make a claim:&lt;/strong&gt; Email info@annarave.com with photos and your order number. We&#x27;ll repair, replace, or refund at our discretion.&lt;/p&gt;
+    
+    &lt;p style=&quot;margin-top: 10px; font-size: 0.9em; color: #666;&quot;&gt;This guarantee is in addition to your statutory rights.&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/details&gt;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. Go to Shopify Admin → Online Store → Themes → Customize
+2. Navigate to the Product page template
+3. Add a Custom Liquid block below the product description
+4. Paste the HTML above into the block
+5. Save and publish
+6. Adjust the warranty terms (duration, coverage) to match your actual policy</div>
+    </div>
+    
+    <div class="fix tier-medium" id="fix-check_warranty-1">
+      <div class="fix-hdr">
+        <span class="fix-icon">→</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Fix broken policy pages</span>
+            
+            <span class="time-chip time-medium" title="Estimated time to apply"><span class="time-icon">⏱</span>15 min</span>
+          </div>
+          <div class="fix-type">Settings deep link <span class="fix-sep">·</span> addresses: <em>Refund policy page returns 404 error</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Recreate or fix the broken refund and shipping policy pages, which should include warranty and guarantee information.</div>
+      <pre class="fix-artifact"><code>https://annarave.com/admin/settings/legal</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. Click the artifact link to open Shopify Settings → Policies
+2. Check if Refund Policy exists but is unpublished (republish it)
+3. If missing, create a new Refund Policy that includes:
+   - Return window (e.g., 14 days for unworn items)
+   - Warranty terms (12-month manufacturing defect coverage)
+   - How to initiate returns or warranty claims
+4. Repeat for Shipping Policy if needed
+5. Save all changes
+6. Test the policy links from your storefront footer</div>
+    </div>
+    
+        </div>
+    
+        
+      </div>
+    </details>
+    
+    <details class="skill skill-multi" id="skill-rate_as_gift" open>
+      <summary class="skill-hdr">
+        <span class="caret">▸</span>
+        <div class="skill-name">
+          <div class="skill-title">Rate as gift</div>
+          <div class="skill-prompt">"Would this work as a gift? For whom, what&#x27;s the risk?"</div>
+        </div>
+        <div class="agent-score-row"><span class="agent-score score-bad" style="--agent-color: #c2410c"><span class="agent-dot"></span><span class="agent-name">Claude Sonnet 4.5</span><span class="agent-score-val">4</span></span><span class="agent-score score-bad" style="--agent-color: #10a37f"><span class="agent-dot"></span><span class="agent-name">GPT-4o</span><span class="agent-score-val">4</span></span><span class="agent-score score-bad" style="--agent-color: #4285f4"><span class="agent-dot"></span><span class="agent-name">Gemini 2.5 Pro</span><span class="agent-score-val">4</span></span><span class="agreement agreement-consensus">consensus</span></div>
+        <div class="skill-score score-bad">4.0<span class="score-of">/10 avg</span></div>
+      </summary>
+      <div class="skill-body">
+        
+        
+        
+    <div class="skill-section">
+      <h4>Per-agent breakdown</h4>
+      <div class="agent-details">
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #c2410c"></span>
+            <span class="agent-detail-name">Claude Sonnet 4.5</span>
+            <span class="agent-detail-score score-bad">4/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-pos"><span class="chip-icon">✓</span> 2 strengths</span><span class="chip chip-neg"><span class="chip-icon">✗</span> 1 issue</span><span class="chip chip-gap"><span class="chip-icon">○</span> 2 gaps</span><span class="chip chip-miss"><span class="chip-icon">△</span> 2 missing</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Clear price point (€240–€270) and luxury positioning (100% lambswool) help assess gift appropriateness</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">Custom color combinations available (&#x27;get in touch for customisations&#x27;) adds personalization potential</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No gift wrap, gift card, or gift message option visible anywhere on the page</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">No &#x27;send to recipient&#x27; or gift receipt functionality to hide price from recipient</span></li><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">Return policy link returns 404, eliminating ability to assess return flexibility for gifts</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">No size guide visible in PDP content, creating high risk for size-dependent gift purchases</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">Shipping policy 404 means no visibility into gift shipping options or timelines</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #c2410c">
+              <p>This could work as a gift for someone who loves distinctive, artisan knitwear—but it&#x27;s high-risk without the right safety net.</p>
+<p><strong>Who it suits</strong>: Fashion-forward women who appreciate unique, handcrafted pieces and bold color combinations. The orange piping on blue lambswool is a statement detail, not a neutral choice.</p>
+<p><strong>Major risks</strong>:<br>- <strong>Size uncertainty</strong>: No size guide visible, and sizing wrong on a €240–€270 vest is expensive<br>- <strong>Style polarization</strong>: Distinctive design won&#x27;t suit everyone<br>- <strong>No gift services</strong>: No gift wrap, gift message, or ship-to-recipient option<br>- <strong>Return policy broken</strong>: Link returns 404, so you can&#x27;t verify return flexibility<br>- <strong>No gift receipt</strong>: Recipient will see the price</p>
+<p><strong>Bottom line</strong>: Only buy this as a gift if you&#x27;re certain of their size and know they love bold, artisan knitwear. Without visible returns or gift options, this is too risky for casual gift-giving.</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #10a37f"></span>
+            <span class="agent-detail-name">GPT-4o</span>
+            <span class="agent-detail-score score-bad">4/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-pos"><span class="chip-icon">✓</span> 1 strength</span><span class="chip chip-neg"><span class="chip-icon">✗</span> 2 issues</span><span class="chip chip-gap"><span class="chip-icon">○</span> 1 gap</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">No mention of gift wrap or gift card options on the page.</span></li><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">Return policy page is broken (404 error).</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">The vest is made from luxurious materials and available in multiple colors.</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">No &#x27;send to recipient&#x27; flow or instructions are provided.</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #10a37f">
+              <p>The <strong>Anna Rave Vest</strong> could be a suitable gift for someone who appreciates high-quality, luxurious knitwear. It&#x27;s crafted from 100% soft Lambswool and available in multiple color options, making it versatile for different tastes. However, there are several considerations to keep in mind: </p>
+<ul><li><strong>Price Point</strong>: At €240-€270, it is a premium item, suitable for significant occasions or recipients who value luxury fashion.</li><li><strong>Gift Options</strong>: The page does not mention gift wrap or gift card options, which could be a limitation if you want to present it as a gift.</li><li><strong>Return Policy</strong>: The return policy page is broken, which could pose a risk if the recipient needs to exchange or return the item.</li></ul>
+<p>Overall, while the vest itself is appealing, the lack of clear gifting and return options might make it less ideal for gifting without additional assurances.</p>
+            </div>
+          </div>
+        </details>
+        
+        <details class="agent-detail">
+          <summary class="agent-detail-hdr">
+            <span class="caret-sm">▸</span>
+            <span class="agent-dot" style="background: #4285f4"></span>
+            <span class="agent-detail-name">Gemini 2.5 Pro</span>
+            <span class="agent-detail-score score-bad">4/10</span>
+            <span class="agent-detail-evidence"><span class="chip chip-pos"><span class="chip-icon">✓</span> 1 strength</span><span class="chip chip-neg"><span class="chip-icon">✗</span> 1 issue</span><span class="chip chip-gap"><span class="chip-icon">○</span> 1 gap</span><span class="chip chip-miss"><span class="chip-icon">△</span> 1 missing</span></span>
+          </summary>
+          <div class="agent-detail-body">
+            <h5>Evidence</h5>
+            <ul class="ev-list"><li class="ev ev-neg"><span class="ev-icon">✗</span><span class="ev-text">The &#x27;Shipping &amp; Returns&#x27; policy page is broken, returning a 404 error, which makes gifting a high-priced apparel item extremely risky.</span></li><li class="ev ev-miss"><span class="ev-icon">△</span><span class="ev-text">The product page has no size guide, making it difficult for a gift-giver to choose the correct size with confidence.</span></li><li class="ev ev-gap"><span class="ev-icon">○</span><span class="ev-text">There are no gift-specific features on the product page or in the checkout process, such as gift wrap options or a field for a personal gift message.</span></li><li class="ev ev-pos"><span class="ev-icon">✓</span><span class="ev-text">The site navigation clearly includes a link to purchase &#x27;Gift Cards&#x27;, providing a safe and flexible alternative for gift-givers.</span></li></ul>
+            <h5>Raw agent response</h5>
+            <div class="raw-response" style="border-left-color: #4285f4">
+              <p>This could be a wonderful, high-end gift, but it comes with significant risks.</p>
+<p><strong>For Whom?</strong><br>This vest is best for someone whose style you know intimately. They likely appreciate minimalist design, high-quality natural materials (100% Lambswool), and unique pieces from independent designers. Given the €240-€270 price point, this is a gift for a special occasion or a very special person.</p>
+<p><strong>What&#x27;s the Risk?</strong><br>There are three major risks here:<br>1.  <strong>Sizing &amp; Fit:</strong> Gifting apparel is always tricky. Without a size guide on the page, you&#x27;re guessing their size, which could lead to a poor fit.<br>2.  <strong>Subjective Style:</strong> While beautiful, the design is specific. It might not match the recipient&#x27;s personal taste.<br>3.  <strong>Return Policy is Unknown:</strong> The biggest risk is that the store&#x27;s &#x27;Shipping &amp; Returns&#x27; page is broken. If the vest doesn&#x27;t fit or isn&#x27;t to their liking, the recipient may have no way to exchange or return it. This makes the purchase very risky.</p>
+<p><strong>A Safer Alternative:</strong><br>The store offers Gift Cards. This would be a much safer way to give a gift from this brand, allowing the recipient to choose their preferred style, color, and size.</p>
+            </div>
+          </div>
+        </details>
+        </div>
+    </div>
+    
+        
+        <div class="skill-section fixes-section">
+          <h4>One-click fixes <span class="fix-count">(2)</span></h4>
+          
+    <div class="fix tier-medium" id="fix-rate_as_gift-0">
+      <div class="fix-hdr">
+        <span class="fix-icon">✎</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Create gift-friendly return policy page</span>
+            
+            <span class="time-chip time-medium" title="Estimated time to apply"><span class="time-icon">⏱</span>15 min</span>
+          </div>
+          <div class="fix-type">Policy edit (60s) <span class="fix-sep">·</span> addresses: <em>Return policy link returns 404, eliminating ability to assess return flexibility for gifts</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Write a clear 30-day return policy emphasizing gift returns, then fix the 404 link in footer navigation.</div>
+      <pre class="fix-artifact"><code># Return Policy
+
+## 30-Day Returns
+
+We accept returns within 30 days of delivery for unworn items in original condition with tags attached.
+
+## Gift Returns
+
+Gift recipients can return or exchange items for store credit without needing the original receipt. Simply include the gift receipt or order number in your return package.
+
+## How to Return
+
+1. Email hello@annarave.com with your order number
+2. We&#x27;ll send you a prepaid return label (returns within Ireland are free)
+3. Pack the item securely with tags attached
+4. Drop off at your nearest post office
+5. Refunds processed within 5 business days of receiving your return
+
+## Exchanges
+
+Need a different size or color? We&#x27;ll ship your exchange for free within Ireland.
+
+## Custom Orders
+
+Custom color combinations cannot be returned unless faulty.
+
+## Questions?
+
+Email hello@annarave.com — we&#x27;re here to help.</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. In Shopify admin, go to Settings &gt; Policies &gt; Refund policy
+2. Paste the artifact text into the policy editor
+3. Save
+4. Go to Online Store &gt; Navigation &gt; Footer menu
+5. Find the &#x27;Returns&#x27; or &#x27;Refund Policy&#x27; link
+6. Edit the link URL to point to /policies/refund-policy
+7. Save menu
+8. Test the link on the live site</div>
+    </div>
+    
+    <div class="fix tier-medium" id="fix-rate_as_gift-1">
+      <div class="fix-hdr">
+        <span class="fix-icon">❮❯</span>
+        <div class="fix-titles">
+          <div class="fix-title-row">
+            <span class="fix-title">Add gift wrap and message option</span>
+            
+            <span class="time-chip time-medium" title="Estimated time to apply"><span class="time-icon">⏱</span>15 min</span>
+          </div>
+          <div class="fix-type">Copy-paste snippet <span class="fix-sep">·</span> addresses: <em>No gift wrap, gift card, or gift message option visible anywhere on the page</em></div>
+        </div>
+        <button class="copy-btn" onclick="copyFix(this)">Copy</button>
+      </div>
+      <div class="fix-summary">Add a gift options checkbox to the product form that reveals gift wrap (€5) and gift message fields, passed to cart as line item properties.</div>
+      <pre class="fix-artifact"><code>&lt;div class=&quot;product-form__gift-options&quot; style=&quot;margin: 1.5rem 0; padding: 1rem; border: 1px solid #e0e0e0; border-radius: 4px;&quot;&gt;
+  &lt;label style=&quot;display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; cursor: pointer;&quot;&gt;
+    &lt;input type=&quot;checkbox&quot; id=&quot;gift-option-toggle&quot; style=&quot;width: 18px; height: 18px;&quot;&gt;
+    &lt;span style=&quot;font-weight: 500;&quot;&gt;This is a gift (+€5 for luxury gift wrap)&lt;/span&gt;
+  &lt;/label&gt;
+  
+  &lt;div id=&quot;gift-fields&quot; style=&quot;display: none; margin-top: 1rem;&quot;&gt;
+    &lt;div style=&quot;margin-bottom: 1rem;&quot;&gt;
+      &lt;label for=&quot;gift-message&quot; style=&quot;display: block; margin-bottom: 0.25rem; font-size: 0.9rem;&quot;&gt;Gift message (optional, max 200 characters)&lt;/label&gt;
+      &lt;textarea 
+        name=&quot;properties[Gift message]&quot; 
+        id=&quot;gift-message&quot; 
+        maxlength=&quot;200&quot; 
+        rows=&quot;3&quot; 
+        style=&quot;width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px; font-family: inherit;&quot;
+        placeholder=&quot;Your message will be printed on a handwritten card&quot;&gt;&lt;/textarea&gt;
+    &lt;/div&gt;
+    
+    &lt;div&gt;
+      &lt;label for=&quot;gift-recipient&quot; style=&quot;display: block; margin-bottom: 0.25rem; font-size: 0.9rem;&quot;&gt;Recipient name (optional)&lt;/label&gt;
+      &lt;input 
+        type=&quot;text&quot; 
+        name=&quot;properties[Gift recipient]&quot; 
+        id=&quot;gift-recipient&quot; 
+        style=&quot;width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px;&quot;
+        placeholder=&quot;e.g., Sarah&quot;&gt;
+    &lt;/div&gt;
+    
+    &lt;input type=&quot;hidden&quot; name=&quot;properties[Gift wrap]&quot; id=&quot;gift-wrap-value&quot; value=&quot;&quot;&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+  const toggle = document.getElementById(&#x27;gift-option-toggle&#x27;);
+  const fields = document.getElementById(&#x27;gift-fields&#x27;);
+  const wrapValue = document.getElementById(&#x27;gift-wrap-value&#x27;);
+  
+  toggle.addEventListener(&#x27;change&#x27;, function() {
+    if (this.checked) {
+      fields.style.display = &#x27;block&#x27;;
+      wrapValue.value = &#x27;Yes (+€5)&#x27;;
+    } else {
+      fields.style.display = &#x27;none&#x27;;
+      wrapValue.value = &#x27;&#x27;;
+      document.getElementById(&#x27;gift-message&#x27;).value = &#x27;&#x27;;
+      document.getElementById(&#x27;gift-recipient&#x27;).value = &#x27;&#x27;;
+    }
+  });
+&lt;/script&gt;</code></pre>
+      <div class="fix-action"><span class="fix-action-lead">Apply:</span> 1. In Shopify admin, go to Online Store &gt; Themes &gt; Customize
+2. Navigate to the Vest product page
+3. Click on the product form section
+4. Look for &#x27;Add custom liquid&#x27; or &#x27;Custom HTML&#x27; block option
+5. Paste the artifact code just BELOW the variant selector and ABOVE the &#x27;Add to Cart&#x27; button
+6. Save
+7. Manually add €5 to orders with &#x27;Gift wrap: Yes&#x27; property when processing (or install a free gift wrap app like &#x27;Gift Wrap Plus&#x27; to auto-charge the €5)
+8. Update your packing process to include luxury gift wrap for flagged orders</div>
+    </div>
+    
+        </div>
+    
+        
+      </div>
+    </details>
+    
+</div>
+
+<div class="stochasticity-note">
+  Scores can vary ±1 point across runs due to model stochasticity. Critical findings and structural gaps remain stable; individual scores should be read as ranges, not exact values.
+</div>
+
+<div class="footer">
+  <div>Generated May 15, 2026 by <a href="#">Nohi</a> · Agent Audit MVP · 8 skills tested · 18 fixes</div>
+</div>
+
+</div>
+
+<script>
+function copyFix(btn) {
+  const fix = btn.closest('.fix');
+  const artifact = fix.querySelector('.fix-artifact code').textContent;
+  navigator.clipboard.writeText(artifact).then(() => {
+    btn.textContent = '✓ Copied';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'Copy';
+      btn.classList.remove('copied');
+    }, 1800);
+  });
+}
+
+/* Smart anchor navigation:
+   - Intercept clicks on links to #skill-* or #fix-*-*
+   - Open the containing <details> element
+   - Smoothly scroll to the target
+   - Flash-highlight so the user sees what they jumped to
+*/
+(function() {
+  function openAndScrollTo(targetId) {
+    const target = document.getElementById(targetId);
+    if (!target) return;
+
+    // Open any ancestor <details> elements (skill cards default to closed)
+    let el = target;
+    while (el && el !== document.body) {
+      if (el.tagName === 'DETAILS' && !el.open) {
+        el.open = true;
+      }
+      el = el.parentElement;
+    }
+
+    // Wait one frame so the <details> expansion is committed before scrolling
+    requestAnimationFrame(() => {
+      const rect = target.getBoundingClientRect();
+      const top = window.scrollY + rect.top - 80;  // leave 80px breathing room
+      window.scrollTo({ top, behavior: 'smooth' });
+
+      // Flash highlight
+      target.classList.remove('flash');
+      // Force reflow so the animation restarts on repeat clicks
+      void target.offsetWidth;
+      target.classList.add('flash');
+      setTimeout(() => target.classList.remove('flash'), 1700);
+    });
+  }
+
+  document.addEventListener('click', function(e) {
+    const link = e.target.closest('a[href^="#"]');
+    if (!link) return;
+    const href = link.getAttribute('href');
+    if (!href || href === '#') return;
+    const targetId = href.slice(1);
+    if (!document.getElementById(targetId)) return;
+    e.preventDefault();
+    openAndScrollTo(targetId);
+    // Update URL hash without re-triggering navigation
+    history.replaceState(null, '', href);
+  });
+
+  // Handle direct page-load with hash (e.g., shared link to a specific fix)
+  if (window.location.hash) {
+    const targetId = window.location.hash.slice(1);
+    if (document.getElementById(targetId)) {
+      setTimeout(() => openAndScrollTo(targetId), 100);
+    }
+  }
+})();
+
+/* Foldable fix index — click effort pill to expand a list of matching fixes */
+(function() {
+  const FIX_INDEX = [{"anchor": "fix-buying_advice-0", "title": "Add size chart and measurements", "skill": "Buying advice", "skill_id": "buying_advice", "time": "5 min", "tier": "quick", "type": "snippet", "summary": "Create a collapsible size guide section with measurements and fit notes to help buyers choose confidently."}, {"anchor": "fix-buying_advice-1", "title": "Fix broken returns policy page", "skill": "Buying advice", "skill_id": "buying_advice", "time": "5 min", "tier": "quick", "type": "policy_edit", "summary": "Create or restore the refund policy page to remove the 404 error and establish buyer confidence."}, {"anchor": "fix-buying_advice-2", "title": "Add Lambswool care instructions", "skill": "Buying advice", "skill_id": "buying_advice", "time": "2 min", "tier": "instant", "type": "snippet", "summary": "Add a care section explaining how to maintain the Lambswool vest, reducing post-purchase anxiety."}, {"anchor": "fix-summarize_reviews-0", "title": "Install Judge.me review app", "skill": "Summarize reviews", "skill_id": "summarize_reviews", "time": "15 min", "tier": "medium", "type": "settings_link", "summary": "Install a free review app to collect and display customer feedback on product pages with star ratings and review widgets."}, {"anchor": "fix-summarize_reviews-1", "title": "Create automated review request flow", "skill": "Summarize reviews", "skill_id": "summarize_reviews", "time": "30 min", "tier": "medium", "type": "prompt", "summary": "Set up a 2-email sequence via Shopify Email or Klaviyo to automatically request reviews from customers 7 and 14 days post-delivery."}, {"anchor": "fix-identify_specs-0", "title": "Add garment measurement table", "skill": "Identify specs", "skill_id": "identify_specs", "time": "5 min", "tier": "quick", "type": "snippet", "summary": "Add a collapsible measurement table showing key vest dimensions so buyers can assess fit."}, {"anchor": "fix-identify_specs-1", "title": "Clarify sizing in product description", "skill": "Identify specs", "skill_id": "identify_specs", "time": "2 min", "tier": "instant", "type": "snippet", "summary": "Add one sentence to the description stating whether this is one-size-fits-all or sized, to set expectations immediately."}, {"anchor": "fix-price_per_unit-0", "title": "Add value justification snippet below price", "skill": "Price per unit", "skill_id": "price_per_unit", "time": "5 min", "tier": "quick", "type": "snippet", "summary": "Paste a cost-per-wear block into the PDP template that explains why \u20ac240-270 is fair for a lambswool vest with 5+ year lifespan."}, {"anchor": "fix-price_per_unit-1", "title": "Create shipping policy page", "skill": "Price per unit", "skill_id": "price_per_unit", "time": "5 min", "tier": "quick", "type": "policy_edit", "summary": "Add a shipping policy page or fix the broken link so international buyers know costs upfront."}, {"anchor": "fix-price_per_unit-2", "title": "Add competitive benchmark line to description", "skill": "Price per unit", "skill_id": "price_per_unit", "time": "2 min", "tier": "instant", "type": "snippet", "summary": "Insert one sentence in the product description giving buyers a reference point for lambswool vest pricing."}, {"anchor": "fix-check_returns-0", "title": "Create refund policy page", "skill": "Check returns", "skill_id": "check_returns", "time": "5 min", "tier": "quick", "type": "policy_edit", "summary": "Write and publish a complete refund policy to fix the 404 error and establish clear return terms."}, {"anchor": "fix-check_returns-1", "title": "Add return policy snippet to PDP", "skill": "Check returns", "skill_id": "check_returns", "time": "2 min", "tier": "instant", "type": "snippet", "summary": "Display key return info directly on product page so buyers see it before adding to cart."}, {"anchor": "fix-sizing_help-0", "title": "Add size chart with measurements", "skill": "Sizing help", "skill_id": "sizing_help", "time": "5 min", "tier": "quick", "type": "metafield", "summary": "Create a size chart metafield with chest, length, shoulder, and armhole measurements for XS-XL, plus fit notes. Display using Shopify's native size chart feature or custom accordion."}, {"anchor": "fix-sizing_help-1", "title": "Add fit guidance to description", "skill": "Sizing help", "skill_id": "sizing_help", "time": "2 min", "tier": "instant", "type": "snippet", "summary": "Insert fit details and model info into the product description to help buyers visualize sizing and scale."}, {"anchor": "fix-check_warranty-0", "title": "Add warranty section to PDP", "skill": "Check warranty", "skill_id": "check_warranty", "time": "2 min", "tier": "instant", "type": "snippet", "summary": "Add a collapsible warranty & care guarantee section to the product page template that displays coverage, duration, and claim process."}, {"anchor": "fix-check_warranty-1", "title": "Fix broken policy pages", "skill": "Check warranty", "skill_id": "check_warranty", "time": "15 min", "tier": "medium", "type": "settings_link", "summary": "Recreate or fix the broken refund and shipping policy pages, which should include warranty and guarantee information."}, {"anchor": "fix-rate_as_gift-0", "title": "Create gift-friendly return policy page", "skill": "Rate as gift", "skill_id": "rate_as_gift", "time": "15 min", "tier": "medium", "type": "policy_edit", "summary": "Write a clear 30-day return policy emphasizing gift returns, then fix the 404 link in footer navigation."}, {"anchor": "fix-rate_as_gift-1", "title": "Add gift wrap and message option", "skill": "Rate as gift", "skill_id": "rate_as_gift", "time": "15 min", "tier": "medium", "type": "snippet", "summary": "Add a gift options checkbox to the product form that reveals gift wrap (\u20ac5) and gift message fields, passed to cart as line item properties."}, {"anchor": "", "title": "Add BreadcrumbList schema to product template", "skill": "Cross-cutting issues", "skill_id": "", "time": "30 min", "tier": "medium", "type": "inline", "summary": "Implement JSON-LD BreadcrumbList schema showing Home > Category > Product hierarchy in theme template."}];
+  const panel = document.getElementById('fix-index-panel');
+  if (!panel) return;
+  const listEl = panel.querySelector('.fix-index-list');
+  const closeBtn = panel.querySelector('.fix-index-close');
+  const pills = document.querySelectorAll('button.effort-pill[data-filter]');
+
+  function tierOrder(t) {
+    return { instant: 0, quick: 1, medium: 2, slow: 3 }[t] ?? 4;
+  }
+
+  function filterFor(mode) {
+    if (mode === 'instant') return FIX_INDEX.filter(f => f.tier === 'instant');
+    if (mode === 'quick')   return FIX_INDEX.filter(f => f.tier === 'instant' || f.tier === 'quick');
+    return FIX_INDEX.slice();
+  }
+
+  function render(mode) {
+    const items = filterFor(mode);
+    items.sort((a, b) => tierOrder(a.tier) - tierOrder(b.tier));
+    listEl.innerHTML = items.length === 0
+      ? '<li class="fix-index-empty">No fixes match this filter.</li>'
+      : items.map(f => `
+          <li>
+            <a class="fix-index-item" href="${f.anchor ? '#' + f.anchor : '#'}" data-anchor="${f.anchor}">
+              <span class="fii-time tier-${f.tier}">${f.tier === 'instant' ? '⚡ ' : ''}${f.time}</span>
+              <span class="fii-title">${f.title.replace(/</g, '&lt;')}</span>
+              <span class="fii-skill">${f.skill.replace(/</g, '&lt;')}</span>
+            </a>
+          </li>`).join('');
+  }
+
+  function closePanel() {
+    panel.setAttribute('hidden', '');
+    pills.forEach(p => p.setAttribute('aria-expanded', 'false'));
+  }
+
+  pills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      const wasExpanded = pill.getAttribute('aria-expanded') === 'true';
+      pills.forEach(p => p.setAttribute('aria-expanded', 'false'));
+      if (wasExpanded) {
+        // Toggle off
+        panel.setAttribute('hidden', '');
+        return;
+      }
+      pill.setAttribute('aria-expanded', 'true');
+      render(pill.dataset.filter);
+      panel.removeAttribute('hidden');
+    });
+  });
+
+  closeBtn.addEventListener('click', closePanel);
+
+  // When an item is clicked: close panel FIRST (so its height doesn't bias the
+  // scroll calculation), then let the global anchor handler do the rest.
+  // Bubble order: this listener (on .fix-index-list) runs before the document-
+  // level anchor handler, so closing here means getBoundingClientRect() in the
+  // anchor handler measures with the panel already removed from layout.
+  listEl.addEventListener('click', e => {
+    const item = e.target.closest('.fix-index-item');
+    if (!item) return;
+    closePanel();  // synchronous — DOM updates before bubble continues
+  });
+
+  // ESC closes the panel
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && !panel.hasAttribute('hidden')) {
+      closePanel();
+    }
+  });
+})();
+
+(function() {
+  const ctx = document.getElementById('radarChart');
+  if (!ctx) return;
+
+  const rawDatasets = [{"label": "Claude Sonnet 4.5", "data": [5, 1, 4, 4, 1, 2, 2, 4], "color": "#c2410c"}, {"label": "GPT-4o", "data": [4, 2, 4, 4, 1, 3, 2, 4], "color": "#10a37f"}, {"label": "Gemini 2.5 Pro", "data": [3, 2, null, 4, 0, 2, 2, 4], "color": "#4285f4"}];
+  const isMulti = rawDatasets.length > 1;
+
+  // Convert hex → rgba with given alpha
+  function hexToRgba(hex, alpha) {
+    const h = hex.replace('#', '');
+    const r = parseInt(h.substring(0, 2), 16);
+    const g = parseInt(h.substring(2, 4), 16);
+    const b = parseInt(h.substring(4, 6), 16);
+    return `rgba(${r},${g},${b},${alpha})`;
+  }
+
+  const datasets = rawDatasets.map((ds, i) => ({
+    label: ds.label,
+    data: ds.data,
+    fill: !isMulti,
+    backgroundColor: isMulti ? hexToRgba(ds.color, 0.08) : hexToRgba(ds.color, 0.18),
+    borderColor: ds.color,
+    borderWidth: isMulti ? 2 : 2.5,
+    pointBackgroundColor: isMulti ? ds.color : [],
+    pointBorderColor: '#fff',
+    pointBorderWidth: 1.5,
+    pointRadius: isMulti ? 4 : 5,
+    pointHoverRadius: 7
+  }));
+
+  new Chart(ctx, {
+    type: 'radar',
+    data: {
+      labels: ["Buying advice", "Summarize reviews", "Identify specs", "Price per unit", "Check returns", "Sizing help", "Check warranty", "Rate as gift"],
+      datasets: datasets
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: {
+          display: isMulti,
+          position: 'bottom',
+          labels: { font: { size: 11, family: 'Inter, sans-serif' }, color: '#54586a', boxWidth: 14, boxHeight: 14, padding: 14 }
+        },
+        tooltip: {
+          callbacks: {
+            label: function(c) {
+              const v = c.parsed.r;
+              return c.dataset.label + ': ' + (v === null ? 'no data' : v.toFixed(1) + ' / 10');
+            }
+          }
+        }
+      },
+      scales: {
+        r: {
+          min: 0, max: 10, beginAtZero: true,
+          ticks: { stepSize: 2, font: { size: 10, family: 'JetBrains Mono, monospace' }, color: '#8b8fa0', backdropColor: 'transparent' },
+          grid: { color: 'rgba(20,20,28,0.07)' },
+          angleLines: { color: 'rgba(20,20,28,0.07)' },
+          pointLabels: { color: '#54586a', font: { size: 11, family: 'Bricolage Grotesque, system-ui, sans-serif', weight: '600' } }
+        }
+      }
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
