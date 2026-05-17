@@ -74,6 +74,57 @@ body {
   letter-spacing: -.02em;
 }
 .brand-divider { width: 1px; height: 16px; background: var(--border-h); }
+
+/* Merchant hero — logo + product image personalization above the H1 */
+.merchant-hero {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  padding: 1rem 1.25rem;
+  margin: 0 0 1.5rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+.merchant-hero .merchant-logo {
+  max-height: 56px;
+  max-width: 180px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+.merchant-hero .merchant-hero-text {
+  flex: 1;
+  min-width: 0;
+}
+.merchant-hero .merchant-hero-brand {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: -.015em;
+  color: var(--text);
+}
+.merchant-hero .merchant-hero-product {
+  font-size: .85rem;
+  color: var(--text2);
+  margin-top: .15rem;
+  line-height: 1.4;
+  word-break: break-word;
+}
+.merchant-hero .merchant-product-img {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+}
+@media (max-width: 600px) {
+  .merchant-hero { gap: .75rem; padding: .75rem .9rem; }
+  .merchant-hero .merchant-logo { max-height: 40px; max-width: 120px; }
+  .merchant-hero .merchant-product-img { width: 56px; height: 56px; }
+}
 .brand-sub {
   font-family: var(--font-mono);
   font-size: .7rem;
@@ -1277,6 +1328,8 @@ button.effort-pill[aria-expanded="true"] .effort-caret {
   <span class="brand-divider"></span>
   <span class="brand-sub">Agent Audit · PDP review</span>
 </div>
+
+<div class="merchant-hero"><img class="merchant-logo" src="https://conceptglobal.co/cdn/shop/files/Group_1CG-Logo.png" alt="Concept Global logo" loading="lazy"><div class="merchant-hero-text"><div class="merchant-hero-brand">Concept Global</div><div class="merchant-hero-product">Travel Sling Bag 2.0</div></div><img class="merchant-product-img" src="http://conceptglobal.co/cdn/shop/files/black_2_M_2.jpg?v=1776667136&amp;width=2048" alt="Travel Sling Bag 2.0" loading="lazy"></div>
 
 <h1>Concept Global — Travel Sling Bag 2.0</h1>
 <p class="report-purpose">

@@ -74,6 +74,57 @@ body {
   letter-spacing: -.02em;
 }
 .brand-divider { width: 1px; height: 16px; background: var(--border-h); }
+
+/* Merchant hero — logo + product image personalization above the H1 */
+.merchant-hero {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  padding: 1rem 1.25rem;
+  margin: 0 0 1.5rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+.merchant-hero .merchant-logo {
+  max-height: 56px;
+  max-width: 180px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+.merchant-hero .merchant-hero-text {
+  flex: 1;
+  min-width: 0;
+}
+.merchant-hero .merchant-hero-brand {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: -.015em;
+  color: var(--text);
+}
+.merchant-hero .merchant-hero-product {
+  font-size: .85rem;
+  color: var(--text2);
+  margin-top: .15rem;
+  line-height: 1.4;
+  word-break: break-word;
+}
+.merchant-hero .merchant-product-img {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+}
+@media (max-width: 600px) {
+  .merchant-hero { gap: .75rem; padding: .75rem .9rem; }
+  .merchant-hero .merchant-logo { max-height: 40px; max-width: 120px; }
+  .merchant-hero .merchant-product-img { width: 56px; height: 56px; }
+}
 .brand-sub {
   font-family: var(--font-mono);
   font-size: .7rem;
@@ -1277,6 +1328,8 @@ button.effort-pill[aria-expanded="true"] .effort-caret {
   <span class="brand-divider"></span>
   <span class="brand-sub">Agent Audit · PDP review</span>
 </div>
+
+<div class="merchant-hero"><img class="merchant-logo" src="https://thevenvia.com/cdn/shop/files/Venvia_LOGO.png" alt="Venvia logo" loading="lazy"><div class="merchant-hero-text"><div class="merchant-hero-brand">Venvia</div><div class="merchant-hero-product">Fire Phoenix Phoenix Brooch Pins Delicate Long Fringe Brooch…</div></div><img class="merchant-product-img" src="http://thevenvia.com/cdn/shop/files/Sce491a9ca30144f6951337574237bf6bD.webp?v=1753176959" alt="Fire Phoenix Phoenix Brooch Pins Delicate Long Fringe Brooch…" loading="lazy"></div>
 
 <h1>Venvia — Fire Phoenix Phoenix Brooch Pins Delicate Long Fringe Brooch…</h1>
 <p class="report-purpose">
