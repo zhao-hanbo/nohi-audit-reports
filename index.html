@@ -3,137 +3,525 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="robots" content="noindex, nofollow">
-<title>Nohi · Agent Audit reports</title>
+<meta name="description" content="Audit your Shopify product page from the perspective of AI shopping agents — ChatGPT, Gemini, Claude.">
+<title>Nohi · How AI shopping agents see your store</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Bricolage+Grotesque:wght@600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Bricolage+Grotesque:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --primary: #334155;
-    --primary-dark: #1e293b;
-    --bg: #fbfaf7;
-    --surface: #ffffff;
-    --text: #1a1c24;
-    --text2: #54586a;
-    --text3: #8b8fa0;
-    --border: rgba(20,20,28,0.08);
-    --border-h: rgba(20,20,28,0.14);
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Inter', system-ui, sans-serif;
-    line-height: 1.55;
-    -webkit-font-smoothing: antialiased;
-  }
-  .wrap { max-width: 760px; margin: 0 auto; padding: 3rem 2rem 5rem; }
-  .brand { display: flex; align-items: center; gap: .55rem; margin-bottom: 2rem; }
-  .brand-mark { width: 28px; height: 28px; background: var(--primary); border-radius: 7px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-family: 'Bricolage Grotesque', sans-serif; }
-  .brand-text { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 1.1rem; letter-spacing: -.02em; }
-  h1 { font-family: 'Bricolage Grotesque', sans-serif; font-size: 2rem; font-weight: 800; letter-spacing: -.025em; line-height: 1.1; margin-bottom: .5rem; }
-  .deck { font-size: 1.02rem; color: var(--text2); margin-bottom: 2.5rem; max-width: 600px; }
-  h2 { font-family: 'Bricolage Grotesque', sans-serif; font-size: .85rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--text3); margin: 2.5rem 0 .75rem; }
-  ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: .5rem; }
-  li a {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    align-items: center;
-    gap: 1rem;
-    padding: .85rem 1rem;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 9px;
-    text-decoration: none;
-    color: var(--text);
-    transition: all .15s;
-  }
-  li a:hover { border-color: var(--primary); background: var(--surface); transform: translateY(-1px); box-shadow: 0 2px 6px rgba(20,20,28,0.05); }
-  .report-name { font-weight: 600; font-size: 1rem; }
-  .report-meta { display: flex; gap: .35rem; flex-wrap: wrap; align-items: center; }
-  .tag { font-family: 'JetBrains Mono', monospace; font-size: .68rem; font-weight: 600; padding: .15rem .55rem; border-radius: 999px; border: 1px solid var(--border-h); color: var(--text3); white-space: nowrap; }
-  .tag.multi { color: #4285f4; border-color: #c8dafa; background: rgba(66,133,244,0.06); }
-  .tag.single { color: #475569; }
-  .tag.zh { color: #be185d; border-color: #fbcfe8; background: rgba(190,24,93,0.06); }
-  .url-row { font-family: 'JetBrains Mono', monospace; font-size: .72rem; color: var(--text3); margin-top: .2rem; word-break: break-all; }
-  footer { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); font-size: .8rem; color: var(--text3); }
-  footer a { color: var(--primary); text-decoration: none; font-weight: 600; }
-  .placeholder { color: var(--text3); font-style: italic; padding: .85rem 1rem; border: 1px dashed var(--border-h); border-radius: 8px; }
+:root {
+  --bg: #fbfaf7;
+  --surface: #ffffff;
+  --surface2: #f3f1ec;
+  --border: rgba(20,20,28,0.07);
+  --border-h: rgba(20,20,28,0.14);
+  --text: #1a1c24;
+  --text2: #54586a;
+  --text3: #8b8fa0;
+  --primary: #334155;
+  --primary-dark: #1e293b;
+  --good: #0f766e;
+  --good-soft: #ecfdf5;
+  --good-border: #a7d8c6;
+  --warn: #92400e;
+  --bad: #4b5563;
+  --crit: #9b1c1c;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', system-ui, sans-serif;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 2rem; }
+
+/* Nav */
+.nav {
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+  position: sticky; top: 0; z-index: 10;
+  backdrop-filter: blur(8px);
+  background: rgba(251,250,247,0.85);
+}
+.nav-inner { display: flex; align-items: center; justify-content: space-between; }
+.brand { display: flex; align-items: center; gap: .55rem; text-decoration: none; color: inherit; }
+.brand-mark { width: 28px; height: 28px; background: var(--primary); border-radius: 7px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-family: 'Bricolage Grotesque', sans-serif; }
+.brand-text { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 1.15rem; letter-spacing: -.02em; }
+.nav-cta { font-size: .82rem; font-weight: 600; color: var(--primary); text-decoration: none; padding: .45rem .9rem; border: 1px solid var(--border-h); border-radius: 999px; transition: all .15s; }
+.nav-cta:hover { background: var(--primary); color: white; border-color: var(--primary); }
+
+/* Hero */
+.hero { padding: 5rem 0 4rem; }
+.eyebrow { font-family: 'JetBrains Mono', monospace; font-size: .75rem; font-weight: 600; color: var(--primary); letter-spacing: .05em; text-transform: uppercase; margin-bottom: 1rem; }
+.h1 {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  font-size: clamp(2.2rem, 5vw, 3.6rem);
+  letter-spacing: -.035em;
+  line-height: 1.05;
+  margin-bottom: 1.5rem;
+  max-width: 880px;
+}
+.h1 em {
+  font-style: normal;
+  background: linear-gradient(120deg, var(--primary), var(--good));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.lead {
+  font-size: 1.18rem;
+  color: var(--text2);
+  max-width: 720px;
+  margin-bottom: 2rem;
+}
+.hero-pills { display: flex; gap: .55rem; flex-wrap: wrap; margin-top: .5rem; }
+.pill {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .76rem;
+  font-weight: 600;
+  padding: .35rem .8rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--text2);
+}
+.pill b { color: var(--text); }
+
+/* Section header */
+.section { padding: 3.5rem 0; border-top: 1px solid var(--border); }
+.section-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: .75rem;
+}
+.section h2 {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 700;
+  font-size: 2rem;
+  letter-spacing: -.025em;
+  margin-bottom: 1rem;
+  max-width: 700px;
+}
+.section .section-lead {
+  font-size: 1.05rem;
+  color: var(--text2);
+  max-width: 680px;
+  margin-bottom: 2.25rem;
+}
+
+/* Why grid */
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+.why-card {
+  padding: 1.4rem 1.5rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+.why-num {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 700;
+  font-size: 2rem;
+  letter-spacing: -.03em;
+  color: var(--primary);
+  display: block;
+  margin-bottom: .35rem;
+}
+.why-title { font-weight: 700; font-size: 1.05rem; margin-bottom: .55rem; letter-spacing: -.015em; }
+.why-body { font-size: .92rem; color: var(--text2); line-height: 1.6; }
+
+/* Skills grid */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: .75rem;
+  margin-bottom: 1.5rem;
+}
+.skill-item {
+  display: flex; gap: .85rem; align-items: flex-start;
+  padding: .85rem 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.skill-icon {
+  flex-shrink: 0;
+  width: 32px; height: 32px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .82rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+.skill-name { font-weight: 700; font-size: .92rem; }
+.skill-q { font-size: .82rem; color: var(--text3); font-style: italic; margin-top: .15rem; }
+
+/* Methodology callout */
+.methodology {
+  margin-top: 1.5rem;
+  padding: 1.25rem 1.5rem;
+  background: var(--good-soft);
+  border: 1px solid var(--good-border);
+  border-radius: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+}
+.meth-stat { }
+.meth-num {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  font-size: 1.5rem;
+  color: var(--good);
+  letter-spacing: -.02em;
+  display: block;
+}
+.meth-label { font-size: .82rem; color: var(--text2); margin-top: .15rem; }
+
+/* Samples */
+.samples-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+.sample-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  transition: all .15s;
+}
+.sample-card:hover {
+  border-color: var(--primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(20,20,28,0.08);
+}
+.sample-thumb {
+  aspect-ratio: 16 / 10;
+  background: var(--surface2);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sample-thumb img {
+  width: 100%; height: 100%; object-fit: cover;
+}
+.sample-body {
+  padding: 1rem 1.1rem 1.15rem;
+  flex: 1;
+  display: flex; flex-direction: column;
+}
+.sample-brand {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 700;
+  font-size: 1.02rem;
+  letter-spacing: -.015em;
+  margin-bottom: .15rem;
+}
+.sample-title {
+  font-size: .85rem;
+  color: var(--text2);
+  margin-bottom: .85rem;
+  flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.sample-meta { display: flex; align-items: center; justify-content: space-between; gap: .5rem; flex-wrap: wrap; }
+.sample-score {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: -.02em;
+}
+.sample-score.good { color: var(--good); }
+.sample-score.warn { color: var(--warn); }
+.sample-score.bad { color: var(--bad); }
+.sample-tags { display: flex; gap: .3rem; flex-wrap: wrap; }
+.tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .65rem;
+  font-weight: 600;
+  padding: .15rem .5rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-h);
+  color: var(--text3);
+  white-space: nowrap;
+}
+.tag.multi { color: #4285f4; border-color: #c8dafa; background: rgba(66,133,244,0.06); }
+.tag.zh { color: #be185d; border-color: #fbcfe8; background: rgba(190,24,93,0.06); }
+
+/* CTA */
+.cta-section {
+  padding: 4rem 0 5rem;
+  text-align: center;
+  border-top: 1px solid var(--border);
+}
+.cta-section h2 {
+  margin-left: auto; margin-right: auto;
+}
+.cta-section .section-lead {
+  margin-left: auto; margin-right: auto;
+}
+.cta-button {
+  display: inline-flex; align-items: center; gap: .55rem;
+  padding: .85rem 1.5rem;
+  background: var(--primary);
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: 10px;
+  margin-top: 1rem;
+  transition: all .15s;
+}
+.cta-button:hover {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(20,20,28,0.15);
+}
+.cta-button-mono {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+}
+.cta-note {
+  margin-top: 1rem;
+  font-size: .85rem;
+  color: var(--text3);
+}
+
+/* Footer */
+.footer {
+  padding: 2rem 0 3rem;
+  border-top: 1px solid var(--border);
+  font-size: .82rem;
+  color: var(--text3);
+  text-align: center;
+}
+.footer a { color: var(--primary); font-weight: 600; text-decoration: none; }
+.footer a:hover { text-decoration: underline; }
+.footer .small { font-size: .72rem; margin-top: .35rem; opacity: .7; }
+
+/* Mobile */
+@media (max-width: 640px) {
+  .hero { padding: 3rem 0 2.5rem; }
+  .section { padding: 2.5rem 0; }
+  .section h2 { font-size: 1.6rem; }
+}
 </style>
 </head>
 <body>
-<div class="wrap">
 
-<div class="brand">
-  <div class="brand-mark">N</div>
-  <span class="brand-text">Nohi · Agent Audit</span>
-</div>
+<nav class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="/">
+      <div class="brand-mark">N</div>
+      <span class="brand-text">Nohi · Agent Audit</span>
+    </a>
+    <a class="nav-cta" href="#cta">Request audit</a>
+  </div>
+</nav>
 
-<h1>Sample reports</h1>
-<p class="deck">Audits of real Shopify product pages from the perspective of AI shopping agents (ChatGPT, Gemini, Claude). Each report scores 8 buyer tasks and pairs every gap with a one-click fix.</p>
+<section class="wrap hero">
+  <div class="eyebrow">For Shopify merchants</div>
+  <h1 class="h1">AI shopping agents see your store <em>differently</em> than humans do.</h1>
+  <p class="lead">ChatGPT, Gemini, and Claude are increasingly the ones answering &ldquo;should I buy this?&rdquo; on behalf of your buyers. We audit your product pages from <strong>their</strong> perspective — and pair every gap with a one-click fix.</p>
+  <div class="hero-pills">
+    <span class="pill">⚡ <b>~3 minutes</b> per audit</span>
+    <span class="pill">3 LLMs in parallel</span>
+    <span class="pill">8 buyer tasks scored</span>
+    <span class="pill">One-click fixes for every gap</span>
+  </div>
+</section>
 
-<h2>Multi-agent (3 LLMs in parallel)</h2>
-<ul>
-  <li><a href="conceptglobal.html">
-    <div>
-      <div class="report-name">Concept Global — Travel Sling Bag 2.0</div>
-      <div class="url-row">conceptglobal.co/products/travel-sling-bag-2-0</div>
+<section class="section">
+  <div class="wrap">
+    <div class="section-eyebrow">Why this matters</div>
+    <h2>The new search result is an answer, not a list.</h2>
+    <p class="section-lead">When buyers ask an AI &ldquo;what's the best X for Y?&rdquo;, the agent reads 5-10 product pages deeply and picks one or two to recommend. What it sees on your PDP determines whether you make the shortlist.</p>
+    <div class="why-grid">
+      <div class="why-card">
+        <span class="why-num">01</span>
+        <div class="why-title">AI reads pages differently</div>
+        <div class="why-body">Cleaned text, JSON-LD schema, structured policies. Visual polish doesn't transfer. What looks great to a human can be opaque to an agent.</div>
+      </div>
+      <div class="why-card">
+        <span class="why-num">02</span>
+        <div class="why-title">Memory compounds</div>
+        <div class="why-body">The brands AI sees today are the brands AI recommends tomorrow. Early adopters compound an advantage that's hard to catch up to.</div>
+      </div>
+      <div class="why-card">
+        <span class="why-num">03</span>
+        <div class="why-title">Models disagree</div>
+        <div class="why-body">Where Claude and Gemini score 4 but GPT scores 9, you have a structural gap. Closing it makes you legible to <em>every</em> agent.</div>
+      </div>
     </div>
-    <div class="report-meta"><span class="tag multi">multi-agent</span><span class="tag">en</span></div>
-  </a></li>
-  <li><a href="annarave.html">
-    <div>
-      <div class="report-name">Annarave — Vest</div>
-      <div class="url-row">annarave.com/products/vest</div>
-    </div>
-    <div class="report-meta"><span class="tag multi">multi-agent</span><span class="tag">en</span></div>
-  </a></li>
-  <li><a href="nirogam.html">
-    <div>
-      <div class="report-name">Nirogam — Sleepmitram Tablets</div>
-      <div class="url-row">nirogamonline.com/products/sleepmitram-tablets</div>
-    </div>
-    <div class="report-meta"><span class="tag multi">multi-agent</span><span class="tag">en</span></div>
-  </a></li>
-  <li><a href="huggwaii.html">
-    <div>
-      <div class="report-name">Huggwaii — Capybara LED Night Lamp</div>
-      <div class="url-row">huggwaii.com/products/capybara-tap-tap-led-night-lamp...</div>
-    </div>
-    <div class="report-meta"><span class="tag multi">multi-agent</span><span class="tag zh">中文</span></div>
-  </a></li>
-</ul>
+  </div>
+</section>
 
-<h2>Single-agent (Claude only)</h2>
-<ul>
-  <li><a href="venvia.html">
-    <div>
-      <div class="report-name">Venvia — Fire Phoenix Brooch</div>
-      <div class="url-row">thevenvia.com/products/fire-phoenix-...</div>
+<section class="section">
+  <div class="wrap">
+    <div class="section-eyebrow">What's tested</div>
+    <h2>Eight things a buyer typically asks an AI about a product.</h2>
+    <p class="section-lead">Each scored 0-10 independently by Claude Sonnet 4.5, GPT-4o, and Gemini 2.5 Pro. Every gap comes with a one-click fix (paste-ready HTML, Shopify deep links, generated copy).</p>
+    <div class="skills-grid">
+      <div class="skill-item"><div class="skill-icon">★</div><div><div class="skill-name">Buying advice</div><div class="skill-q">Should I buy this?</div></div></div>
+      <div class="skill-item"><div class="skill-icon">★</div><div><div class="skill-name">Summarize reviews</div><div class="skill-q">What do customers say?</div></div></div>
+      <div class="skill-item"><div class="skill-icon">★</div><div><div class="skill-name">Identify specs</div><div class="skill-q">What are the specifications?</div></div></div>
+      <div class="skill-item"><div class="skill-icon">★</div><div><div class="skill-name">Price per unit</div><div class="skill-q">Is this a fair price?</div></div></div>
+      <div class="skill-item"><div class="skill-icon">★</div><div><div class="skill-name">Check returns</div><div class="skill-q">What's the return policy?</div></div></div>
+      <div class="skill-item"><div class="skill-icon">★</div><div><div class="skill-name">Sizing help</div><div class="skill-q">How big is it / will it fit?</div></div></div>
+      <div class="skill-item"><div class="skill-icon">★</div><div><div class="skill-name">Check warranty</div><div class="skill-q">Is there a warranty?</div></div></div>
+      <div class="skill-item"><div class="skill-icon">★</div><div><div class="skill-name">Rate as gift</div><div class="skill-q">Would this work as a gift?</div></div></div>
     </div>
-    <div class="report-meta"><span class="tag single">single</span><span class="tag">en</span></div>
-  </a></li>
-  <li><a href="olipop.html">
-    <div>
-      <div class="report-name">Olipop — Strawberry Vanilla</div>
-      <div class="url-row">drinkolipop.com/products/strawberry-vanilla</div>
+    <div class="methodology">
+      <div class="meth-stat">
+        <span class="meth-num">3</span>
+        <div class="meth-label">LLMs running in parallel</div>
+      </div>
+      <div class="meth-stat">
+        <span class="meth-num">24</span>
+        <div class="meth-label">independent agent calls</div>
+      </div>
+      <div class="meth-stat">
+        <span class="meth-num">~3 min</span>
+        <div class="meth-label">end-to-end runtime</div>
+      </div>
+      <div class="meth-stat">
+        <span class="meth-num">~$0.30</span>
+        <div class="meth-label">cost per audit</div>
+      </div>
     </div>
-    <div class="report-meta"><span class="tag single">single</span><span class="tag">en</span></div>
-  </a></li>
-  <li><a href="conceptglobal-single.html">
-    <div>
-      <div class="report-name">Concept Global — Travel Sling Bag 2.0 <span class="tag single" style="margin-left:.4rem;">single-agent variant</span></div>
-      <div class="url-row">conceptglobal.co/products/travel-sling-bag-2-0</div>
-    </div>
-    <div class="report-meta"><span class="tag single">single</span><span class="tag">en</span></div>
-  </a></li>
-</ul>
+  </div>
+</section>
 
-<footer>
-  Powered by <a href="https://nohi.ai">Nohi</a>. These reports are samples shared with merchants for feedback. Not indexed by search engines.
+<section class="section">
+  <div class="wrap">
+    <div class="section-eyebrow">Sample reports</div>
+    <h2>Real audits we've shared with founders.</h2>
+    <p class="section-lead">Click into any sample to see the full report. Each one is a snapshot of what AI agents see on that exact page on the day it was audited.</p>
+    <div class="samples-grid">
+      <a class="sample-card" href="conceptglobal.html">
+        <div class="sample-thumb"><img src="_assets/conceptglobal/product.jpg" alt="Concept Global Travel Sling Bag 2.0" loading="lazy"></div>
+        <div class="sample-body">
+          <div class="sample-brand">Concept Global</div>
+          <div class="sample-title">Travel Sling Bag 2.0</div>
+          <div class="sample-meta">
+            <span class="sample-score warn">6.5<span style="font-size:.7em;color:var(--text3);font-weight:500;">/10</span></span>
+            <div class="sample-tags"><span class="tag multi">multi-agent</span></div>
+          </div>
+        </div>
+      </a>
+      <a class="sample-card" href="annarave.html">
+        <div class="sample-thumb"><img src="_assets/annarave/product.jpg" alt="Anna Rave Vest" loading="lazy"></div>
+        <div class="sample-body">
+          <div class="sample-brand">Anna Rave</div>
+          <div class="sample-title">Vest (made-to-order knitwear)</div>
+          <div class="sample-meta">
+            <span class="sample-score bad">3.5<span style="font-size:.7em;color:var(--text3);font-weight:500;">/10</span></span>
+            <div class="sample-tags"><span class="tag multi">multi-agent</span></div>
+          </div>
+        </div>
+      </a>
+      <a class="sample-card" href="nirogam.html">
+        <div class="sample-thumb"><img src="_assets/nirogam/product.png" alt="Nirogam Sleepmitram Tablets" loading="lazy"></div>
+        <div class="sample-body">
+          <div class="sample-brand">Nirogam</div>
+          <div class="sample-title">Sleepmitram Tablets — Ayurveda sleep support</div>
+          <div class="sample-meta">
+            <span class="sample-score bad">4.5<span style="font-size:.7em;color:var(--text3);font-weight:500;">/10</span></span>
+            <div class="sample-tags"><span class="tag multi">multi-agent</span></div>
+          </div>
+        </div>
+      </a>
+      <a class="sample-card" href="huggwaii.html">
+        <div class="sample-thumb"><img src="_assets/huggwaii/product.png" alt="Huggwaii Capybara LED Night Lamp" loading="lazy"></div>
+        <div class="sample-body">
+          <div class="sample-brand">Huggwaii</div>
+          <div class="sample-title">Capybara LED Night Lamp</div>
+          <div class="sample-meta">
+            <span class="sample-score bad">4.1<span style="font-size:.7em;color:var(--text3);font-weight:500;">/10</span></span>
+            <div class="sample-tags"><span class="tag multi">multi-agent</span><span class="tag zh">中文</span></div>
+          </div>
+        </div>
+      </a>
+      <a class="sample-card" href="olipop.html">
+        <div class="sample-thumb"><img src="_assets/olipop/product.webp" alt="Olipop Strawberry Vanilla" loading="lazy"></div>
+        <div class="sample-body">
+          <div class="sample-brand">Olipop</div>
+          <div class="sample-title">Strawberry Vanilla prebiotic soda</div>
+          <div class="sample-meta">
+            <span class="sample-score bad">4.3<span style="font-size:.7em;color:var(--text3);font-weight:500;">/10</span></span>
+            <div class="sample-tags"><span class="tag">single-agent</span></div>
+          </div>
+        </div>
+      </a>
+      <a class="sample-card" href="venvia.html">
+        <div class="sample-thumb"><img src="_assets/venvia/product.webp" alt="Venvia Fire Phoenix Brooch" loading="lazy"></div>
+        <div class="sample-body">
+          <div class="sample-brand">Venvia</div>
+          <div class="sample-title">Fire Phoenix Brooch — statement accessory</div>
+          <div class="sample-meta">
+            <span class="sample-score bad">4.1<span style="font-size:.7em;color:var(--text3);font-weight:500;">/10</span></span>
+            <div class="sample-tags"><span class="tag">single-agent</span></div>
+          </div>
+        </div>
+      </a>
+      <a class="sample-card" href="conceptglobal-single.html">
+        <div class="sample-thumb"><img src="_assets/conceptglobal-single/product.jpg" alt="Concept Global single-agent" loading="lazy"></div>
+        <div class="sample-body">
+          <div class="sample-brand">Concept Global</div>
+          <div class="sample-title">Travel Sling Bag 2.0 — single-agent variant for comparison</div>
+          <div class="sample-meta">
+            <span class="sample-score warn">6.1<span style="font-size:.7em;color:var(--text3);font-weight:500;">/10</span></span>
+            <div class="sample-tags"><span class="tag">single-agent</span></div>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="section cta-section" id="cta">
+  <div class="wrap">
+    <div class="section-eyebrow">Get yours</div>
+    <h2>Want an audit for your store?</h2>
+    <p class="section-lead">Send us your top product page URL. You'll get a report within 24 hours. Independent research, no commercial follow-up unless you ask.</p>
+    <a class="cta-button" href="mailto:zhao@nohi.ai?subject=Agent%20Audit%20request&amp;body=My%20product%20page%20URL%3A%20">
+      <span>→</span>
+      <span class="cta-button-mono">zhao@nohi.ai</span>
+    </a>
+    <div class="cta-note">Free for the first audit. We use feedback to keep improving the tool.</div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="wrap">
+    Powered by <a href="https://nohi.ai">Nohi</a> · Reports are private (noindex) and shared 1:1 with each merchant.
+    <div class="small">Built on Claude Agent SDK + OpenAI + Google Gemini APIs.</div>
+  </div>
 </footer>
 
-</div>
 </body>
 </html>
